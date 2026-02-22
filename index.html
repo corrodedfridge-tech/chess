@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         :root {
             --bg-darkest: #262421;
@@ -40,6 +35,8 @@
             --mistake: #e69d00;
             --miss: #df5f5b;
             --blunder: #ca3431;
+            --gold: #ffd700;
+            --purple: #9b59b6;
         }
 
         body {
@@ -51,24 +48,59 @@
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-8px); } 80% { transform: translateX(8px); } }
+        @keyframes shake { 0%, 100% { transform: translate(0, 0) rotate(0); } 10% { transform: translate(-10px, -5px) rotate(-1deg); } 20% { transform: translate(10px, 5px) rotate(1deg); } 30% { transform: translate(-10px, 5px) rotate(-1deg); } 40% { transform: translate(10px, -5px) rotate(1deg); } 50% { transform: translate(-5px, 5px) rotate(-0.5deg); } 60% { transform: translate(5px, -5px) rotate(0.5deg); } 70% { transform: translate(-5px, -5px) rotate(-0.5deg); } 80% { transform: translate(5px, 5px) rotate(0.5deg); } 90% { transform: translate(-2px, 2px) rotate(0); } }
+        @keyframes megaShake { 0%, 100% { transform: translate(0, 0) rotate(0); } 5% { transform: translate(-15px, -10px) rotate(-2deg); } 10% { transform: translate(15px, 10px) rotate(2deg); } 15% { transform: translate(-15px, 10px) rotate(-2deg); } 20% { transform: translate(15px, -10px) rotate(2deg); } 25% { transform: translate(-12px, 8px) rotate(-1.5deg); } 30% { transform: translate(12px, -8px) rotate(1.5deg); } 35% { transform: translate(-10px, -8px) rotate(-1deg); } 40% { transform: translate(10px, 8px) rotate(1deg); } 45% { transform: translate(-8px, 6px) rotate(-0.8deg); } 50% { transform: translate(8px, -6px) rotate(0.8deg); } 55% { transform: translate(-6px, -4px) rotate(-0.5deg); } 60% { transform: translate(6px, 4px) rotate(0.5deg); } 70% { transform: translate(-4px, 2px) rotate(-0.3deg); } 80% { transform: translate(2px, -2px) rotate(0.2deg); } 90% { transform: translate(-1px, 1px) rotate(0); } }
         @keyframes popIn { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes captureFlash { 0% { background: rgba(255, 100, 100, 0.7); } 100% { background: transparent; } }
+        @keyframes popInBig { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.3) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        @keyframes captureFlash { 0% { background: rgba(255, 100, 100, 0.7); transform: scale(1.05); } 100% { background: transparent; transform: scale(1); } }
+        @keyframes queenCapture { 0% { background: rgba(255, 215, 0, 0.8); transform: scale(1.1); } 50% { background: rgba(255, 215, 0, 0.4); } 100% { background: transparent; transform: scale(1); } }
         @keyframes checkPulse { 0%, 100% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.6); } 50% { box-shadow: inset 0 0 60px rgba(255, 0, 0, 0.9); } }
         @keyframes moveIconPop { 0% { transform: scale(0) rotate(-180deg); } 60% { transform: scale(1.3) rotate(10deg); } 100% { transform: scale(1) rotate(0deg); } }
-        @keyframes kingFall { 0% { transform: rotate(0deg) scale(1); } 30% { transform: rotate(-15deg) scale(1); } 100% { transform: rotate(-90deg) scale(0.8) translateY(20px); opacity: 0.5; } }
-        @keyframes explode { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
-        @keyframes particle { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
-        @keyframes victoryGlow { 0%, 100% { box-shadow: 0 0 30px rgba(129, 182, 76, 0.5); } 50% { box-shadow: 0 0 60px rgba(129, 182, 76, 0.8); } }
+        @keyframes kingFall { 0% { transform: rotate(0deg) scale(1); filter: brightness(1); } 20% { transform: rotate(-10deg) scale(1.1); filter: brightness(1.5); } 40% { transform: rotate(-30deg) scale(1); filter: brightness(0.8); } 100% { transform: rotate(-90deg) scale(0.7) translateY(20px); filter: brightness(0.3); opacity: 0.4; } }
+        @keyframes explode { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
+        @keyframes explodeBig { 0% { transform: scale(0); opacity: 1; border-width: 8px; } 100% { transform: scale(6); opacity: 0; border-width: 1px; } }
+        @keyframes particle { 0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); opacity: 0; } }
+        @keyframes particleSlow { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; } }
+        @keyframes victoryGlow { 0%, 100% { box-shadow: 0 0 40px rgba(129, 182, 76, 0.6), 0 0 80px rgba(129, 182, 76, 0.3); } 50% { box-shadow: 0 0 80px rgba(129, 182, 76, 0.9), 0 0 120px rgba(129, 182, 76, 0.5); } }
+        @keyframes defeatGlow { 0%, 100% { box-shadow: 0 0 40px rgba(202, 52, 49, 0.6); } 50% { box-shadow: 0 0 80px rgba(202, 52, 49, 0.9); } }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(180deg); } }
+        @keyframes lightning { 0% { opacity: 0; } 5% { opacity: 1; } 10% { opacity: 0; } 15% { opacity: 0.8; } 20% { opacity: 0; } 100% { opacity: 0; } }
+        @keyframes confetti { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0.8; } }
+        @keyframes screenFlash { 0% { opacity: 0; } 10% { opacity: 0.8; } 100% { opacity: 0; } }
+        @keyframes crownBounce { 0% { transform: translateY(-50px) scale(0); opacity: 0; } 50% { transform: translateY(10px) scale(1.2); opacity: 1; } 70% { transform: translateY(-5px) scale(0.95); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+        @keyframes textReveal { 0% { transform: translateY(50px) scale(0.5); opacity: 0; filter: blur(10px); } 100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); } }
+        @keyframes piecePlace { 0% { transform: scale(1.3) translateY(-10px); } 50% { transform: scale(0.95) translateY(2px); } 100% { transform: scale(1) translateY(0); } }
+        @keyframes pieceLift { 0% { transform: scale(1); filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4)); } 100% { transform: scale(1.15); filter: drop-shadow(8px 16px 16px rgba(0,0,0,0.5)); } }
+        @keyframes ripple { 0% { transform: scale(0.5); opacity: 0.5; } 100% { transform: scale(2.5); opacity: 0; } }
+        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 5px var(--glow-color)); } 50% { filter: drop-shadow(0 0 20px var(--glow-color)); } }
+        @keyframes importantMove { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(0.95); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes evalBarPulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.3); } }
+        @keyframes starBurst { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
 
-        .shake { animation: shake 0.4s ease-in-out; }
-        .king-fallen { animation: kingFall 0.8s ease-in forwards; }
+        .shake { animation: shake 0.5s ease-in-out; }
+        .mega-shake { animation: megaShake 1.2s ease-in-out; }
+        .king-fallen { animation: kingFall 1.2s ease-in forwards; }
         .victory-glow { animation: victoryGlow 1.5s ease infinite; }
+        .defeat-glow { animation: defeatGlow 1.5s ease infinite; }
+        .piece-placed { animation: piecePlace 0.25s ease-out; }
+        .important-move { animation: importantMove 0.4s ease-out; }
+
+        .screen-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            pointer-events: none;
+            z-index: 99999;
+            animation: screenFlash 0.5s ease-out forwards;
+        }
 
         .header {
             background: linear-gradient(180deg, #302e2b 0%, #272522 100%);
@@ -106,9 +138,7 @@
             transition: all 0.3s ease;
         }
 
-        .logo:hover .logo-icon {
-            transform: rotate(-10deg) scale(1.1);
-        }
+        .logo:hover .logo-icon { transform: rotate(-10deg) scale(1.1); }
 
         .nav-tabs {
             display: flex;
@@ -152,7 +182,7 @@
         }
 
         .elo-label {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -161,45 +191,47 @@
         .elo-display {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .elo-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
-            min-width: 50px;
-            color: var(--accent-green);
+            min-width: 55px;
+            background: linear-gradient(135deg, var(--accent-green), #a8e063);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .elo-slider {
-            width: 180px;
-            height: 6px;
+            width: 200px;
+            height: 8px;
             -webkit-appearance: none;
-            background: var(--bg-dark);
-            border-radius: 3px;
+            background: linear-gradient(90deg, #ca3431 0%, #f7c631 30%, #81b64c 60%, #1baca6 100%);
+            border-radius: 4px;
             outline: none;
             cursor: pointer;
         }
 
         .elo-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, var(--accent-green), var(--accent-green-dark));
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #fff, #ddd);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
             transition: transform 0.2s;
+            border: 3px solid var(--bg-darkest);
         }
 
-        .elo-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
+        .elo-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
         .elo-description {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-muted);
-            max-width: 120px;
+            font-weight: 500;
         }
 
         .main-container {
@@ -228,7 +260,7 @@
         .board-container {
             position: relative;
             border-radius: 6px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 12px 40px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
         }
@@ -240,6 +272,8 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
             position: relative;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .square {
@@ -260,28 +294,39 @@
         
         .square.legal-move::after {
             content: '';
-            width: 26px;
-            height: 26px;
-            background: rgba(0, 0, 0, 0.18);
+            width: 28px;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.15);
             border-radius: 50%;
             position: absolute;
             transition: all 0.2s ease;
+            animation: pulse 2s ease infinite;
         }
 
-        .square.legal-move:hover::after { transform: scale(1.3); background: rgba(0, 0, 0, 0.25); }
+        .square.legal-move:hover::after { transform: scale(1.4); background: rgba(0, 0, 0, 0.25); }
 
         .square.legal-capture::after {
             content: '';
             width: 100%;
             height: 100%;
-            border: 7px solid rgba(0, 0, 0, 0.18);
+            border: 7px solid rgba(0, 0, 0, 0.15);
             border-radius: 50%;
             position: absolute;
             box-sizing: border-box;
+            animation: pulse 2s ease infinite;
         }
 
-        .square.check { background: var(--check-red) !important; animation: checkPulse 1s ease infinite; }
-        .square.capture-flash { animation: captureFlash 0.3s ease; }
+        .square.check { background: var(--check-red) !important; animation: checkPulse 0.8s ease infinite; }
+        .square.capture-flash { animation: captureFlash 0.4s ease-out; }
+        .square.queen-capture { animation: queenCapture 0.6s ease-out; }
+
+        .square-ripple {
+            position: absolute;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: ripple 0.6s ease-out forwards;
+        }
 
         .move-classification-icon {
             position: absolute;
@@ -306,8 +351,8 @@
             filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4));
         }
 
-        .piece:hover { transform: scale(1.08); filter: drop-shadow(3px 6px 8px rgba(0,0,0,0.5)); }
-        .piece.dragging { cursor: grabbing; transform: scale(1.2); z-index: 1000; }
+        .piece:hover { transform: scale(1.08); filter: drop-shadow(4px 8px 8px rgba(0,0,0,0.5)); }
+        .piece.dragging { cursor: grabbing; }
 
         .ghost-piece {
             position: fixed;
@@ -315,7 +360,7 @@
             z-index: 10000;
             width: 100px;
             height: 100px;
-            filter: drop-shadow(6px 12px 12px rgba(0,0,0,0.6));
+            filter: drop-shadow(8px 16px 16px rgba(0,0,0,0.6));
             transform: translate(-50%, -50%);
         }
 
@@ -334,7 +379,7 @@
         .square.dark .coordinate { color: var(--light-square); }
 
         .eval-bar-container {
-            width: 30px;
+            width: 32px;
             height: 640px;
             background: linear-gradient(180deg, #1a1a1a 0%, #333 100%);
             border-radius: 6px;
@@ -345,18 +390,20 @@
 
         .eval-bar-white {
             width: 100%;
-            background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
             position: absolute;
             bottom: 0;
-            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .eval-bar-white.advantage { animation: evalBarPulse 1s ease; }
 
         .eval-text {
             position: absolute;
             width: 100%;
             text-align: center;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 800;
             padding: 5px 0;
         }
 
@@ -364,32 +411,33 @@
         .eval-text.black { top: 0; color: #ffffff; }
 
         .captured-pieces {
-            height: 32px;
+            height: 36px;
             display: flex;
             align-items: center;
-            gap: 1px;
+            gap: 2px;
             padding: 0 8px;
-            min-height: 32px;
+            min-height: 36px;
         }
 
         .captured-piece {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             opacity: 0.85;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
             animation: popIn 0.3s ease;
         }
 
-        .captured-piece:hover { transform: scale(1.3); opacity: 1; z-index: 10; }
+        .captured-piece:hover { transform: scale(1.4); opacity: 1; z-index: 10; }
+        .captured-piece.queen { animation: popInBig 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 0 8px var(--gold)); }
 
         .material-advantage {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-white);
             margin-left: 8px;
-            background: var(--bg-dark);
-            padding: 2px 8px;
-            border-radius: 4px;
+            background: var(--accent-green);
+            padding: 3px 10px;
+            border-radius: 12px;
             animation: popIn 0.3s ease;
         }
 
@@ -414,6 +462,7 @@
             background: var(--bg-dark);
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .player-info::before {
@@ -428,7 +477,7 @@
         }
 
         .player-info.active::before { background: var(--accent-green); box-shadow: 0 0 20px var(--accent-green); }
-        .player-info.active { background: linear-gradient(90deg, rgba(129, 182, 76, 0.15) 0%, var(--bg-dark) 100%); }
+        .player-info.active { background: linear-gradient(90deg, rgba(129, 182, 76, 0.2) 0%, var(--bg-dark) 100%); }
 
         .player-avatar {
             width: 48px;
@@ -440,9 +489,10 @@
             align-items: center;
             font-size: 24px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
 
-        .player-info.active .player-avatar { animation: pulse 2s ease infinite; }
+        .player-info.active .player-avatar { animation: pulse 2s ease infinite; transform: scale(1.05); }
 
         .player-details { flex: 1; }
         .player-name { font-weight: 700; font-size: 15px; }
@@ -540,9 +590,11 @@
             padding: 16px;
             font-size: 16px;
             font-weight: 700;
-            color: var(--accent-green);
             background: linear-gradient(180deg, transparent 0%, rgba(129, 182, 76, 0.1) 100%);
         }
+
+        .game-status.victory { color: var(--accent-green); }
+        .game-status.defeat { color: var(--blunder); }
 
         .thinking {
             display: flex;
@@ -563,7 +615,7 @@
             height: 8px;
             background: var(--accent-green);
             border-radius: 50%;
-            animation: pulse 1.2s infinite;
+            animation: pulse 1s infinite;
         }
         .thinking-dots span:nth-child(2) { animation-delay: 0.15s; }
         .thinking-dots span:nth-child(3) { animation-delay: 0.3s; }
@@ -630,72 +682,136 @@
 
         .resign-btn:hover { background: var(--blunder); border-color: var(--blunder); color: var(--text-white); }
 
-        .review-panel { display: none; animation: fadeIn 0.3s ease; }
+        /* Review Panel */
+        .review-panel { display: none; animation: fadeIn 0.3s ease; overflow-y: auto; max-height: 400px; }
         .review-panel.active { display: block; }
 
         .accuracy-section {
-            padding: 28px;
+            padding: 24px;
             background: linear-gradient(180deg, var(--bg-darkest) 0%, var(--bg-darker) 100%);
         }
 
-        .accuracy-row { display: flex; justify-content: center; gap: 50px; }
+        .accuracy-row { display: flex; justify-content: center; gap: 40px; }
         .accuracy-item { text-align: center; }
 
         .accuracy-ring {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             position: relative;
-            margin: 0 auto 14px;
+            margin: 0 auto 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .accuracy-ring svg { position: absolute; width: 100%; height: 100%; transform: rotate(-90deg); }
-        .accuracy-ring circle { fill: none; stroke-width: 10; }
+        .accuracy-ring circle { fill: none; stroke-width: 8; }
         .accuracy-ring .bg { stroke: var(--bg-dark); }
         .accuracy-ring .progress { stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .accuracy-ring.white .progress { stroke: var(--text-white); filter: drop-shadow(0 0 8px rgba(255,255,255,0.5)); }
+        .accuracy-ring.white .progress { stroke: var(--text-white); filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
         .accuracy-ring.black .progress { stroke: var(--text-muted); }
 
-        .accuracy-value { font-size: 32px; font-weight: 800; }
-        .accuracy-percent { font-size: 14px; font-weight: 600; opacity: 0.7; }
-        .accuracy-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .accuracy-value { font-size: 26px; font-weight: 800; }
+        .accuracy-percent { font-size: 12px; font-weight: 600; opacity: 0.7; }
+        .accuracy-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        .eval-graph {
+            height: 80px;
+            margin: 0 18px 18px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eval-graph-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--bg-medium);
+        }
+
+        .eval-graph-fill {
+            position: absolute;
+            bottom: 50%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(129, 182, 76, 0.3) 0%, rgba(129, 182, 76, 0.1) 100%);
+        }
+
+        .eval-graph canvas {
+            width: 100%;
+            height: 100%;
+        }
 
         .classification-section { padding: 0 18px 18px; }
-        .classification-header { display: flex; justify-content: flex-end; padding: 12px 0; gap: 10px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .classification-header span { width: 44px; text-align: center; }
+        .classification-header { display: flex; justify-content: flex-end; padding: 10px 0; gap: 8px; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .classification-header span { width: 40px; text-align: center; }
 
         .classification-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(255,255,255,0.04);
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
         }
-        .classification-row:hover { background: rgba(255,255,255,0.02); }
+        .classification-row:hover { background: rgba(255,255,255,0.02); padding-left: 8px; }
 
-        .classification-label { display: flex; align-items: center; gap: 12px; }
-        .classification-icon { width: 28px; height: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .classification-name { font-size: 13px; font-weight: 600; }
-        .classification-counts { display: flex; gap: 10px; }
+        .classification-label { display: flex; align-items: center; gap: 10px; }
+        .classification-icon { width: 24px; height: 24px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
+        .classification-name { font-size: 12px; font-weight: 600; }
+        .classification-counts { display: flex; gap: 8px; }
 
         .count-badge {
-            width: 44px;
+            width: 40px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            padding: 6px 0;
-            border-radius: 6px;
+            padding: 4px 0;
+            border-radius: 4px;
             background: var(--bg-dark);
+            transition: all 0.2s ease;
         }
         .count-badge.has-value { background: var(--bg-medium); }
 
+        .key-moments {
+            padding: 0 18px 18px;
+        }
+
+        .key-moments-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .key-moment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .key-moment:hover { background: var(--bg-medium); transform: translateX(4px); }
+        .key-moment-icon { width: 28px; height: 28px; }
+        .key-moment-text { flex: 1; font-size: 12px; }
+        .key-moment-move { font-weight: 700; }
+        .key-moment-eval { font-size: 11px; color: var(--text-muted); }
+
         .review-move-info {
             background: var(--bg-dark);
-            margin: 16px;
+            margin: 0 18px 18px;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,0.2);
@@ -706,22 +822,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 18px;
+            padding: 14px 16px;
             background: var(--bg-darkest);
         }
 
-        .review-move-class { display: flex; align-items: center; gap: 12px; }
-        .review-move-icon { width: 28px; height: 28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .review-move-notation { font-size: 18px; font-weight: 700; }
-        .review-move-type { font-size: 13px; color: var(--text-muted); }
+        .review-move-class { display: flex; align-items: center; gap: 10px; }
+        .review-move-icon { width: 26px; height: 26px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
+        .review-move-notation { font-size: 16px; font-weight: 700; }
+        .review-move-type { font-size: 12px; color: var(--text-muted); }
 
-        .eval-change { font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 6px; }
+        .eval-change { font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: 5px; }
         .eval-change.positive { background: rgba(129, 182, 76, 0.2); color: var(--accent-green); }
         .eval-change.negative { background: rgba(202, 52, 49, 0.2); color: var(--blunder); }
 
-        .review-best-move { padding: 14px 18px; font-size: 13px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05); }
+        .review-best-move { padding: 12px 16px; font-size: 12px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05); }
         .review-best-move strong { color: var(--accent-green); font-weight: 700; }
 
+        /* Modals */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -729,52 +846,87 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.92);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
         }
 
-        .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
 
         .modal {
             background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-darkest) 100%);
-            padding: 40px 50px;
-            border-radius: 20px;
+            padding: 50px 60px;
+            border-radius: 24px;
             text-align: center;
-            box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 480px;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8);
+            max-width: 500px;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
-        .modal-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darkest) 100%);
-            border-radius: 50%;
-            margin: 0 auto 24px;
+        .modal.victory { animation: victoryGlow 2s ease infinite; }
+        .modal.defeat { animation: defeatGlow 2s ease infinite; }
+
+        .modal-crown {
+            font-size: 80px;
+            animation: crownBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+        }
+
+        .modal-title {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            animation: textReveal 0.6s ease 0.2s both;
+            letter-spacing: -1px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 36px;
+            animation: textReveal 0.6s ease 0.4s both;
+        }
+
+        .modal-stats {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 50px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            position: relative;
+            gap: 30px;
+            margin-bottom: 30px;
+            animation: textReveal 0.6s ease 0.5s both;
         }
 
-        .modal-icon.victory { animation: victoryGlow 1.5s ease infinite; }
+        .modal-stat {
+            text-align: center;
+        }
 
-        .modal-title { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
-        .modal-subtitle { color: var(--text-muted); font-size: 16px; margin-bottom: 32px; line-height: 1.5; }
+        .modal-stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
 
-        .modal-buttons { display: flex; gap: 12px; justify-content: center; }
+        .modal-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            animation: textReveal 0.6s ease 0.6s both;
+        }
 
         .modal-btn {
-            padding: 16px 32px;
-            border-radius: 10px;
-            font-size: 14px;
+            padding: 16px 36px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -785,22 +937,22 @@
         .modal-btn.primary {
             background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
             color: var(--text-white);
-            box-shadow: 0 4px 16px rgba(129, 182, 76, 0.4);
+            box-shadow: 0 4px 20px rgba(129, 182, 76, 0.5);
         }
-        .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(129, 182, 76, 0.5); }
+        .modal-btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 30px rgba(129, 182, 76, 0.6); }
 
         .modal-btn.secondary { background: var(--bg-dark); color: var(--text-light); border: 2px solid var(--bg-medium); }
-        .modal-btn.secondary:hover { background: var(--bg-medium); color: var(--text-white); }
+        .modal-btn.secondary:hover { background: var(--bg-medium); color: var(--text-white); transform: translateY(-2px); }
 
-        .promotion-modal .modal { padding: 28px; }
-        .promotion-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text-light); }
-        .promotion-pieces { display: flex; gap: 10px; }
+        .promotion-modal .modal { padding: 30px; }
+        .promotion-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--text-light); }
+        .promotion-pieces { display: flex; gap: 12px; justify-content: center; }
 
         .promotion-piece {
-            width: 85px;
-            height: 85px;
+            width: 90px;
+            height: 90px;
             background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -811,7 +963,8 @@
 
         .promotion-piece:hover {
             border-color: var(--accent-green);
-            transform: scale(1.08) translateY(-4px);
+            transform: scale(1.1) translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
         }
 
         .promotion-piece img { width: 70px; height: 70px; }
@@ -830,24 +983,37 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            animation: particle 1s ease-out forwards;
+            animation: particle 1.2s ease-out forwards;
+        }
+
+        .particle-star {
+            position: absolute;
+            font-size: 20px;
+            animation: particleSlow 1.5s ease-out forwards;
         }
 
         .explosion-ring {
             position: absolute;
-            border: 4px solid var(--accent-green);
+            border: 4px solid;
             border-radius: 50%;
-            animation: explode 0.6s ease-out forwards;
+            animation: explodeBig 0.8s ease-out forwards;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            animation: confetti 3s ease-out forwards;
         }
 
         .empty-state { padding: 50px; text-align: center; color: var(--text-muted); }
-        .empty-state-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+        .empty-state-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; animation: float 3s ease infinite; }
         .empty-state-text { font-size: 14px; line-height: 1.7; }
 
-        .analyzing-container { padding: 70px 40px; text-align: center; }
+        .analyzing-container { padding: 60px 40px; text-align: center; }
         .spinner {
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             border: 5px solid var(--bg-dark);
             border-top: 5px solid var(--accent-green);
             border-radius: 50%;
@@ -857,6 +1023,20 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .analyzing-text { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .analyzing-subtext { font-size: 13px; color: var(--text-muted); }
+        .analyzing-progress {
+            width: 200px;
+            height: 4px;
+            background: var(--bg-dark);
+            border-radius: 2px;
+            margin: 20px auto 0;
+            overflow: hidden;
+        }
+        .analyzing-progress-bar {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
 
         @media (max-width: 1100px) {
             .main-container { flex-direction: column; align-items: center; padding: 20px; }
@@ -887,8 +1067,8 @@
                 <div class="elo-display">
                     <span class="elo-value" id="eloDisplay">1500</span>
                     <input type="range" class="elo-slider" id="eloSlider" min="0" max="3200" step="100" value="1500">
+                    <span class="elo-description" id="eloDesc">Intermediate</span>
                 </div>
-                <span class="elo-description" id="eloDesc">Intermediate</span>
             </div>
         </div>
     </header>
@@ -923,7 +1103,7 @@
             </div>
 
             <div class="thinking" id="thinkingIndicator" style="display: none;">
-                <span>Thinking</span>
+                <span>Calculating</span>
                 <div class="thinking-dots"><span></span><span></span><span></span></div>
             </div>
 
@@ -936,7 +1116,7 @@
                 <div class="moves-container" id="movesContainer">
                     <div class="empty-state">
                         <div class="empty-state-icon">♟</div>
-                        <div class="empty-state-text">No moves yet.<br>Make your first move!</div>
+                        <div class="empty-state-text">Your move.<br>Make it count.</div>
                     </div>
                 </div>
             </div>
@@ -945,7 +1125,7 @@
                 <div id="reviewContent">
                     <div class="empty-state">
                         <div class="empty-state-icon">📊</div>
-                        <div class="empty-state-text">Play a game first, then click<br>"Game Review" to analyze.</div>
+                        <div class="empty-state-text">Play a game first, then<br>analyze your performance.</div>
                     </div>
                 </div>
             </div>
@@ -984,10 +1164,20 @@
     </main>
 
     <div class="modal-overlay" id="gameOverModal">
-        <div class="modal">
-            <div class="modal-icon" id="gameOverIcon">👑</div>
-            <h2 class="modal-title" id="gameOverTitle">Game Over</h2>
+        <div class="modal" id="gameOverModalContent">
+            <div class="modal-crown" id="gameOverIcon">👑</div>
+            <h2 class="modal-title" id="gameOverTitle">Victory!</h2>
             <p class="modal-subtitle" id="gameOverMessage">You won by checkmate!</p>
+            <div class="modal-stats" id="modalStats">
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="statMoves">0</div>
+                    <div class="modal-stat-label">Moves</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-value" id="statAccuracy">0%</div>
+                    <div class="modal-stat-label">Accuracy</div>
+                </div>
+            </div>
             <div class="modal-buttons">
                 <button class="modal-btn primary" onclick="newGame()">Play Again</button>
                 <button class="modal-btn secondary" onclick="closeModal(); startReview();">Review Game</button>
@@ -997,7 +1187,7 @@
 
     <div class="modal-overlay promotion-modal" id="promotionModal">
         <div class="modal">
-            <div class="promotion-title">Choose promotion piece</div>
+            <div class="promotion-title">Promote your pawn</div>
             <div class="promotion-pieces" id="promotionPieces"></div>
         </div>
     </div>
@@ -1032,121 +1222,116 @@
         };
 
         const ELO_DESCRIPTIONS = {
-            0: "Tries to lose",
-            100: "Absolute beginner",
-            200: "Terrible",
-            300: "Very weak",
-            400: "Weak",
-            500: "Novice",
-            600: "Casual",
-            700: "Learner",
-            800: "Beginner",
-            900: "Below average",
-            1000: "Average",
-            1100: "Improving",
-            1200: "Decent",
-            1300: "Competent",
-            1400: "Solid",
-            1500: "Intermediate",
-            1600: "Good",
-            1700: "Strong",
-            1800: "Very strong",
-            1900: "Expert",
-            2000: "Candidate Master",
-            2100: "Master",
-            2200: "National Master",
-            2300: "FIDE Master",
-            2400: "International Master",
-            2500: "Grandmaster",
-            2600: "Super GM",
-            2700: "Elite",
-            2800: "World Class",
-            2900: "Near Perfect",
-            3000: "Engine Level",
-            3100: "Superhuman",
-            3200: "Unbeatable"
+            0: "Tries to lose", 100: "Terrible", 200: "Very weak", 300: "Weak", 400: "Beginner",
+            500: "Novice", 600: "Casual", 700: "Learning", 800: "Improving", 900: "Below avg",
+            1000: "Average", 1100: "Decent", 1200: "Solid", 1300: "Good", 1400: "Strong",
+            1500: "Intermediate", 1600: "Advanced", 1700: "Expert", 1800: "Very strong",
+            1900: "Near master", 2000: "Candidate Master", 2100: "Master", 2200: "National Master",
+            2300: "FIDE Master", 2400: "Int. Master", 2500: "Grandmaster", 2600: "Super GM",
+            2700: "Elite", 2800: "World class", 2900: "Near perfect", 3000: "Engine",
+            3100: "Superhuman", 3200: "Unbeatable"
         };
 
         let audioCtx = null;
-        function getAudioContext() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            return audioCtx;
-        }
+        const getAudioContext = () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; };
 
-        function playSound(type) {
+        function playSound(type, options = {}) {
             try {
                 const ctx = getAudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
                 
                 switch(type) {
-                    case 'move':
-                        osc.frequency.value = 440;
+                    case 'move': {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.value = 330 + Math.random() * 60;
                         osc.type = 'sine';
-                        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-                        osc.start(); osc.stop(ctx.currentTime + 0.1);
+                        gain.gain.setValueAtTime(0.08, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                        osc.start(now); osc.stop(now + 0.1);
                         break;
-                    case 'capture':
-                        osc.frequency.value = 220;
-                        osc.type = 'triangle';
-                        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-                        osc.start(); osc.stop(ctx.currentTime + 0.2);
+                    }
+                    case 'capture': {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.value = 180;
+                        osc.type = 'sawtooth';
+                        gain.gain.setValueAtTime(0.12, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                        osc.start(now); osc.stop(now + 0.25);
                         break;
-                    case 'check':
-                        osc.frequency.value = 800;
+                    }
+                    case 'queenCapture': {
+                        [523.25, 659.25, 783.99].forEach((freq, i) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0.15, now + i * 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.3);
+                            osc.start(now + i * 0.05); osc.stop(now + i * 0.05 + 0.4);
+                        });
+                        break;
+                    }
+                    case 'check': {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.frequency.setValueAtTime(600, now);
+                        osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
                         osc.type = 'square';
-                        gain.gain.setValueAtTime(0.08, ctx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-                        osc.start(); osc.stop(ctx.currentTime + 0.25);
+                        gain.gain.setValueAtTime(0.06, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                        osc.start(now); osc.stop(now + 0.25);
                         break;
-                    case 'checkmate':
-                        const notes = [523.25, 659.25, 783.99, 1046.50];
-                        notes.forEach((freq, i) => {
-                            const o = ctx.createOscillator();
-                            const g = ctx.createGain();
-                            o.connect(g); g.connect(ctx.destination);
-                            o.frequency.value = freq;
-                            o.type = 'sine';
-                            g.gain.setValueAtTime(0, ctx.currentTime + i * 0.15);
-                            g.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.15 + 0.05);
-                            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.4);
-                            o.start(ctx.currentTime + i * 0.15);
-                            o.stop(ctx.currentTime + i * 0.15 + 0.5);
+                    }
+                    case 'victory': {
+                        const melody = [[523.25, 0], [659.25, 0.15], [783.99, 0.3], [1046.50, 0.45], [1318.51, 0.7], [1046.50, 0.9]];
+                        melody.forEach(([freq, delay]) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0, now + delay);
+                            gain.gain.linearRampToValueAtTime(0.15, now + delay + 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.4);
+                            osc.start(now + delay); osc.stop(now + delay + 0.5);
                         });
-                        return;
-                    case 'defeat':
-                        const low = [392, 349.23, 293.66, 261.63];
-                        low.forEach((freq, i) => {
-                            const o = ctx.createOscillator();
-                            const g = ctx.createGain();
-                            o.connect(g); g.connect(ctx.destination);
-                            o.frequency.value = freq;
-                            o.type = 'sine';
-                            g.gain.setValueAtTime(0, ctx.currentTime + i * 0.2);
-                            g.gain.linearRampToValueAtTime(0.12, ctx.currentTime + i * 0.2 + 0.05);
-                            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.2 + 0.5);
-                            o.start(ctx.currentTime + i * 0.2);
-                            o.stop(ctx.currentTime + i * 0.2 + 0.6);
+                        break;
+                    }
+                    case 'defeat': {
+                        const melody = [[392, 0], [349.23, 0.25], [293.66, 0.5], [220, 0.75]];
+                        melody.forEach(([freq, delay]) => {
+                            const osc = ctx.createOscillator();
+                            const gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0, now + delay);
+                            gain.gain.linearRampToValueAtTime(0.1, now + delay + 0.05);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.6);
+                            osc.start(now + delay); osc.stop(now + delay + 0.7);
                         });
-                        return;
+                        break;
+                    }
                 }
             } catch(e) {}
         }
 
-        function createExplosion(x, y, count = 30) {
+        function createParticles(x, y, count, options = {}) {
             const container = document.getElementById('particles');
-            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bb5', '#fff'];
+            const colors = options.colors || ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bb5', '#fff'];
             
             for (let i = 0; i < count; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 12 + 4;
+                const size = options.size || (Math.random() * 12 + 4);
                 const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-                const distance = Math.random() * 150 + 80;
+                const distance = (options.distance || 120) + Math.random() * 80;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
                 
@@ -1154,39 +1339,113 @@
                     left: ${x}px; top: ${y}px;
                     width: ${size}px; height: ${size}px;
                     background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    --tx: ${tx}px; --ty: ${ty}px;
+                    --tx: ${tx}px; --ty: ${ty}px; --rot: ${Math.random() * 720}deg;
+                    animation-duration: ${options.duration || 1.2}s;
                 `;
                 container.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
-            }
-            
-            for (let i = 0; i < 3; i++) {
-                const ring = document.createElement('div');
-                ring.className = 'explosion-ring';
-                ring.style.cssText = `left: ${x - 20}px; top: ${y - 20}px; width: 40px; height: 40px;`;
-                ring.style.animationDelay = `${i * 0.1}s`;
-                container.appendChild(ring);
-                setTimeout(() => ring.remove(), 600);
+                setTimeout(() => particle.remove(), (options.duration || 1.2) * 1000);
             }
         }
 
-        function checkmateAnimation(kingSquare, playerWon) {
+        function createExplosionRings(x, y, count = 3) {
+            const container = document.getElementById('particles');
+            const colors = ['var(--accent-green)', 'var(--gold)', '#fff'];
+            
+            for (let i = 0; i < count; i++) {
+                const ring = document.createElement('div');
+                ring.className = 'explosion-ring';
+                ring.style.cssText = `
+                    left: ${x - 25}px; top: ${y - 25}px;
+                    width: 50px; height: 50px;
+                    border-color: ${colors[i % colors.length]};
+                    animation-delay: ${i * 0.12}s;
+                `;
+                container.appendChild(ring);
+                setTimeout(() => ring.remove(), 1000);
+            }
+        }
+
+        function createConfetti(count = 50) {
+            const container = document.getElementById('particles');
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bb5', '#9b59b6', '#fff'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.cssText = `
+                    left: ${Math.random() * window.innerWidth}px;
+                    top: -20px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation-delay: ${Math.random() * 2}s;
+                    animation-duration: ${2 + Math.random() * 2}s;
+                `;
+                container.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function screenFlash() {
+            const flash = document.createElement('div');
+            flash.className = 'screen-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 500);
+        }
+
+        function epicCheckmateAnimation(kingSquare, playerWon) {
             const board = document.getElementById('board');
             const rect = board.getBoundingClientRect();
-            const kingX = rect.left + kingSquare.col * 80 + 40;
-            const kingY = rect.top + kingSquare.row * 80 + 40;
-            
+            const x = rect.left + kingSquare.col * 80 + 40;
+            const y = rect.top + kingSquare.row * 80 + 40;
+
+            // Screen flash
+            screenFlash();
+
+            // King falls
             const kingPiece = document.querySelector(`.square[data-row="${kingSquare.row}"][data-col="${kingSquare.col}"] .piece`);
             if (kingPiece) kingPiece.classList.add('king-fallen');
-            
-            document.getElementById('boardContainer').classList.add('shake');
-            setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 500);
-            
-            setTimeout(() => createExplosion(kingX, kingY, 40), 200);
-            setTimeout(() => createExplosion(kingX - 30, kingY - 30, 20), 350);
-            setTimeout(() => createExplosion(kingX + 30, kingY + 30, 20), 450);
-            
-            playSound(playerWon ? 'checkmate' : 'defeat');
+
+            // Mega shake
+            document.getElementById('boardContainer').classList.add('mega-shake');
+            setTimeout(() => document.getElementById('boardContainer').classList.remove('mega-shake'), 1200);
+
+            // Multiple explosion waves
+            setTimeout(() => {
+                createParticles(x, y, 50, { colors: playerWon ? ['#81b64c', '#a8e063', '#fff', '#ffd700'] : ['#ca3431', '#ff6b6b', '#333', '#fff'], distance: 150 });
+                createExplosionRings(x, y, 4);
+            }, 100);
+
+            setTimeout(() => createParticles(x - 40, y - 40, 25, { distance: 100 }), 250);
+            setTimeout(() => createParticles(x + 40, y + 40, 25, { distance: 100 }), 350);
+            setTimeout(() => createParticles(x, y, 30, { distance: 200, size: 8 }), 500);
+
+            // Corner explosions
+            setTimeout(() => {
+                [[0, 0], [640, 0], [0, 640], [640, 640]].forEach(([ox, oy], i) => {
+                    setTimeout(() => createParticles(rect.left + ox, rect.top + oy, 15, { distance: 80 }), i * 100);
+                });
+            }, 400);
+
+            // Confetti for victory
+            if (playerWon) {
+                setTimeout(() => createConfetti(80), 600);
+            }
+
+            // Sound
+            playSound(playerWon ? 'victory' : 'defeat');
+        }
+
+        function queenCaptureAnimation(x, y) {
+            createParticles(x, y, 30, { colors: ['#ffd700', '#ffec8b', '#fff', '#ffa500'], distance: 100, duration: 1 });
+            createExplosionRings(x, y, 2);
+            playSound('queenCapture');
+        }
+
+        function createRipple(square) {
+            const ripple = document.createElement('div');
+            ripple.className = 'square-ripple';
+            ripple.style.cssText = 'left: 50%; top: 50%; width: 40px; height: 40px; transform: translate(-50%, -50%);';
+            square.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
         }
 
         // Chess Engine
@@ -1211,6 +1470,7 @@
                 this.fullMoveNumber = 1;
                 this.moveHistory = [];
                 this.capturedPieces = { white: [], black: [] };
+                this.evalHistory = [0];
             }
 
             clone() {
@@ -1223,6 +1483,7 @@
                 c.fullMoveNumber = this.fullMoveNumber;
                 c.moveHistory = [...this.moveHistory];
                 c.capturedPieces = { white: [...this.capturedPieces.white], black: [...this.capturedPieces.black] };
+                c.evalHistory = [...this.evalHistory];
                 return c;
             }
 
@@ -1294,10 +1555,8 @@
                             if (r + dir >= 0 && r + dir < 8 && !this.board[r + dir][c]) {
                                 if (r + dir === promo) ['Q','R','B','N'].forEach(p => moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c}, promotion: p }));
                                 else moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c} });
-                                
                                 if (r === start && !this.board[r+2*dir][c]) moves.push({ from: {row:r,col:c}, to: {row:r+2*dir,col:c} });
                             }
-                            
                             for (const dc of [-1, 1]) {
                                 const nc = c + dc;
                                 if (nc >= 0 && nc < 8 && r + dir >= 0 && r + dir < 8) {
@@ -1310,7 +1569,6 @@
                                 }
                             }
                         }
-                        
                         if (pt === 'N') {
                             for (const [dr, dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]) {
                                 const nr = r + dr, nc = c + dc;
@@ -1318,7 +1576,6 @@
                                     moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} });
                             }
                         }
-                        
                         if (pt === 'B' || pt === 'Q') {
                             for (const [dr, dc] of [[-1,-1],[-1,1],[1,-1],[1,1]]) {
                                 let nr = r + dr, nc = c + dc;
@@ -1329,7 +1586,6 @@
                                 }
                             }
                         }
-                        
                         if (pt === 'R' || pt === 'Q') {
                             for (const [dr, dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
                                 let nr = r + dr, nc = c + dc;
@@ -1340,7 +1596,6 @@
                                 }
                             }
                         }
-                        
                         if (pt === 'K') {
                             for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
                                 if (dr === 0 && dc === 0) continue;
@@ -1352,22 +1607,15 @@
                             if (r === row && c === 4 && !this.isInCheck(color)) {
                                 const ks = color === 'white' ? 'K' : 'k', qs = color === 'white' ? 'Q' : 'q';
                                 const opp = color === 'white' ? 'black' : 'white';
-                                if (this.castling[ks] && !this.board[row][5] && !this.board[row][6] &&
-                                    !this.isSquareAttacked(row, 5, opp) && !this.isSquareAttacked(row, 6, opp))
+                                if (this.castling[ks] && !this.board[row][5] && !this.board[row][6] && !this.isSquareAttacked(row, 5, opp) && !this.isSquareAttacked(row, 6, opp))
                                     moves.push({ from: {row:r,col:c}, to: {row:row,col:6}, isCastling: 'kingside' });
-                                if (this.castling[qs] && !this.board[row][3] && !this.board[row][2] && !this.board[row][1] &&
-                                    !this.isSquareAttacked(row, 3, opp) && !this.isSquareAttacked(row, 2, opp))
+                                if (this.castling[qs] && !this.board[row][3] && !this.board[row][2] && !this.board[row][1] && !this.isSquareAttacked(row, 3, opp) && !this.isSquareAttacked(row, 2, opp))
                                     moves.push({ from: {row:r,col:c}, to: {row:row,col:2}, isCastling: 'queenside' });
                             }
                         }
                     }
                 }
-                
-                return moves.filter(m => {
-                    const c = this.clone();
-                    c.makeMove(m, true);
-                    return !c.isInCheck(color);
-                });
+                return moves.filter(m => { const c = this.clone(); c.makeMove(m, true); return !c.isInCheck(color); });
             }
 
             makeMove(move, skip = false) {
@@ -1403,15 +1651,14 @@
                     if (from.row === 0 && from.col === 0) this.castling.q = false;
                 }
 
-                this.enPassant = (piece.toUpperCase() === 'P' && Math.abs(to.row - from.row) === 2) ?
-                    { row: (from.row + to.row) / 2, col: from.col } : null;
-
+                this.enPassant = (piece.toUpperCase() === 'P' && Math.abs(to.row - from.row) === 2) ? { row: (from.row + to.row) / 2, col: from.col } : null;
                 this.halfMoveClock = (captured || piece.toUpperCase() === 'P') ? 0 : this.halfMoveClock + 1;
                 if (color === 'black') this.fullMoveNumber++;
 
                 if (!skip) {
                     const notation = this.getMoveNotation(move, piece, captured, isCastling);
                     this.moveHistory.push({ ...move, notation, piece, captured, boardState: this.getBoardState() });
+                    this.evalHistory.push(this.evaluate() / 100);
                 }
 
                 this.turn = this.turn === 'white' ? 'black' : 'white';
@@ -1421,22 +1668,17 @@
             getMoveNotation(move, piece, captured, isCastling) {
                 if (isCastling === 'kingside') return 'O-O';
                 if (isCastling === 'queenside') return 'O-O-O';
-                const files = 'abcdefgh';
-                const pt = piece.toUpperCase();
+                const files = 'abcdefgh', pt = piece.toUpperCase();
                 let n = pt !== 'P' ? pt : '';
                 if (captured || move.isEnPassant) { if (pt === 'P') n += files[move.from.col]; n += 'x'; }
                 n += files[move.to.col] + (8 - move.to.row);
                 if (move.promotion) n += '=' + move.promotion;
-                const copy = this.clone();
-                const opp = this.getPieceColor(piece) === 'white' ? 'black' : 'white';
+                const copy = this.clone(), opp = this.getPieceColor(piece) === 'white' ? 'black' : 'white';
                 if (copy.isInCheck(opp)) n += copy.generateLegalMoves(opp).length === 0 ? '#' : '+';
                 return n;
             }
 
-            getBoardState() {
-                return { board: this.board.map(r => [...r]), turn: this.turn, castling: { ...this.castling }, enPassant: this.enPassant ? { ...this.enPassant } : null };
-            }
-
+            getBoardState() { return { board: this.board.map(r => [...r]), turn: this.turn, castling: { ...this.castling }, enPassant: this.enPassant ? { ...this.enPassant } : null }; }
             isCheckmate() { return this.isInCheck(this.turn) && this.generateLegalMoves().length === 0; }
             isStalemate() { return !this.isInCheck(this.turn) && this.generateLegalMoves().length === 0; }
             isDraw() {
@@ -1469,22 +1711,18 @@
             }
         }
 
-        // AI
         class ChessAI {
-            constructor(elo = 1500) {
-                this.setElo(elo);
-            }
+            constructor(elo = 1500) { this.setElo(elo); }
 
             setElo(elo) {
                 this.elo = elo;
                 this.tryToLose = elo === 0;
-                
                 if (elo === 0) { this.depth = 3; this.randomness = 0; }
-                else if (elo <= 400) { this.depth = 1; this.randomness = 300; }
-                else if (elo <= 800) { this.depth = 1; this.randomness = 150; }
+                else if (elo <= 400) { this.depth = 1; this.randomness = 400; }
+                else if (elo <= 800) { this.depth = 1; this.randomness = 200; }
                 else if (elo <= 1200) { this.depth = 2; this.randomness = 100; }
                 else if (elo <= 1600) { this.depth = 3; this.randomness = 50; }
-                else if (elo <= 2000) { this.depth = 4; this.randomness = 20; }
+                else if (elo <= 2000) { this.depth = 3; this.randomness = 20; }
                 else if (elo <= 2400) { this.depth = 4; this.randomness = 5; }
                 else if (elo <= 2800) { this.depth = 5; this.randomness = 0; }
                 else { this.depth = 6; this.randomness = 0; }
@@ -1494,28 +1732,19 @@
                 const moves = engine.generateLegalMoves();
                 if (!moves.length) return null;
                 
-                if (this.elo <= 400 && this.elo > 0) {
-                    const randomIndex = Math.floor(Math.random() * moves.length);
-                    if (Math.random() < 0.5) return { move: moves[randomIndex], score: 0 };
+                if (this.elo <= 400 && this.elo > 0 && Math.random() < 0.4) {
+                    return { move: moves[Math.floor(Math.random() * moves.length)], score: 0 };
                 }
 
-                let best = null;
-                let bestScore = this.tryToLose ? Infinity : (engine.turn === 'white' ? -Infinity : Infinity);
-                
-                const scoredMoves = [];
-                
-                for (const m of moves) {
-                    const c = engine.clone();
-                    c.makeMove(m, true);
+                const scoredMoves = moves.map(m => {
+                    const c = engine.clone(); c.makeMove(m, true);
                     let s = this.minimax(c, this.depth - 1, -Infinity, Infinity, engine.turn !== 'white');
                     s += (Math.random() - 0.5) * this.randomness;
-                    scoredMoves.push({ move: m, score: s });
-                }
+                    return { move: m, score: s };
+                });
                 
                 scoredMoves.sort((a, b) => {
-                    if (this.tryToLose) {
-                        return engine.turn === 'white' ? a.score - b.score : b.score - a.score;
-                    }
+                    if (this.tryToLose) return engine.turn === 'white' ? a.score - b.score : b.score - a.score;
                     return engine.turn === 'white' ? b.score - a.score : a.score - b.score;
                 });
                 
@@ -1529,74 +1758,55 @@
                 
                 if (max) {
                     let v = -Infinity;
-                    for (const m of moves) {
-                        const c = e.clone(); c.makeMove(m, true);
-                        v = Math.max(v, this.minimax(c, d-1, a, b, false));
-                        a = Math.max(a, v);
-                        if (b <= a) break;
-                    }
+                    for (const m of moves) { const c = e.clone(); c.makeMove(m, true); v = Math.max(v, this.minimax(c, d-1, a, b, false)); a = Math.max(a, v); if (b <= a) break; }
                     return v;
                 } else {
                     let v = Infinity;
-                    for (const m of moves) {
-                        const c = e.clone(); c.makeMove(m, true);
-                        v = Math.min(v, this.minimax(c, d-1, a, b, true));
-                        b = Math.min(b, v);
-                        if (b <= a) break;
-                    }
+                    for (const m of moves) { const c = e.clone(); c.makeMove(m, true); v = Math.min(v, this.minimax(c, d-1, a, b, true)); b = Math.min(b, v); if (b <= a) break; }
                     return v;
                 }
             }
 
             analyzeMove(eng, move, color) {
-                const oldDepth = this.depth;
-                const oldRand = this.randomness;
-                const oldLose = this.tryToLose;
-                
-                this.depth = 4;
-                this.randomness = 0;
-                this.tryToLose = false;
+                const oldD = this.depth, oldR = this.randomness, oldL = this.tryToLose;
+                this.depth = 4; this.randomness = 0; this.tryToLose = false;
                 
                 const best = this.getBestMove(eng);
-                
-                this.depth = oldDepth;
-                this.randomness = oldRand;
-                this.tryToLose = oldLose;
+                this.depth = oldD; this.randomness = oldR; this.tryToLose = oldL;
                 
                 if (!best?.move) return { classification: 'book', evalChange: 0, evalAfter: 0 };
                 
                 const afterBest = eng.clone(); afterBest.makeMove(best.move, true);
                 const after = eng.clone(); after.makeMove(move, true);
-                const evalBest = afterBest.evaluate() * (color === 'white' ? 1 : -1);
-                const evalActual = after.evaluate() * (color === 'white' ? 1 : -1);
-                const change = (evalActual - evalBest) / 100;
+                const evalBest = afterBest.evaluate() * (color === 'white' ? 1 : -1) / 100;
+                const evalActual = after.evaluate() * (color === 'white' ? 1 : -1) / 100;
+                const change = evalActual - evalBest;
+                
                 const isBest = move.from.row === best.move.from.row && move.from.col === best.move.from.col &&
                                move.to.row === best.move.to.row && move.to.col === best.move.to.col;
                 
                 let cls;
                 if (isBest) cls = 'best';
                 else if (change >= -0.1) cls = 'excellent';
-                else if (change >= -0.25) cls = 'good';
-                else if (change >= -0.6) cls = 'inaccuracy';
-                else if (change >= -1.5) cls = 'mistake';
+                else if (change >= -0.3) cls = 'good';
+                else if (change >= -0.7) cls = 'inaccuracy';
+                else if (change >= -2) cls = 'mistake';
                 else cls = 'blunder';
 
                 const piece = eng.board[move.from.row][move.from.col];
                 const vals = { P:1, N:3, B:3, R:5, Q:9, K:0 };
                 const pv = vals[piece?.toUpperCase()] || 0;
                 const opp = color === 'white' ? 'black' : 'white';
-                if (eng.isSquareAttacked(move.to.row, move.to.col, opp) && !isBest && change >= 1) {
+                if (!isBest && change >= 1.5 && eng.isSquareAttacked(move.to.row, move.to.col, opp)) {
                     const cap = eng.board[move.to.row][move.to.col];
-                    const cv = cap ? vals[cap.toUpperCase()] : 0;
-                    if (pv > cv && change >= 2) cls = 'brilliant';
+                    if (pv > (cap ? vals[cap.toUpperCase()] : 0)) cls = 'brilliant';
                 }
                 if (cls === 'best' && !eng.board[move.to.row][move.to.col] && !move.isCastling) cls = 'great';
 
-                return { classification: cls, evalChange: change, evalAfter: evalActual / 100, bestMove: best.move, isBestMove: isBest };
+                return { classification: cls, evalChange: change, evalAfter: evalActual, bestMove: best.move, isBestMove: isBest };
             }
         }
 
-        // State
         let engine = new ChessEngine();
         let ai = new ChessAI(1500);
         let selectedSquare = null;
@@ -1614,8 +1824,7 @@
             updateMoveList();
             updateEvalBar(0);
             
-            const slider = document.getElementById('eloSlider');
-            slider.addEventListener('input', e => {
+            document.getElementById('eloSlider').addEventListener('input', e => {
                 const elo = parseInt(e.target.value);
                 ai.setElo(elo);
                 document.getElementById('eloDisplay').textContent = elo;
@@ -1627,10 +1836,10 @@
                 else if (elo <= 400) name = 'Baby Bot 👶';
                 else if (elo <= 800) name = 'Beginner Bot';
                 else if (elo <= 1200) name = 'Casual Bot';
-                else if (elo <= 1600) name = 'Intermediate Bot';
+                else if (elo <= 1600) name = 'Club Player';
                 else if (elo <= 2000) name = 'Expert Bot';
                 else if (elo <= 2400) name = 'Master Bot';
-                else if (elo <= 2800) name = 'Grandmaster Bot';
+                else if (elo <= 2800) name = 'Grandmaster';
                 else name = 'Stockfish 🐟';
                 document.getElementById('botName').textContent = name;
             });
@@ -1649,8 +1858,7 @@
             const state = customState || engine.board;
             const files = 'abcdefgh';
 
-            let lastMove = null;
-            let classification = null;
+            let lastMove = null, classification = null;
             if (reviewMode && classIndex >= 0 && engine.moveHistory[classIndex]) {
                 lastMove = engine.moveHistory[classIndex];
                 classification = moveAnalysis[classIndex];
@@ -1666,13 +1874,9 @@
                     sq.dataset.row = r;
                     sq.dataset.col = c;
 
-                    if (lastMove && ((lastMove.from.row === r && lastMove.from.col === c) || (lastMove.to.row === r && lastMove.to.col === c))) {
-                        sq.classList.add('last-move');
-                    }
+                    if (lastMove && ((lastMove.from.row === r && lastMove.from.col === c) || (lastMove.to.row === r && lastMove.to.col === c))) sq.classList.add('last-move');
                     if (selectedSquare?.row === r && selectedSquare?.col === c) sq.classList.add('selected');
-                    if (legalMoves.some(m => m.to.row === r && m.to.col === c)) {
-                        sq.classList.add(state[r][c] ? 'legal-capture' : 'legal-move');
-                    }
+                    if (legalMoves.some(m => m.to.row === r && m.to.col === c)) sq.classList.add(state[r][c] ? 'legal-capture' : 'legal-move');
                     if (!customState && engine.isInCheck(engine.turn)) {
                         const kp = engine.getKingPosition(engine.turn);
                         if (kp?.row === r && kp?.col === c) sq.classList.add('check');
@@ -1737,10 +1941,7 @@
         function endDrag(e, r, c) {
             if (!dragging) return;
             const move = legalMoves.find(m => m.to.row === r && m.to.col === c);
-            if (move) {
-                if (move.promotion) { showPromotion(move); return; }
-                makePlayerMove(move);
-            }
+            if (move) { if (move.promotion) { showPromotion(move); return; } makePlayerMove(move); }
             selectedSquare = null; legalMoves = []; dragging = false; dragStartSquare = null;
             if (ghostPiece) { ghostPiece.remove(); ghostPiece = null; }
             renderBoard();
@@ -1776,50 +1977,82 @@
 
         function makePlayerMove(move) {
             const captured = engine.board[move.to.row][move.to.col];
+            const isQueen = captured?.toUpperCase() === 'Q';
             const result = engine.makeMove(move);
             selectedSquare = null; legalMoves = [];
             
-            if (result.isCastling) playSound('move');
-            else if (captured || result.isEnPassant) { playSound('capture'); flashSquare(move.to.row, move.to.col); }
-            else if (move.promotion) playSound('move');
-            else playSound('move');
-
             renderBoard();
+            
+            const sq = document.querySelector(`.square[data-row="${move.to.row}"][data-col="${move.to.col}"]`);
+            const piece = sq?.querySelector('.piece');
+            if (piece) piece.classList.add('piece-placed');
+            if (sq) createRipple(sq);
+
+            if (isQueen) {
+                const rect = sq.getBoundingClientRect();
+                queenCaptureAnimation(rect.left + 40, rect.top + 40);
+                sq.classList.add('queen-capture');
+            } else if (captured || result.isEnPassant) {
+                playSound('capture');
+                sq?.classList.add('capture-flash');
+            } else {
+                playSound('move');
+            }
+
             updateMoveList();
-            updateEvalBar(engine.evaluate() / 100);
+            const ev = engine.evaluate() / 100;
+            updateEvalBar(ev, true);
 
-            if (engine.isInCheck(engine.turn)) playSound('check');
+            if (engine.isInCheck(engine.turn)) {
+                playSound('check');
+                document.getElementById('boardContainer').classList.add('shake');
+                setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 500);
+            }
+            
             if (checkGameEnd()) return;
-            setTimeout(makeAIMove, 400);
-        }
-
-        function flashSquare(r, c) {
-            setTimeout(() => {
-                const sq = document.querySelector(`.square[data-row="${r}"][data-col="${c}"]`);
-                if (sq) sq.classList.add('capture-flash');
-            }, 50);
+            setTimeout(makeAIMove, 400 + Math.random() * 200);
         }
 
         function makeAIMove() {
             if (gameOver) return;
             document.getElementById('thinkingIndicator').style.display = 'flex';
             
-            const thinkTime = Math.max(200, Math.min(1500, ai.elo / 2));
+            const thinkTime = Math.max(300, Math.min(2000, ai.elo * 0.5 + Math.random() * 500));
             
             setTimeout(() => {
                 const result = ai.getBestMove(engine);
                 document.getElementById('thinkingIndicator').style.display = 'none';
                 if (result?.move) {
                     const captured = engine.board[result.move.to.row][result.move.to.col];
+                    const isQueen = captured?.toUpperCase() === 'Q';
                     const moveResult = engine.makeMove(result.move);
                     
-                    if (captured || moveResult.isEnPassant) { playSound('capture'); flashSquare(result.move.to.row, result.move.to.col); }
-                    else playSound('move');
-
                     renderBoard();
+                    
+                    const sq = document.querySelector(`.square[data-row="${result.move.to.row}"][data-col="${result.move.to.col}"]`);
+                    const piece = sq?.querySelector('.piece');
+                    if (piece) piece.classList.add('piece-placed');
+                    if (sq) createRipple(sq);
+
+                    if (isQueen) {
+                        const rect = sq.getBoundingClientRect();
+                        queenCaptureAnimation(rect.left + 40, rect.top + 40);
+                        sq.classList.add('queen-capture');
+                    } else if (captured || moveResult.isEnPassant) {
+                        playSound('capture');
+                        sq?.classList.add('capture-flash');
+                    } else {
+                        playSound('move');
+                    }
+
                     updateMoveList();
-                    updateEvalBar(engine.evaluate() / 100);
-                    if (engine.isInCheck(engine.turn)) { playSound('check'); document.getElementById('boardContainer').classList.add('shake'); setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 400); }
+                    updateEvalBar(engine.evaluate() / 100, true);
+                    
+                    if (engine.isInCheck(engine.turn)) {
+                        playSound('check');
+                        document.getElementById('boardContainer').classList.add('shake');
+                        setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 500);
+                    }
                     checkGameEnd();
                 }
             }, thinkTime);
@@ -1831,28 +2064,25 @@
                 const playerWon = engine.turn === 'black';
                 const kingPos = engine.getKingPosition(engine.turn);
                 
-                setTimeout(() => checkmateAnimation(kingPos, playerWon), 100);
+                setTimeout(() => epicCheckmateAnimation(kingPos, playerWon), 100);
                 
                 setTimeout(() => {
+                    const modal = document.getElementById('gameOverModalContent');
                     const icon = document.getElementById('gameOverIcon');
                     const title = document.getElementById('gameOverTitle');
                     const msg = document.getElementById('gameOverMessage');
+                    const status = document.getElementById('gameStatus');
                     
-                    if (playerWon) {
-                        icon.textContent = '👑';
-                        icon.classList.add('victory');
-                        title.textContent = 'Victory!';
-                        msg.textContent = 'You won by checkmate!';
-                    } else {
-                        icon.textContent = '💀';
-                        icon.classList.remove('victory');
-                        title.textContent = 'Defeat';
-                        msg.textContent = 'You were checkmated.';
-                    }
+                    modal.className = 'modal ' + (playerWon ? 'victory' : 'defeat');
+                    icon.textContent = playerWon ? '👑' : '💀';
+                    title.textContent = playerWon ? 'Victory!' : 'Defeat';
+                    msg.textContent = playerWon ? 'Checkmate! You crushed them!' : 'You were checkmated';
+                    status.className = 'game-status ' + (playerWon ? 'victory' : 'defeat');
+                    status.textContent = playerWon ? '🎉 Victory!' : '😢 Defeated';
                     
-                    document.getElementById('gameStatus').textContent = playerWon ? 'You won!' : 'You lost';
+                    document.getElementById('statMoves').textContent = Math.ceil(engine.moveHistory.length / 2);
                     document.getElementById('gameOverModal').classList.add('active');
-                }, 1200);
+                }, 1500);
                 
                 return true;
             }
@@ -1860,11 +2090,13 @@
             const draw = engine.isDraw();
             if (draw) {
                 gameOver = true;
+                document.getElementById('gameOverModalContent').className = 'modal';
                 document.getElementById('gameOverIcon').textContent = '🤝';
-                document.getElementById('gameOverIcon').classList.remove('victory');
                 document.getElementById('gameOverTitle').textContent = 'Draw';
                 document.getElementById('gameOverMessage').textContent = draw === 'stalemate' ? 'Stalemate' : draw === 'fifty-move' ? 'Fifty-move rule' : 'Insufficient material';
                 document.getElementById('gameStatus').textContent = 'Draw';
+                document.getElementById('gameStatus').className = 'game-status';
+                document.getElementById('statMoves').textContent = Math.ceil(engine.moveHistory.length / 2);
                 document.getElementById('gameOverModal').classList.add('active');
                 return true;
             }
@@ -1877,10 +2109,13 @@
             if (gameOver || !engine.moveHistory.length) return;
             gameOver = true;
             playSound('defeat');
+            document.getElementById('gameOverModalContent').className = 'modal defeat';
             document.getElementById('gameOverIcon').textContent = '🏳️';
             document.getElementById('gameOverTitle').textContent = 'You Resigned';
-            document.getElementById('gameOverMessage').textContent = 'Black wins';
-            document.getElementById('gameStatus').textContent = 'You resigned';
+            document.getElementById('gameOverMessage').textContent = 'Better luck next time';
+            document.getElementById('gameStatus').textContent = 'Resigned';
+            document.getElementById('gameStatus').className = 'game-status defeat';
+            document.getElementById('statMoves').textContent = Math.ceil(engine.moveHistory.length / 2);
             document.getElementById('gameOverModal').classList.add('active');
         }
 
@@ -1888,7 +2123,7 @@
             const container = document.getElementById('movesContainer');
             const moves = engine.moveHistory;
             if (!moves.length) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">♟</div><div class="empty-state-text">No moves yet.<br>Make your first move!</div></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">♟</div><div class="empty-state-text">Your move.<br>Make it count.</div></div>';
                 return;
             }
             container.innerHTML = '';
@@ -1917,12 +2152,14 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function updateEvalBar(ev) {
+        function updateEvalBar(ev, animate = false) {
             const bar = document.getElementById('evalBar');
             const tw = document.getElementById('evalTextWhite');
             const tb = document.getElementById('evalTextBlack');
             const clamped = Math.max(-10, Math.min(10, ev));
             bar.style.height = (50 + (clamped / 10) * 50) + '%';
+            if (animate) bar.classList.add('advantage');
+            setTimeout(() => bar.classList.remove('advantage'), 1000);
             if (ev > 0) { tw.textContent = '+' + ev.toFixed(1); tb.textContent = ''; }
             else if (ev < 0) { tw.textContent = ''; tb.textContent = Math.abs(ev).toFixed(1); }
             else { tw.textContent = '0.0'; tb.textContent = ''; }
@@ -1938,12 +2175,12 @@
 
             const wCont = document.getElementById('capturedWhite');
             const wCap = [...engine.capturedPieces.white].sort((a,b) => order[a] - order[b]);
-            wCont.innerHTML = wCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`).join('');
+            wCont.innerHTML = wCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece ${p.toUpperCase() === 'Q' ? 'queen' : ''}">`).join('');
             if (adv > 0) wCont.innerHTML += `<span class="material-advantage">+${adv}</span>`;
 
             const bCont = document.getElementById('capturedBlack');
             const bCap = [...engine.capturedPieces.black].sort((a,b) => order[a] - order[b]);
-            bCont.innerHTML = bCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`).join('');
+            bCont.innerHTML = bCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece ${p.toUpperCase() === 'Q' ? 'queen' : ''}">`).join('');
             if (adv < 0) bCont.innerHTML += `<span class="material-advantage">+${Math.abs(adv)}</span>`;
         }
 
@@ -1967,6 +2204,7 @@
             updateMoveList();
             updateEvalBar(0);
             document.getElementById('gameStatus').textContent = '';
+            document.getElementById('gameStatus').className = 'game-status';
             showPanelTab('moves');
             document.getElementById('playTab').classList.add('active');
             document.getElementById('reviewTabBtn').classList.remove('active');
@@ -1993,7 +2231,16 @@
             document.getElementById('playTab').classList.remove('active');
             document.getElementById('reviewTabBtn').classList.add('active');
             showPanelTab('review');
-            document.getElementById('reviewContent').innerHTML = '<div class="analyzing-container"><div class="spinner"></div><div class="analyzing-text">Analyzing your game...</div><div class="analyzing-subtext">This may take a moment</div></div>';
+            
+            document.getElementById('reviewContent').innerHTML = `
+                <div class="analyzing-container">
+                    <div class="spinner"></div>
+                    <div class="analyzing-text">Analyzing your game...</div>
+                    <div class="analyzing-subtext">Finding brilliancies and blunders</div>
+                    <div class="analyzing-progress"><div class="analyzing-progress-bar" id="analysisProgress"></div></div>
+                </div>
+            `;
+            
             setTimeout(analyzeGame, 100);
         }
 
@@ -2001,19 +2248,30 @@
             moveAnalysis = [];
             const temp = new ChessEngine();
             const analyzer = new ChessAI(2800);
+            const total = engine.moveHistory.length;
             
-            for (let i = 0; i < engine.moveHistory.length; i++) {
+            let i = 0;
+            function analyzeNext() {
+                if (i >= total) {
+                    showReviewResults();
+                    reviewMode = true;
+                    reviewMoveIndex = -1;
+                    updateMoveList();
+                    return;
+                }
+                
                 const move = engine.moveHistory[i];
                 const color = i % 2 === 0 ? 'white' : 'black';
-                const analysis = analyzer.analyzeMove(temp, move, color);
-                moveAnalysis.push(analysis);
+                moveAnalysis.push(analyzer.analyzeMove(temp, move, color));
                 temp.makeMove(move, true);
+                
+                const progress = document.getElementById('analysisProgress');
+                if (progress) progress.style.width = ((i + 1) / total * 100) + '%';
+                
+                i++;
+                setTimeout(analyzeNext, 30);
             }
-            
-            showReviewResults();
-            reviewMode = true;
-            reviewMoveIndex = -1;
-            updateMoveList();
+            analyzeNext();
         }
 
         function showReviewResults() {
@@ -2023,11 +2281,11 @@
             
             const calcAcc = arr => {
                 if (!arr.length) return 100;
-                return Math.round(arr.reduce((s,a) => s + ({brilliant:100,great:100,best:100,excellent:95,good:87,book:92,inaccuracy:52,mistake:26,miss:15,blunder:0}[a.classification] || 80), 0) / arr.length);
+                return Math.round(arr.reduce((s,a) => s + ({brilliant:100,great:100,best:100,excellent:96,good:88,book:90,inaccuracy:55,mistake:30,miss:18,blunder:0}[a.classification] || 80), 0) / arr.length);
             };
             const wAcc = calcAcc(wA), bAcc = calcAcc(bA);
             const cnt = (arr, cls) => arr.filter(a => a.classification === cls).length;
-            const circ = 2 * Math.PI * 46;
+            const circ = 2 * Math.PI * 42;
             
             const classes = [
                 { key: 'brilliant', name: 'Brilliant' },
@@ -2035,33 +2293,58 @@
                 { key: 'best', name: 'Best Move' },
                 { key: 'excellent', name: 'Excellent' },
                 { key: 'good', name: 'Good' },
-                { key: 'book', name: 'Book' },
                 { key: 'inaccuracy', name: 'Inaccuracy' },
                 { key: 'mistake', name: 'Mistake' },
                 { key: 'blunder', name: 'Blunder' }
             ];
+
+            // Find key moments
+            const keyMoments = [];
+            moveAnalysis.forEach((a, i) => {
+                if (['brilliant', 'blunder', 'mistake'].includes(a.classification)) {
+                    keyMoments.push({ index: i, ...a, move: engine.moveHistory[i] });
+                }
+            });
+
+            document.getElementById('statAccuracy').textContent = wAcc + '%';
 
             content.innerHTML = `
                 <div class="accuracy-section">
                     <div class="accuracy-row">
                         <div class="accuracy-item">
                             <div class="accuracy-ring white">
-                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="46"/><circle class="progress" cx="50" cy="50" r="46" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - wAcc/100)}"/></svg>
+                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="progress" cx="50" cy="50" r="42" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - wAcc/100)}"/></svg>
                                 <div class="accuracy-value">${wAcc}<span class="accuracy-percent">%</span></div>
                             </div>
                             <div class="accuracy-label">Your Accuracy</div>
                         </div>
                         <div class="accuracy-item">
                             <div class="accuracy-ring black">
-                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="46"/><circle class="progress" cx="50" cy="50" r="46" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - bAcc/100)}"/></svg>
+                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="progress" cx="50" cy="50" r="42" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - bAcc/100)}"/></svg>
                                 <div class="accuracy-value">${bAcc}<span class="accuracy-percent">%</span></div>
                             </div>
                             <div class="accuracy-label">Bot Accuracy</div>
                         </div>
                     </div>
                 </div>
+                
+                ${keyMoments.length > 0 ? `
+                <div class="key-moments">
+                    <div class="key-moments-title">Key Moments</div>
+                    ${keyMoments.slice(0, 5).map(km => `
+                        <div class="key-moment" onclick="goToMove(${km.index})">
+                            <img src="${CLASSIFICATION_ICONS[km.classification]}" class="key-moment-icon">
+                            <div class="key-moment-text">
+                                <div class="key-moment-move">Move ${Math.floor(km.index/2)+1}${km.index % 2 === 0 ? '.' : '...'} ${km.move.notation}</div>
+                                <div class="key-moment-eval">${km.evalChange >= 0 ? '+' : ''}${km.evalChange.toFixed(1)} eval change</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                
                 <div class="classification-section">
-                    <div class="classification-header"><span>White</span><span>Black</span></div>
+                    <div class="classification-header"><span>You</span><span>Bot</span></div>
                     ${classes.map(c => `
                         <div class="classification-row">
                             <div class="classification-label">
@@ -2100,8 +2383,7 @@
         function showMoveInfo(idx) {
             const info = document.getElementById('reviewMoveInfo');
             if (!info || !moveAnalysis[idx]) return;
-            const a = moveAnalysis[idx];
-            const m = engine.moveHistory[idx];
+            const a = moveAnalysis[idx], m = engine.moveHistory[idx];
             const names = { brilliant:'Brilliant', great:'Great Move', best:'Best Move', excellent:'Excellent', good:'Good', book:'Book', inaccuracy:'Inaccuracy', mistake:'Mistake', miss:'Miss', blunder:'Blunder' };
             const files = 'abcdefgh';
 
@@ -2115,7 +2397,7 @@
                         </div>
                         <span class="eval-change ${a.evalChange >= 0 ? 'positive' : 'negative'}">${a.evalChange >= 0 ? '+' : ''}${a.evalChange.toFixed(2)}</span>
                     </div>
-                    ${!a.isBestMove && a.bestMove ? `<div class="review-best-move">Best move was <strong>${files[a.bestMove.from.col]}${8-a.bestMove.from.row}${files[a.bestMove.to.col]}${8-a.bestMove.to.row}</strong></div>` : ''}
+                    ${!a.isBestMove && a.bestMove ? `<div class="review-best-move">Best was <strong>${files[a.bestMove.from.col]}${8-a.bestMove.from.row}${files[a.bestMove.to.col]}${8-a.bestMove.to.row}</strong></div>` : ''}
                 </div>
             `;
         }
