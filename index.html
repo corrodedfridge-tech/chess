@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -27,9 +27,9 @@
             --text-muted: #888888;
             --light-square: #ebecd0;
             --dark-square: #779556;
-            --highlight-yellow: rgba(255, 255, 0, 0.4);
+            --highlight-yellow: rgba(255, 255, 0, 0.5);
             --highlight-move: rgba(255, 255, 0, 0.5);
-            --check-red: radial-gradient(ellipse at center, rgba(255,0,0,0.8) 0%, rgba(255,0,0,0.4) 40%, rgba(255,0,0,0) 70%);
+            --check-red: radial-gradient(ellipse at center, rgba(255,0,0,0.9) 0%, rgba(255,0,0,0.5) 35%, rgba(255,0,0,0) 65%);
             --brilliant: #1baca6;
             --great: #5c8bb0;
             --best: #98bc4b;
@@ -50,6 +50,59 @@
             overflow-x: hidden;
         }
 
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes captureFlash {
+            0% { background: rgba(255, 100, 100, 0.6); }
+            100% { background: transparent; }
+        }
+
+        @keyframes checkPulse {
+            0%, 100% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.8); }
+        }
+
+        @keyframes moveIconPop {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            60% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px currentColor); }
+            50% { filter: drop-shadow(0 0 15px currentColor); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
         /* Header */
         .header {
             background: linear-gradient(180deg, #302e2b 0%, #272522 100%);
@@ -58,7 +111,7 @@
             align-items: center;
             gap: 24px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -69,22 +122,28 @@
             align-items: center;
             gap: 10px;
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-white);
             text-decoration: none;
             letter-spacing: -0.5px;
         }
 
         .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--accent-green);
-            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(129, 182, 76, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(-10deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(129, 182, 76, 0.6);
         }
 
         .nav-tabs {
@@ -92,21 +151,38 @@
             gap: 4px;
             background: var(--bg-dark);
             padding: 4px;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .nav-btn {
             background: transparent;
             border: none;
             color: var(--text-light);
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
             font-family: inherit;
             transition: all 0.2s ease;
             letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
         }
 
         .nav-btn:hover {
@@ -115,9 +191,9 @@
         }
 
         .nav-btn.active {
-            background: var(--accent-green);
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
             color: var(--text-white);
-            box-shadow: 0 2px 8px rgba(129, 182, 76, 0.4);
+            box-shadow: 0 4px 15px rgba(129, 182, 76, 0.5);
         }
 
         .header-controls {
@@ -129,13 +205,13 @@
 
         .difficulty-select {
             background: var(--bg-dark);
-            border: 1px solid var(--bg-medium);
+            border: 2px solid var(--bg-medium);
             color: var(--text-white);
             padding: 10px 16px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 13px;
             font-family: inherit;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             appearance: none;
@@ -147,12 +223,13 @@
 
         .difficulty-select:hover {
             border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(129, 182, 76, 0.15);
         }
 
         .difficulty-select:focus {
             outline: none;
             border-color: var(--accent-green);
-            box-shadow: 0 0 0 3px rgba(129, 182, 76, 0.2);
+            box-shadow: 0 0 0 4px rgba(129, 182, 76, 0.25);
         }
 
         /* Main Layout */
@@ -164,9 +241,10 @@
             gap: 24px;
             max-width: 1400px;
             margin: 0 auto;
+            animation: fadeIn 0.5s ease;
         }
 
-        /* Board Container */
+        /* Board Section */
         .board-section {
             display: flex;
             flex-direction: column;
@@ -175,15 +253,21 @@
 
         .board-wrapper {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             position: relative;
         }
 
         .board-container {
             position: relative;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .board-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.7), 0 6px 16px rgba(0,0,0,0.5);
         }
 
         .board {
@@ -203,7 +287,7 @@
             align-items: center;
             position: relative;
             cursor: pointer;
-            transition: background 0.1s ease;
+            transition: all 0.15s ease;
         }
 
         .square.light {
@@ -224,69 +308,96 @@
 
         .square.legal-move::after {
             content: '';
-            width: 28px;
-            height: 28px;
-            background: rgba(0, 0, 0, 0.15);
+            width: 26px;
+            height: 26px;
+            background: rgba(0, 0, 0, 0.18);
             border-radius: 50%;
             position: absolute;
             pointer-events: none;
-            transition: transform 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .square.legal-move:hover::after {
-            transform: scale(1.15);
+            transform: scale(1.3);
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .square.legal-capture::after {
             content: '';
             width: 100%;
             height: 100%;
-            border: 6px solid rgba(0, 0, 0, 0.15);
+            border: 7px solid rgba(0, 0, 0, 0.18);
             border-radius: 50%;
             position: absolute;
             box-sizing: border-box;
             pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .square.legal-capture:hover::after {
+            border-width: 9px;
+            border-color: rgba(0, 0, 0, 0.25);
         }
 
         .square.check {
             background: var(--check-red) !important;
+            animation: checkPulse 1s ease infinite;
         }
 
-        .square.premove {
-            background: rgba(255, 150, 0, 0.5) !important;
+        .square.capture-flash {
+            animation: captureFlash 0.3s ease;
+        }
+
+        /* Move classification icons on board */
+        .move-classification-icon {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 26px;
+            height: 26px;
+            z-index: 20;
+            animation: moveIconPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            pointer-events: none;
         }
 
         /* Pieces */
         .piece {
-            width: 90%;
-            height: 90%;
+            width: 88%;
+            height: 88%;
             cursor: grab;
             z-index: 10;
-            transition: transform 0.08s ease;
+            transition: transform 0.1s ease;
             user-select: none;
             -webkit-user-drag: none;
-            filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.4));
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4));
         }
 
         .piece:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
+            filter: drop-shadow(3px 6px 6px rgba(0,0,0,0.5));
         }
 
         .piece.dragging {
             cursor: grabbing;
-            transform: scale(1.15);
+            transform: scale(1.2);
             z-index: 1000;
-            filter: drop-shadow(4px 8px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(6px 12px 12px rgba(0,0,0,0.6));
+        }
+
+        .piece.captured {
+            animation: popIn 0.3s ease reverse;
         }
 
         .ghost-piece {
             position: fixed;
             pointer-events: none;
             z-index: 10000;
-            width: 90px;
-            height: 90px;
-            filter: drop-shadow(4px 8px 8px rgba(0,0,0,0.5));
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(6px 12px 12px rgba(0,0,0,0.6));
             transform: translate(-50%, -50%);
+            transition: none;
         }
 
         /* Coordinates */
@@ -296,16 +407,17 @@
             font-weight: 700;
             pointer-events: none;
             user-select: none;
+            opacity: 0.8;
         }
 
         .coordinate.file {
-            bottom: 3px;
-            right: 5px;
+            bottom: 2px;
+            right: 4px;
         }
 
         .coordinate.rank {
-            top: 3px;
-            left: 5px;
+            top: 2px;
+            left: 4px;
         }
 
         .square.light .coordinate {
@@ -318,21 +430,21 @@
 
         /* Eval Bar */
         .eval-bar-container {
-            width: 28px;
+            width: 30px;
             height: 640px;
-            background: #ffffff;
-            border-radius: 4px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #333 100%);
+            border-radius: 6px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.3);
         }
 
-        .eval-bar {
+        .eval-bar-white {
             width: 100%;
-            background: #262421;
+            background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 100%);
             position: absolute;
             bottom: 0;
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .eval-text {
@@ -341,53 +453,65 @@
             text-align: center;
             font-size: 10px;
             font-weight: 700;
-            padding: 4px 0;
-            transition: opacity 0.2s ease;
+            padding: 5px 0;
+            transition: all 0.3s ease;
         }
 
         .eval-text.white {
             bottom: 0;
-            color: #262421;
-            background: #ffffff;
+            color: #1a1a1a;
         }
 
         .eval-text.black {
             top: 0;
             color: #ffffff;
-            background: #262421;
         }
 
         /* Captured Pieces */
         .captured-pieces {
-            height: 28px;
+            height: 32px;
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 1px;
             padding: 0 8px;
+            min-height: 32px;
         }
 
         .captured-piece {
-            width: 20px;
-            height: 20px;
-            opacity: 0.8;
+            width: 22px;
+            height: 22px;
+            opacity: 0.85;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            animation: popIn 0.3s ease;
+        }
+
+        .captured-piece:hover {
+            transform: scale(1.3);
+            opacity: 1;
+            z-index: 10;
         }
 
         .material-advantage {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-white);
             margin-left: 8px;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            animation: popIn 0.3s ease;
         }
 
         /* Side Panel */
         .side-panel {
             background: var(--bg-darker);
-            border-radius: 8px;
+            border-radius: 12px;
             width: 380px;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
+            animation: slideUp 0.4s ease;
         }
 
         .panel-section {
@@ -399,25 +523,48 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 14px 18px;
+            padding: 16px 18px;
             background: var(--bg-dark);
-            transition: background 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-info::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .player-info.active::before {
+            background: var(--accent-green);
+            box-shadow: 0 0 20px var(--accent-green);
         }
 
         .player-info.active {
-            background: linear-gradient(90deg, var(--accent-green-dark) 0%, var(--bg-dark) 100%);
+            background: linear-gradient(90deg, rgba(129, 182, 76, 0.15) 0%, var(--bg-dark) 100%);
         }
 
         .player-avatar {
-            width: 44px;
-            height: 44px;
-            background: var(--bg-medium);
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--bg-medium) 0%, var(--bg-dark) 100%);
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 22px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 24px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .player-info.active .player-avatar {
+            animation: pulse 2s ease infinite;
         }
 
         .player-details {
@@ -425,7 +572,7 @@
         }
 
         .player-name {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 15px;
             letter-spacing: -0.2px;
         }
@@ -433,29 +580,34 @@
         .player-rating {
             color: var(--text-muted);
             font-size: 12px;
-            margin-top: 2px;
+            margin-top: 3px;
         }
 
         .player-clock {
             background: var(--bg-darkest);
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 20px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 22px;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
             letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
         .player-clock.active {
-            background: var(--accent-green);
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
             color: var(--text-white);
+            box-shadow: 0 4px 20px rgba(129, 182, 76, 0.5);
+            border-color: rgba(255,255,255,0.2);
         }
 
         /* Tabs */
         .tab-container {
             display: flex;
             background: var(--bg-darkest);
-            padding: 4px;
+            padding: 6px;
+            gap: 4px;
         }
 
         .tab {
@@ -470,24 +622,25 @@
             font-weight: 600;
             font-family: inherit;
             transition: all 0.2s ease;
-            border-radius: 4px;
+            border-radius: 6px;
             position: relative;
         }
 
         .tab:hover {
             color: var(--text-light);
+            background: var(--bg-dark);
         }
 
         .tab.active {
             color: var(--text-white);
-            background: var(--bg-dark);
+            background: var(--bg-medium);
         }
 
         /* Moves Container */
         .moves-section {
             flex: 1;
-            min-height: 280px;
-            max-height: 350px;
+            min-height: 260px;
+            max-height: 320px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -500,17 +653,17 @@
         }
 
         .moves-container::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         .moves-container::-webkit-scrollbar-track {
             background: var(--bg-darkest);
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         .moves-container::-webkit-scrollbar-thumb {
             background: var(--bg-medium);
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         .moves-container::-webkit-scrollbar-thumb:hover {
@@ -521,11 +674,10 @@
             display: flex;
             align-items: center;
             padding: 2px 0;
-            border-radius: 4px;
         }
 
         .move-number {
-            width: 36px;
+            width: 32px;
             color: var(--text-muted);
             font-size: 12px;
             font-weight: 600;
@@ -537,54 +689,42 @@
             flex: 1;
             padding: 8px 12px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 14px;
             font-weight: 500;
             transition: all 0.15s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            position: relative;
         }
 
         .move:hover {
             background: var(--bg-dark);
+            transform: translateX(2px);
         }
 
         .move.current {
             background: var(--bg-medium);
+            box-shadow: inset 3px 0 0 var(--accent-green);
         }
 
         .move-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 700;
+            width: 20px;
+            height: 20px;
             flex-shrink: 0;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
         }
-
-        .move.brilliant-move .move-icon { background: var(--brilliant); }
-        .move.great-move .move-icon { background: var(--great); }
-        .move.best-move .move-icon { background: var(--best); }
-        .move.excellent-move .move-icon { background: var(--excellent); }
-        .move.good-move .move-icon { background: var(--good); }
-        .move.book-move .move-icon { background: var(--book); }
-        .move.inaccuracy-move .move-icon { background: var(--inaccuracy); color: #000; }
-        .move.mistake-move .move-icon { background: var(--mistake); }
-        .move.miss-move .move-icon { background: var(--miss); }
-        .move.blunder-move .move-icon { background: var(--blunder); }
 
         /* Game Status */
         .game-status {
             text-align: center;
             padding: 16px;
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 700;
             color: var(--accent-green);
-            background: var(--bg-darkest);
+            background: linear-gradient(180deg, transparent 0%, rgba(129, 182, 76, 0.1) 100%);
+            animation: fadeIn 0.3s ease;
         }
 
         /* Thinking Indicator */
@@ -592,16 +732,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 12px 18px;
+            gap: 12px;
+            padding: 14px 18px;
             color: var(--text-muted);
-            background: var(--bg-darkest);
+            background: linear-gradient(90deg, var(--bg-darkest) 0%, var(--bg-dark) 50%, var(--bg-darkest) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             font-size: 13px;
+            font-weight: 500;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .thinking-dots {
             display: flex;
-            gap: 4px;
+            gap: 5px;
         }
 
         .thinking-dots span {
@@ -617,14 +765,14 @@
 
         @keyframes thinking {
             0%, 60%, 100% { transform: scale(0.6); opacity: 0.4; }
-            30% { transform: scale(1); opacity: 1; }
+            30% { transform: scale(1.2); opacity: 1; }
         }
 
         /* Game Controls */
         .game-controls {
             display: flex;
             gap: 8px;
-            padding: 14px 18px;
+            padding: 16px 18px;
             justify-content: center;
             background: var(--bg-darkest);
             border-top: 1px solid rgba(255,255,255,0.06);
@@ -634,64 +782,98 @@
             background: var(--bg-dark);
             border: none;
             color: var(--text-light);
-            width: 44px;
-            height: 44px;
-            border-radius: 6px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
         }
 
         .control-btn:hover {
             background: var(--bg-medium);
             color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .control-btn:hover::after {
+            opacity: 1;
         }
 
         .control-btn:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.95);
         }
 
         .control-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
+            transform: none;
         }
 
         .control-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             fill: currentColor;
         }
 
         /* Action Buttons */
         .action-buttons {
-            padding: 14px 18px;
+            padding: 16px 18px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .new-game-btn {
             flex: 1;
-            background: var(--accent-green);
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
             border: none;
             color: var(--text-white);
-            padding: 14px 24px;
-            border-radius: 8px;
+            padding: 16px 28px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(129, 182, 76, 0.3);
+            box-shadow: 0 4px 16px rgba(129, 182, 76, 0.4);
             letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .new-game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .new-game-btn:hover::before {
+            left: 100%;
         }
 
         .new-game-btn:hover {
-            background: var(--accent-green-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(129, 182, 76, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(129, 182, 76, 0.5);
         }
 
         .new-game-btn:active {
@@ -700,10 +882,10 @@
 
         .resign-btn {
             background: var(--bg-dark);
-            border: 1px solid var(--bg-medium);
+            border: 2px solid var(--bg-medium);
             color: var(--text-light);
-            padding: 14px 20px;
-            border-radius: 8px;
+            padding: 16px 22px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
@@ -715,11 +897,13 @@
             background: var(--blunder);
             border-color: var(--blunder);
             color: var(--text-white);
+            box-shadow: 0 4px 16px rgba(202, 52, 49, 0.4);
         }
 
         /* Review Panel */
         .review-panel {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .review-panel.active {
@@ -727,14 +911,14 @@
         }
 
         .accuracy-section {
-            padding: 24px;
-            background: var(--bg-darkest);
+            padding: 28px;
+            background: linear-gradient(180deg, var(--bg-darkest) 0%, var(--bg-darker) 100%);
         }
 
         .accuracy-row {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 50px;
         }
 
         .accuracy-item {
@@ -742,11 +926,11 @@
         }
 
         .accuracy-ring {
-            width: 110px;
-            height: 110px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             position: relative;
-            margin: 0 auto 12px;
+            margin: 0 auto 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -761,7 +945,7 @@
 
         .accuracy-ring circle {
             fill: none;
-            stroke-width: 8;
+            stroke-width: 10;
         }
 
         .accuracy-ring .bg {
@@ -770,11 +954,12 @@
 
         .accuracy-ring .progress {
             stroke-linecap: round;
-            transition: stroke-dashoffset 1s ease;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .accuracy-ring.white .progress {
             stroke: var(--text-white);
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
         }
 
         .accuracy-ring.black .progress {
@@ -782,17 +967,23 @@
         }
 
         .accuracy-value {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -1px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .accuracy-percent {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.7;
         }
 
         .accuracy-label {
             font-size: 12px;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         /* Classification Stats */
@@ -803,17 +994,17 @@
         .classification-header {
             display: flex;
             justify-content: flex-end;
-            padding: 10px 0;
-            gap: 8px;
+            padding: 12px 0;
+            gap: 10px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .classification-header span {
-            width: 40px;
+            width: 44px;
             text-align: center;
         }
 
@@ -823,6 +1014,11 @@
             align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.2s ease;
+        }
+
+        .classification-row:hover {
+            background: rgba(255,255,255,0.02);
         }
 
         .classification-row:last-child {
@@ -836,84 +1032,83 @@
         }
 
         .classification-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
-
-        .classification-icon.brilliant { background: var(--brilliant); }
-        .classification-icon.great { background: var(--great); }
-        .classification-icon.best { background: var(--best); }
-        .classification-icon.excellent { background: var(--excellent); }
-        .classification-icon.good { background: var(--good); }
-        .classification-icon.book { background: var(--book); }
-        .classification-icon.inaccuracy { background: var(--inaccuracy); color: #000; }
-        .classification-icon.mistake { background: var(--mistake); }
-        .classification-icon.miss { background: var(--miss); }
-        .classification-icon.blunder { background: var(--blunder); }
 
         .classification-name {
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .classification-counts {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .count-badge {
-            width: 40px;
+            width: 44px;
             text-align: center;
             font-size: 14px;
-            font-weight: 600;
-            padding: 4px 0;
-            border-radius: 4px;
+            font-weight: 700;
+            padding: 6px 0;
+            border-radius: 6px;
             background: var(--bg-dark);
+            transition: all 0.2s ease;
         }
 
         .count-badge.has-value {
             background: var(--bg-medium);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         /* Review Move Info */
         .review-move-info {
             background: var(--bg-dark);
             margin: 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
         }
 
         .review-move-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 16px;
+            padding: 16px 18px;
             background: var(--bg-darkest);
         }
 
         .review-move-class {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .review-move-icon {
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .review-move-notation {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .review-move-type {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         .eval-change {
             font-size: 14px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 4px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
         .eval-change.positive {
@@ -927,17 +1122,18 @@
         }
 
         .review-best-move {
-            padding: 12px 16px;
+            padding: 14px 18px;
             font-size: 13px;
             color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         .review-best-move strong {
             color: var(--accent-green);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         /* Arrow Overlay */
@@ -959,61 +1155,58 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(4px);
-            animation: fadeIn 0.2s ease;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.25s ease;
         }
 
         .modal-overlay.active {
             display: flex;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .modal {
-            background: var(--bg-darker);
-            padding: 32px 40px;
-            border-radius: 16px;
+            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-darkest) 100%);
+            padding: 36px 44px;
+            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
-            animation: modalSlide 0.3s ease;
-            max-width: 420px;
+            box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.05);
+            animation: modalSlide 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 440px;
         }
 
         @keyframes modalSlide {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(-30px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         .modal-icon {
-            width: 64px;
-            height: 64px;
-            background: var(--bg-dark);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darkest) 100%);
             border-radius: 50%;
-            margin: 0 auto 20px;
+            margin: 0 auto 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 -4px 12px rgba(0,0,0,0.2);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
         }
 
         .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
         }
 
         .modal-subtitle {
             color: var(--text-muted);
             font-size: 15px;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
             line-height: 1.5;
         }
 
@@ -1024,10 +1217,10 @@
         }
 
         .modal-btn {
-            padding: 14px 28px;
-            border-radius: 8px;
+            padding: 16px 32px;
+            border-radius: 10px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -1035,17 +1228,20 @@
         }
 
         .modal-btn.primary {
-            background: var(--accent-green);
+            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
             color: var(--text-white);
+            box-shadow: 0 4px 16px rgba(129, 182, 76, 0.4);
         }
 
         .modal-btn.primary:hover {
-            background: var(--accent-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(129, 182, 76, 0.5);
         }
 
         .modal-btn.secondary {
             background: var(--bg-dark);
             color: var(--text-light);
+            border: 2px solid var(--bg-medium);
         }
 
         .modal-btn.secondary:hover {
@@ -1055,60 +1251,62 @@
 
         /* Promotion Modal */
         .promotion-modal .modal {
-            padding: 24px;
+            padding: 28px;
         }
 
         .promotion-title {
             font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-light);
         }
 
         .promotion-pieces {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .promotion-piece {
-            width: 80px;
-            height: 80px;
-            background: var(--bg-dark);
-            border-radius: 8px;
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.15s ease;
-            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
         }
 
         .promotion-piece:hover {
-            background: var(--bg-medium);
+            background: linear-gradient(135deg, var(--bg-medium) 0%, var(--bg-light) 100%);
             border-color: var(--accent-green);
-            transform: scale(1.05);
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
         .promotion-piece img {
-            width: 65px;
-            height: 65px;
-            filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.3));
+            width: 70px;
+            height: 70px;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4));
         }
 
         /* Analyzing Spinner */
         .analyzing-container {
-            padding: 60px 40px;
+            padding: 70px 40px;
             text-align: center;
         }
 
         .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid var(--bg-dark);
-            border-top: 4px solid var(--accent-green);
+            width: 56px;
+            height: 56px;
+            border: 5px solid var(--bg-dark);
+            border-top: 5px solid var(--accent-green);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 20px rgba(129, 182, 76, 0.3);
         }
 
         @keyframes spin {
@@ -1116,8 +1314,8 @@
         }
 
         .analyzing-text {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text-white);
             margin-bottom: 8px;
         }
@@ -1129,20 +1327,20 @@
 
         /* Empty State */
         .empty-state {
-            padding: 40px;
+            padding: 50px;
             text-align: center;
             color: var(--text-muted);
         }
 
         .empty-state-icon {
-            font-size: 48px;
+            font-size: 56px;
             margin-bottom: 16px;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .empty-state-text {
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         /* Responsive */
@@ -1183,7 +1381,7 @@
         
         <div class="nav-tabs">
             <button class="nav-btn active" id="playTab" onclick="showGame()">Play</button>
-            <button class="nav-btn" id="reviewTab" onclick="startReview()">Game Review</button>
+            <button class="nav-btn" id="reviewTabBtn" onclick="startReview()">Game Review</button>
         </div>
 
         <div class="header-controls">
@@ -1202,12 +1400,12 @@
             
             <div class="board-wrapper">
                 <div class="eval-bar-container">
-                    <div class="eval-bar" id="evalBar" style="height: 50%;"></div>
+                    <div class="eval-bar-white" id="evalBar" style="height: 50%;"></div>
                     <div class="eval-text white" id="evalTextWhite">0.0</div>
                     <div class="eval-text black" id="evalTextBlack"></div>
                 </div>
                 
-                <div class="board-container">
+                <div class="board-container" id="boardContainer">
                     <div class="board" id="board"></div>
                     <svg class="arrow-overlay" id="arrowOverlay"></svg>
                 </div>
@@ -1221,7 +1419,7 @@
                 <div class="player-avatar">🤖</div>
                 <div class="player-details">
                     <div class="player-name">Stockfish AI</div>
-                    <div class="player-rating">Level <span id="botLevel">3</span> • Black</div>
+                    <div class="player-rating">Level <span id="botLevel">3</span></div>
                 </div>
                 <div class="player-clock" id="blackClock">10:00</div>
             </div>
@@ -1251,7 +1449,7 @@
                 <div id="reviewContent">
                     <div class="empty-state">
                         <div class="empty-state-icon">📊</div>
-                        <div class="empty-state-text">Play a game first, then click<br>"Game Review" to analyze your moves.</div>
+                        <div class="empty-state-text">Play a game first, then click<br>"Game Review" to analyze.</div>
                     </div>
                 </div>
             </div>
@@ -1259,16 +1457,16 @@
             <div class="game-status" id="gameStatus"></div>
 
             <div class="game-controls panel-section">
-                <button class="control-btn" onclick="goToStart()" title="Go to start">
+                <button class="control-btn" onclick="goToStart()" title="Start">
                     <svg viewBox="0 0 24 24"><path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"/></svg>
                 </button>
-                <button class="control-btn" onclick="goBack()" title="Previous move">
+                <button class="control-btn" onclick="goBack()" title="Back">
                     <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
                 </button>
-                <button class="control-btn" onclick="goForward()" title="Next move">
+                <button class="control-btn" onclick="goForward()" title="Forward">
                     <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                 </button>
-                <button class="control-btn" onclick="goToEnd()" title="Go to end">
+                <button class="control-btn" onclick="goToEnd()" title="End">
                     <svg viewBox="0 0 24 24"><path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"/></svg>
                 </button>
             </div>
@@ -1283,8 +1481,8 @@
             </div>
 
             <div class="action-buttons">
-                <button class="new-game-btn" onclick="newGame()">New Game</button>
-                <button class="resign-btn" onclick="resign()">Resign</button>
+                <button class="new-game-btn" id="newGameBtn" onclick="newGame()">New Game</button>
+                <button class="resign-btn" id="resignBtn" onclick="resign()">Resign</button>
             </div>
         </aside>
     </main>
@@ -1311,7 +1509,7 @@
     </div>
 
     <script>
-        // Piece images
+        // Assets
         const PIECE_IMAGES = {
             'K': 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/whiteking.png',
             'Q': 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/whitequeen.png',
@@ -1327,11 +1525,85 @@
             'p': 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/blackpawn.png'
         };
 
+        const CLASSIFICATION_ICONS = {
+            brilliant: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/brilliantmove.png',
+            great: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/greatmove.png',
+            best: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/bestmove.png',
+            good: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/goodmove.png',
+            book: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/bookmove.png',
+            inaccuracy: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/innacuracy.png',
+            mistake: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/mistake.png',
+            miss: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/miss.png',
+            blunder: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/blunder.png',
+            excellent: 'https://raw.githubusercontent.com/corrodedfridge-tech/chess/main/goodmove.png'
+        };
+
+        // Audio context for sounds
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                switch(type) {
+                    case 'move':
+                        osc.frequency.value = 440;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                        break;
+                    case 'capture':
+                        osc.frequency.value = 300;
+                        osc.type = 'triangle';
+                        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+                        break;
+                    case 'check':
+                        osc.frequency.value = 600;
+                        osc.type = 'square';
+                        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                        break;
+                    case 'castle':
+                        osc.frequency.value = 350;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+                        break;
+                    case 'promote':
+                        osc.frequency.value = 800;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                        break;
+                    case 'gameend':
+                        osc.frequency.value = 523;
+                        osc.type = 'sine';
+                        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.15);
+                        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.3);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                        osc.stop(ctx.currentTime + 0.5);
+                        osc.start();
+                        return;
+                }
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
         // Chess Engine
         class ChessEngine {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
 
             reset() {
                 this.board = [
@@ -1355,78 +1627,61 @@
             }
 
             clone() {
-                const copy = new ChessEngine();
-                copy.board = this.board.map(row => [...row]);
-                copy.turn = this.turn;
-                copy.castling = { ...this.castling };
-                copy.enPassant = this.enPassant;
-                copy.halfMoveClock = this.halfMoveClock;
-                copy.fullMoveNumber = this.fullMoveNumber;
-                copy.moveHistory = [...this.moveHistory];
-                copy.positionHistory = [...this.positionHistory];
-                copy.capturedPieces = {
-                    white: [...this.capturedPieces.white],
-                    black: [...this.capturedPieces.black]
-                };
-                return copy;
+                const c = new ChessEngine();
+                c.board = this.board.map(r => [...r]);
+                c.turn = this.turn;
+                c.castling = { ...this.castling };
+                c.enPassant = this.enPassant;
+                c.halfMoveClock = this.halfMoveClock;
+                c.fullMoveNumber = this.fullMoveNumber;
+                c.moveHistory = [...this.moveHistory];
+                c.positionHistory = [...this.positionHistory];
+                c.capturedPieces = { white: [...this.capturedPieces.white], black: [...this.capturedPieces.black] };
+                return c;
             }
 
-            isWhite(piece) { return piece && piece === piece.toUpperCase(); }
-            isBlack(piece) { return piece && piece === piece.toLowerCase(); }
-            getPieceColor(piece) { return piece ? (this.isWhite(piece) ? 'white' : 'black') : null; }
+            isWhite(p) { return p && p === p.toUpperCase(); }
+            isBlack(p) { return p && p === p.toLowerCase(); }
+            getPieceColor(p) { return p ? (this.isWhite(p) ? 'white' : 'black') : null; }
 
             getKingPosition(color) {
-                const king = color === 'white' ? 'K' : 'k';
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        if (this.board[r][c] === king) return { row: r, col: c };
-                    }
-                }
+                const k = color === 'white' ? 'K' : 'k';
+                for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (this.board[r][c] === k) return { row: r, col: c };
                 return null;
             }
 
             isSquareAttacked(row, col, byColor) {
-                const pawnDir = byColor === 'white' ? 1 : -1;
+                const pDir = byColor === 'white' ? 1 : -1;
                 const pawn = byColor === 'white' ? 'P' : 'p';
-                if (row + pawnDir >= 0 && row + pawnDir < 8) {
-                    if (col - 1 >= 0 && this.board[row + pawnDir][col - 1] === pawn) return true;
-                    if (col + 1 < 8 && this.board[row + pawnDir][col + 1] === pawn) return true;
+                if (row + pDir >= 0 && row + pDir < 8) {
+                    if (col > 0 && this.board[row + pDir][col - 1] === pawn) return true;
+                    if (col < 7 && this.board[row + pDir][col + 1] === pawn) return true;
                 }
-
                 const knight = byColor === 'white' ? 'N' : 'n';
-                const knightMoves = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
-                for (const [dr, dc] of knightMoves) {
+                for (const [dr, dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]) {
                     const r = row + dr, c = col + dc;
                     if (r >= 0 && r < 8 && c >= 0 && c < 8 && this.board[r][c] === knight) return true;
                 }
-
                 const king = byColor === 'white' ? 'K' : 'k';
-                for (let dr = -1; dr <= 1; dr++) {
-                    for (let dc = -1; dc <= 1; dc++) {
-                        if (dr === 0 && dc === 0) continue;
-                        const r = row + dr, c = col + dc;
-                        if (r >= 0 && r < 8 && c >= 0 && c < 8 && this.board[r][c] === king) return true;
-                    }
+                for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    const r = row + dr, c = col + dc;
+                    if (r >= 0 && r < 8 && c >= 0 && c < 8 && this.board[r][c] === king) return true;
                 }
-
-                const directions = [
-                    { dr: -1, dc: 0, pieces: byColor === 'white' ? ['R', 'Q'] : ['r', 'q'] },
-                    { dr: 1, dc: 0, pieces: byColor === 'white' ? ['R', 'Q'] : ['r', 'q'] },
-                    { dr: 0, dc: -1, pieces: byColor === 'white' ? ['R', 'Q'] : ['r', 'q'] },
-                    { dr: 0, dc: 1, pieces: byColor === 'white' ? ['R', 'Q'] : ['r', 'q'] },
-                    { dr: -1, dc: -1, pieces: byColor === 'white' ? ['B', 'Q'] : ['b', 'q'] },
-                    { dr: -1, dc: 1, pieces: byColor === 'white' ? ['B', 'Q'] : ['b', 'q'] },
-                    { dr: 1, dc: -1, pieces: byColor === 'white' ? ['B', 'Q'] : ['b', 'q'] },
-                    { dr: 1, dc: 1, pieces: byColor === 'white' ? ['B', 'Q'] : ['b', 'q'] }
+                const dirs = [
+                    { dr: -1, dc: 0, p: byColor === 'white' ? ['R','Q'] : ['r','q'] },
+                    { dr: 1, dc: 0, p: byColor === 'white' ? ['R','Q'] : ['r','q'] },
+                    { dr: 0, dc: -1, p: byColor === 'white' ? ['R','Q'] : ['r','q'] },
+                    { dr: 0, dc: 1, p: byColor === 'white' ? ['R','Q'] : ['r','q'] },
+                    { dr: -1, dc: -1, p: byColor === 'white' ? ['B','Q'] : ['b','q'] },
+                    { dr: -1, dc: 1, p: byColor === 'white' ? ['B','Q'] : ['b','q'] },
+                    { dr: 1, dc: -1, p: byColor === 'white' ? ['B','Q'] : ['b','q'] },
+                    { dr: 1, dc: 1, p: byColor === 'white' ? ['B','Q'] : ['b','q'] }
                 ];
-
-                for (const { dr, dc, pieces } of directions) {
+                for (const { dr, dc, p } of dirs) {
                     let r = row + dr, c = col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        if (this.board[r][c]) {
-                            if (pieces.includes(this.board[r][c])) return true;
-                            break;
-                        }
+                        if (this.board[r][c]) { if (p.includes(this.board[r][c])) return true; break; }
                         r += dr; c += dc;
                     }
                 }
@@ -1434,138 +1689,89 @@
             }
 
             isInCheck(color) {
-                const kingPos = this.getKingPosition(color);
-                return kingPos ? this.isSquareAttacked(kingPos.row, kingPos.col, color === 'white' ? 'black' : 'white') : false;
+                const kp = this.getKingPosition(color);
+                return kp ? this.isSquareAttacked(kp.row, kp.col, color === 'white' ? 'black' : 'white') : false;
             }
 
             generatePseudoLegalMoves(color) {
                 const moves = [];
-
                 for (let r = 0; r < 8; r++) {
                     for (let c = 0; c < 8; c++) {
                         const piece = this.board[r][c];
                         if (!piece || this.getPieceColor(piece) !== color) continue;
-
-                        const pieceType = piece.toUpperCase();
-
-                        if (pieceType === 'P') {
+                        const pt = piece.toUpperCase();
+                        
+                        if (pt === 'P') {
                             const dir = color === 'white' ? -1 : 1;
-                            const startRow = color === 'white' ? 6 : 1;
-                            const promoRow = color === 'white' ? 0 : 7;
-
+                            const start = color === 'white' ? 6 : 1;
+                            const promo = color === 'white' ? 0 : 7;
+                            
                             if (r + dir >= 0 && r + dir < 8 && !this.board[r + dir][c]) {
-                                if (r + dir === promoRow) {
-                                    ['Q', 'R', 'B', 'N'].forEach(promo => {
-                                        moves.push({ from: {row: r, col: c}, to: {row: r + dir, col: c}, promotion: promo });
-                                    });
-                                } else {
-                                    moves.push({ from: {row: r, col: c}, to: {row: r + dir, col: c} });
-                                }
+                                if (r + dir === promo) ['Q','R','B','N'].forEach(p => moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c}, promotion: p }));
+                                else moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c} });
                             }
-
-                            if (r === startRow && !this.board[r + dir][c] && !this.board[r + 2*dir][c]) {
-                                moves.push({ from: {row: r, col: c}, to: {row: r + 2*dir, col: c} });
-                            }
-
+                            if (r === start && !this.board[r+dir][c] && !this.board[r+2*dir][c]) moves.push({ from: {row:r,col:c}, to: {row:r+2*dir,col:c} });
+                            
                             for (const dc of [-1, 1]) {
                                 const nc = c + dc;
                                 if (nc >= 0 && nc < 8 && r + dir >= 0 && r + dir < 8) {
                                     const target = this.board[r + dir][nc];
-                                    const isEnPassant = this.enPassant && this.enPassant.row === r + dir && this.enPassant.col === nc;
-                                    if ((target && this.getPieceColor(target) !== color) || isEnPassant) {
-                                        if (r + dir === promoRow) {
-                                            ['Q', 'R', 'B', 'N'].forEach(promo => {
-                                                moves.push({ from: {row: r, col: c}, to: {row: r + dir, col: nc}, promotion: promo, isEnPassant });
-                                            });
-                                        } else {
-                                            moves.push({ from: {row: r, col: c}, to: {row: r + dir, col: nc}, isEnPassant });
-                                        }
+                                    const isEP = this.enPassant && this.enPassant.row === r + dir && this.enPassant.col === nc;
+                                    if ((target && this.getPieceColor(target) !== color) || isEP) {
+                                        if (r + dir === promo) ['Q','R','B','N'].forEach(p => moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:nc}, promotion: p, isEnPassant: isEP }));
+                                        else moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:nc}, isEnPassant: isEP });
                                     }
                                 }
                             }
                         }
-
-                        if (pieceType === 'N') {
-                            const knightMoves = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
-                            for (const [dr, dc] of knightMoves) {
+                        
+                        if (pt === 'N') {
+                            for (const [dr, dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]) {
                                 const nr = r + dr, nc = c + dc;
-                                if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                                    const target = this.board[nr][nc];
-                                    if (!target || this.getPieceColor(target) !== color) {
-                                        moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                    }
-                                }
+                                if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && (!this.board[nr][nc] || this.getPieceColor(this.board[nr][nc]) !== color))
+                                    moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} });
                             }
                         }
-
-                        if (pieceType === 'B' || pieceType === 'Q') {
+                        
+                        if (pt === 'B' || pt === 'Q') {
                             for (const [dr, dc] of [[-1,-1],[-1,1],[1,-1],[1,1]]) {
                                 let nr = r + dr, nc = c + dc;
                                 while (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                                    const target = this.board[nr][nc];
-                                    if (!target) {
-                                        moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                    } else {
-                                        if (this.getPieceColor(target) !== color) {
-                                            moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                        }
-                                        break;
-                                    }
+                                    if (!this.board[nr][nc]) moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} });
+                                    else { if (this.getPieceColor(this.board[nr][nc]) !== color) moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} }); break; }
                                     nr += dr; nc += dc;
                                 }
                             }
                         }
-
-                        if (pieceType === 'R' || pieceType === 'Q') {
+                        
+                        if (pt === 'R' || pt === 'Q') {
                             for (const [dr, dc] of [[-1,0],[1,0],[0,-1],[0,1]]) {
                                 let nr = r + dr, nc = c + dc;
                                 while (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                                    const target = this.board[nr][nc];
-                                    if (!target) {
-                                        moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                    } else {
-                                        if (this.getPieceColor(target) !== color) {
-                                            moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                        }
-                                        break;
-                                    }
+                                    if (!this.board[nr][nc]) moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} });
+                                    else { if (this.getPieceColor(this.board[nr][nc]) !== color) moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} }); break; }
                                     nr += dr; nc += dc;
                                 }
                             }
                         }
-
-                        if (pieceType === 'K') {
-                            for (let dr = -1; dr <= 1; dr++) {
-                                for (let dc = -1; dc <= 1; dc++) {
-                                    if (dr === 0 && dc === 0) continue;
-                                    const nr = r + dr, nc = c + dc;
-                                    if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                                        const target = this.board[nr][nc];
-                                        if (!target || this.getPieceColor(target) !== color) {
-                                            moves.push({ from: {row: r, col: c}, to: {row: nr, col: nc} });
-                                        }
-                                    }
-                                }
+                        
+                        if (pt === 'K') {
+                            for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+                                if (dr === 0 && dc === 0) continue;
+                                const nr = r + dr, nc = c + dc;
+                                if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && (!this.board[nr][nc] || this.getPieceColor(this.board[nr][nc]) !== color))
+                                    moves.push({ from: {row:r,col:c}, to: {row:nr,col:nc} });
                             }
-
                             const row = color === 'white' ? 7 : 0;
                             if (r === row && c === 4) {
-                                const kingSide = color === 'white' ? 'K' : 'k';
-                                const queenSide = color === 'white' ? 'Q' : 'q';
-
-                                if (this.castling[kingSide] && !this.board[row][5] && !this.board[row][6] &&
-                                    !this.isInCheck(color) &&
-                                    !this.isSquareAttacked(row, 5, color === 'white' ? 'black' : 'white') &&
-                                    !this.isSquareAttacked(row, 6, color === 'white' ? 'black' : 'white')) {
-                                    moves.push({ from: {row: r, col: c}, to: {row: row, col: 6}, isCastling: 'kingside' });
-                                }
-
-                                if (this.castling[queenSide] && !this.board[row][3] && !this.board[row][2] && !this.board[row][1] &&
-                                    !this.isInCheck(color) &&
-                                    !this.isSquareAttacked(row, 3, color === 'white' ? 'black' : 'white') &&
-                                    !this.isSquareAttacked(row, 2, color === 'white' ? 'black' : 'white')) {
-                                    moves.push({ from: {row: r, col: c}, to: {row: row, col: 2}, isCastling: 'queenside' });
-                                }
+                                const ks = color === 'white' ? 'K' : 'k', qs = color === 'white' ? 'Q' : 'q';
+                                const opp = color === 'white' ? 'black' : 'white';
+                                if (this.castling[ks] && !this.board[row][5] && !this.board[row][6] && !this.isInCheck(color) &&
+                                    !this.isSquareAttacked(row, 5, opp) && !this.isSquareAttacked(row, 6, opp))
+                                    moves.push({ from: {row:r,col:c}, to: {row:row,col:6}, isCastling: 'kingside' });
+                                if (this.castling[qs] && !this.board[row][3] && !this.board[row][2] && !this.board[row][1] && !this.isInCheck(color) &&
+                                    !this.isSquareAttacked(row, 3, opp) && !this.isSquareAttacked(row, 2, opp))
+                                    moves.push({ from: {row:r,col:c}, to: {row:row,col:2}, isCastling: 'queenside' });
                             }
                         }
                     }
@@ -1574,32 +1780,23 @@
             }
 
             generateLegalMoves(color = this.turn) {
-                const pseudoMoves = this.generatePseudoLegalMoves(color);
-                return pseudoMoves.filter(move => {
-                    const copy = this.clone();
-                    copy.makeMove(move, true);
-                    return !copy.isInCheck(color);
+                return this.generatePseudoLegalMoves(color).filter(m => {
+                    const c = this.clone(); c.makeMove(m, true); return !c.isInCheck(color);
                 });
             }
 
-            makeMove(move, skipValidation = false) {
+            makeMove(move, skip = false) {
                 const { from, to, promotion, isEnPassant, isCastling } = move;
                 const piece = this.board[from.row][from.col];
                 const captured = this.board[to.row][to.col];
                 const color = this.getPieceColor(piece);
 
-                if (!skipValidation) {
-                    this.positionHistory.push(this.getBoardState());
-                }
-
-                if (captured) {
-                    this.capturedPieces[color].push(captured);
-                }
-
+                if (!skip) this.positionHistory.push(this.getBoardState());
+                if (captured) this.capturedPieces[color].push(captured);
                 if (isEnPassant) {
-                    const capturedRow = color === 'white' ? to.row + 1 : to.row - 1;
-                    this.capturedPieces[color].push(this.board[capturedRow][to.col]);
-                    this.board[capturedRow][to.col] = null;
+                    const cr = color === 'white' ? to.row + 1 : to.row - 1;
+                    this.capturedPieces[color].push(this.board[cr][to.col]);
+                    this.board[cr][to.col] = null;
                 }
 
                 this.board[to.row][to.col] = promotion ? (color === 'white' ? promotion : promotion.toLowerCase()) : piece;
@@ -1607,13 +1804,8 @@
 
                 if (isCastling) {
                     const row = from.row;
-                    if (isCastling === 'kingside') {
-                        this.board[row][5] = this.board[row][7];
-                        this.board[row][7] = null;
-                    } else {
-                        this.board[row][3] = this.board[row][0];
-                        this.board[row][0] = null;
-                    }
+                    if (isCastling === 'kingside') { this.board[row][5] = this.board[row][7]; this.board[row][7] = null; }
+                    else { this.board[row][3] = this.board[row][0]; this.board[row][0] = null; }
                 }
 
                 if (piece.toUpperCase() === 'K') {
@@ -1627,26 +1819,15 @@
                     if (from.row === 0 && from.col === 0) this.castling.q = false;
                 }
 
-                if (piece.toUpperCase() === 'P' && Math.abs(to.row - from.row) === 2) {
-                    this.enPassant = { row: (from.row + to.row) / 2, col: from.col };
-                } else {
-                    this.enPassant = null;
-                }
+                this.enPassant = (piece.toUpperCase() === 'P' && Math.abs(to.row - from.row) === 2) ?
+                    { row: (from.row + to.row) / 2, col: from.col } : null;
 
-                if (captured || piece.toUpperCase() === 'P') this.halfMoveClock = 0;
-                else this.halfMoveClock++;
-
+                this.halfMoveClock = (captured || piece.toUpperCase() === 'P') ? 0 : this.halfMoveClock + 1;
                 if (color === 'black') this.fullMoveNumber++;
 
-                if (!skipValidation) {
+                if (!skip) {
                     const notation = this.getMoveNotation(move, piece, captured, isCastling);
-                    this.moveHistory.push({
-                        ...move,
-                        notation,
-                        piece,
-                        captured,
-                        boardState: this.getBoardState()
-                    });
+                    this.moveHistory.push({ ...move, notation, piece, captured, boardState: this.getBoardState() });
                 }
 
                 this.turn = this.turn === 'white' ? 'black' : 'white';
@@ -1656,71 +1837,35 @@
             getMoveNotation(move, piece, captured, isCastling) {
                 if (isCastling === 'kingside') return 'O-O';
                 if (isCastling === 'queenside') return 'O-O-O';
-
                 const files = 'abcdefgh';
-                const pieceType = piece.toUpperCase();
-                let notation = '';
-
-                if (pieceType !== 'P') notation += pieceType;
-                if (captured || move.isEnPassant) {
-                    if (pieceType === 'P') notation += files[move.from.col];
-                    notation += 'x';
-                }
-                notation += files[move.to.col] + (8 - move.to.row);
-                if (move.promotion) notation += '=' + move.promotion;
-
+                const pt = piece.toUpperCase();
+                let n = pt !== 'P' ? pt : '';
+                if (captured || move.isEnPassant) { if (pt === 'P') n += files[move.from.col]; n += 'x'; }
+                n += files[move.to.col] + (8 - move.to.row);
+                if (move.promotion) n += '=' + move.promotion;
                 const copy = this.clone();
-                const oppColor = this.getPieceColor(piece) === 'white' ? 'black' : 'white';
-                if (copy.isInCheck(oppColor)) {
-                    notation += copy.generateLegalMoves(oppColor).length === 0 ? '#' : '+';
-                }
-                return notation;
+                const opp = this.getPieceColor(piece) === 'white' ? 'black' : 'white';
+                if (copy.isInCheck(opp)) n += copy.generateLegalMoves(opp).length === 0 ? '#' : '+';
+                return n;
             }
 
             getBoardState() {
-                return {
-                    board: this.board.map(row => [...row]),
-                    turn: this.turn,
-                    castling: { ...this.castling },
-                    enPassant: this.enPassant ? { ...this.enPassant } : null
-                };
-            }
-
-            loadBoardState(state) {
-                this.board = state.board.map(row => [...row]);
-                this.turn = state.turn;
-                this.castling = { ...state.castling };
-                this.enPassant = state.enPassant ? { ...state.enPassant } : null;
+                return { board: this.board.map(r => [...r]), turn: this.turn, castling: { ...this.castling }, enPassant: this.enPassant ? { ...this.enPassant } : null };
             }
 
             isCheckmate() { return this.isInCheck(this.turn) && this.generateLegalMoves().length === 0; }
             isStalemate() { return !this.isInCheck(this.turn) && this.generateLegalMoves().length === 0; }
-
             isDraw() {
                 if (this.isStalemate()) return 'stalemate';
                 if (this.halfMoveClock >= 100) return 'fifty-move';
-                if (this.isInsufficientMaterial()) return 'insufficient';
-                return false;
-            }
-
-            isInsufficientMaterial() {
-                const pieces = [];
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        if (this.board[r][c]) pieces.push({ piece: this.board[r][c], row: r, col: c });
-                    }
-                }
-                if (pieces.length === 2) return true;
-                if (pieces.length === 3) {
-                    const nonKing = pieces.find(p => p.piece.toUpperCase() !== 'K');
-                    if (nonKing && ['N', 'B'].includes(nonKing.piece.toUpperCase())) return true;
-                }
+                const pieces = this.board.flat().filter(p => p);
+                if (pieces.length === 2) return 'insufficient';
+                if (pieces.length === 3 && pieces.some(p => ['N','n','B','b'].includes(p))) return 'insufficient';
                 return false;
             }
 
             evaluate() {
-                const pieceValues = { P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000 };
-                
+                const vals = { P: 100, N: 320, B: 330, R: 500, Q: 900, K: 20000 };
                 const tables = {
                     P: [[0,0,0,0,0,0,0,0],[50,50,50,50,50,50,50,50],[10,10,20,30,30,20,10,10],[5,5,10,25,25,10,5,5],[0,0,0,20,20,0,0,0],[5,-5,-10,0,0,-10,-5,5],[5,10,10,-20,-20,10,10,5],[0,0,0,0,0,0,0,0]],
                     N: [[-50,-40,-30,-30,-30,-30,-40,-50],[-40,-20,0,0,0,0,-20,-40],[-30,0,10,15,15,10,0,-30],[-30,5,15,20,20,15,5,-30],[-30,0,15,20,20,15,0,-30],[-30,5,10,15,15,10,5,-30],[-40,-20,0,5,5,0,-20,-40],[-50,-40,-30,-30,-30,-30,-40,-50]],
@@ -1729,19 +1874,12 @@
                     Q: [[-20,-10,-10,-5,-5,-10,-10,-20],[-10,0,0,0,0,0,0,-10],[-10,0,5,5,5,5,0,-10],[-5,0,5,5,5,5,0,-5],[0,0,5,5,5,5,0,-5],[-10,5,5,5,5,5,0,-10],[-10,0,5,0,0,0,0,-10],[-20,-10,-10,-5,-5,-10,-10,-20]],
                     K: [[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-20,-30,-30,-40,-40,-30,-30,-20],[-10,-20,-20,-20,-20,-20,-20,-10],[20,20,0,0,0,0,20,20],[20,30,10,0,0,10,30,20]]
                 };
-
                 let score = 0;
-                for (let r = 0; r < 8; r++) {
-                    for (let c = 0; c < 8; c++) {
-                        const piece = this.board[r][c];
-                        if (!piece) continue;
-                        const isWhite = this.isWhite(piece);
-                        const pieceType = piece.toUpperCase();
-                        const value = pieceValues[pieceType] || 0;
-                        const table = tables[pieceType];
-                        const tableValue = table ? (isWhite ? table[r][c] : table[7-r][c]) : 0;
-                        score += isWhite ? (value + tableValue) : -(value + tableValue);
-                    }
+                for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+                    const p = this.board[r][c]; if (!p) continue;
+                    const isW = this.isWhite(p), pt = p.toUpperCase();
+                    const val = vals[pt] || 0, tbl = tables[pt], tv = tbl ? (isW ? tbl[r][c] : tbl[7-r][c]) : 0;
+                    score += isW ? (val + tv) : -(val + tv);
                 }
                 return score;
             }
@@ -1749,174 +1887,96 @@
 
         // AI
         class ChessAI {
-            constructor(depth = 3) {
-                this.depth = depth;
-            }
+            constructor(depth = 3) { this.depth = depth; }
 
             getBestMove(engine) {
                 const moves = engine.generateLegalMoves();
-                if (moves.length === 0) return null;
-
-                let bestMove = null;
-                let bestScore = engine.turn === 'white' ? -Infinity : Infinity;
-
-                moves.sort((a, b) => this.getMoveScore(engine, b) - this.getMoveScore(engine, a));
-
-                for (const move of moves) {
-                    const copy = engine.clone();
-                    copy.makeMove(move, true);
-                    const score = this.minimax(copy, this.depth - 1, -Infinity, Infinity, engine.turn !== 'white');
-                    
-                    if (engine.turn === 'white' ? score > bestScore : score < bestScore) {
-                        bestScore = score;
-                        bestMove = move;
-                    }
+                if (!moves.length) return null;
+                let best = null, bestScore = engine.turn === 'white' ? -Infinity : Infinity;
+                moves.sort((a, b) => this.moveScore(engine, b) - this.moveScore(engine, a));
+                for (const m of moves) {
+                    const c = engine.clone(); c.makeMove(m, true);
+                    const s = this.minimax(c, this.depth - 1, -Infinity, Infinity, engine.turn !== 'white');
+                    if (engine.turn === 'white' ? s > bestScore : s < bestScore) { bestScore = s; best = m; }
                 }
-                return { move: bestMove, score: bestScore };
+                return { move: best, score: bestScore };
             }
 
-            getMoveScore(engine, move) {
-                let score = 0;
-                const captured = engine.board[move.to.row][move.to.col];
-                if (captured) {
-                    const values = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 0 };
-                    score += values[captured.toUpperCase()] * 10;
-                }
-                if (move.promotion) score += 8;
-                if (move.isCastling) score += 2;
-                return score;
+            moveScore(e, m) {
+                let s = 0;
+                const cap = e.board[m.to.row][m.to.col];
+                if (cap) s += { P:1, N:3, B:3, R:5, Q:9, K:0 }[cap.toUpperCase()] * 10;
+                if (m.promotion) s += 8;
+                if (m.isCastling) s += 2;
+                return s;
             }
 
-            minimax(engine, depth, alpha, beta, maximizing) {
-                if (depth === 0) return this.quiescence(engine, alpha, beta, maximizing);
-
-                const moves = engine.generateLegalMoves();
-                if (moves.length === 0) {
-                    if (engine.isInCheck(engine.turn)) return maximizing ? -100000 + (this.depth - depth) : 100000 - (this.depth - depth);
-                    return 0;
-                }
-
-                moves.sort((a, b) => this.getMoveScore(engine, b) - this.getMoveScore(engine, a));
-
-                if (maximizing) {
-                    let maxScore = -Infinity;
-                    for (const move of moves) {
-                        const copy = engine.clone();
-                        copy.makeMove(move, true);
-                        const score = this.minimax(copy, depth - 1, alpha, beta, false);
-                        maxScore = Math.max(maxScore, score);
-                        alpha = Math.max(alpha, score);
-                        if (beta <= alpha) break;
-                    }
-                    return maxScore;
+            minimax(e, d, a, b, max) {
+                if (d === 0) return this.quiesce(e, a, b, max);
+                const moves = e.generateLegalMoves();
+                if (!moves.length) return e.isInCheck(e.turn) ? (max ? -100000 + (this.depth - d) : 100000 - (this.depth - d)) : 0;
+                moves.sort((x, y) => this.moveScore(e, y) - this.moveScore(e, x));
+                if (max) {
+                    let v = -Infinity;
+                    for (const m of moves) { const c = e.clone(); c.makeMove(m, true); v = Math.max(v, this.minimax(c, d-1, a, b, false)); a = Math.max(a, v); if (b <= a) break; }
+                    return v;
                 } else {
-                    let minScore = Infinity;
-                    for (const move of moves) {
-                        const copy = engine.clone();
-                        copy.makeMove(move, true);
-                        const score = this.minimax(copy, depth - 1, alpha, beta, true);
-                        minScore = Math.min(minScore, score);
-                        beta = Math.min(beta, score);
-                        if (beta <= alpha) break;
-                    }
-                    return minScore;
+                    let v = Infinity;
+                    for (const m of moves) { const c = e.clone(); c.makeMove(m, true); v = Math.min(v, this.minimax(c, d-1, a, b, true)); b = Math.min(b, v); if (b <= a) break; }
+                    return v;
                 }
             }
 
-            quiescence(engine, alpha, beta, maximizing) {
-                const standPat = engine.evaluate();
-                if (maximizing) {
-                    if (standPat >= beta) return beta;
-                    if (alpha < standPat) alpha = standPat;
-                } else {
-                    if (standPat <= alpha) return alpha;
-                    if (beta > standPat) beta = standPat;
+            quiesce(e, a, b, max) {
+                const stand = e.evaluate();
+                if (max) { if (stand >= b) return b; if (a < stand) a = stand; }
+                else { if (stand <= a) return a; if (b > stand) b = stand; }
+                for (const m of e.generateLegalMoves().filter(x => e.board[x.to.row][x.to.col])) {
+                    const c = e.clone(); c.makeMove(m, true);
+                    const s = this.quiesce(c, a, b, !max);
+                    if (max) { if (s >= b) return b; if (s > a) a = s; }
+                    else { if (s <= a) return a; if (s < b) b = s; }
                 }
-
-                const moves = engine.generateLegalMoves().filter(m => engine.board[m.to.row][m.to.col] !== null);
-                for (const move of moves) {
-                    const copy = engine.clone();
-                    copy.makeMove(move, true);
-                    const score = this.quiescence(copy, alpha, beta, !maximizing);
-                    if (maximizing) {
-                        if (score >= beta) return beta;
-                        if (score > alpha) alpha = score;
-                    } else {
-                        if (score <= alpha) return alpha;
-                        if (score < beta) beta = score;
-                    }
-                }
-                return maximizing ? alpha : beta;
+                return max ? a : b;
             }
 
-            analyzeMove(engineBefore, move, color) {
-                const before = engineBefore.clone();
-                const after = engineBefore.clone();
-                after.makeMove(move, true);
-
+            analyzeMove(eng, move, color) {
                 this.depth = 4;
-                const bestResult = this.getBestMove(before);
-                const bestMove = bestResult?.move;
+                const best = this.getBestMove(eng);
+                if (!best?.move) return { classification: 'book', evalChange: 0 };
+                const afterBest = eng.clone(); afterBest.makeMove(best.move, true);
+                const after = eng.clone(); after.makeMove(move, true);
+                const evalBest = afterBest.evaluate() * (color === 'white' ? 1 : -1);
+                const evalActual = after.evaluate() * (color === 'white' ? 1 : -1);
+                const change = (evalActual - evalBest) / 100;
+                const isBest = move.from.row === best.move.from.row && move.from.col === best.move.from.col &&
+                               move.to.row === best.move.to.row && move.to.col === best.move.to.col;
                 
-                if (!bestMove) return { classification: 'book', evalChange: 0 };
+                let cls;
+                if (isBest) cls = 'best';
+                else if (change >= -0.05) cls = 'excellent';
+                else if (change >= -0.15) cls = 'good';
+                else if (change >= -0.5) cls = 'inaccuracy';
+                else if (change >= -1.5) cls = 'mistake';
+                else cls = 'blunder';
 
-                const afterBest = before.clone();
-                afterBest.makeMove(bestMove, true);
-                const evalAfterBest = afterBest.evaluate() * (color === 'white' ? 1 : -1);
-                const evalAfterActual = after.evaluate() * (color === 'white' ? 1 : -1);
-                const evalChange = (evalAfterActual - evalAfterBest) / 100;
-
-                const isBestMove = move.from.row === bestMove.from.row && move.from.col === bestMove.from.col &&
-                                   move.to.row === bestMove.to.row && move.to.col === bestMove.to.col;
-
-                const isSacrifice = this.isSacrifice(engineBefore, move, color);
-
-                let classification;
-                if (isBestMove) classification = 'best';
-                else if (evalChange >= -0.05) classification = 'excellent';
-                else if (evalChange >= -0.15) classification = 'good';
-                else if (evalChange >= -0.5) classification = 'inaccuracy';
-                else if (evalChange >= -1.5) classification = 'mistake';
-                else classification = 'blunder';
-
-                if (isSacrifice && !isBestMove && evalChange >= 0.5) {
-                    const materialLoss = this.getMaterialChange(engineBefore, move, color);
-                    if (materialLoss >= 3 && evalChange >= 1.5) classification = 'brilliant';
+                // Brilliant detection
+                const piece = eng.board[move.from.row][move.from.col];
+                const vals = { P:1, N:3, B:3, R:5, Q:9, K:0 };
+                const pv = vals[piece.toUpperCase()];
+                const opp = color === 'white' ? 'black' : 'white';
+                if (eng.isSquareAttacked(move.to.row, move.to.col, opp) && !isBest) {
+                    const cap = eng.board[move.to.row][move.to.col];
+                    const cv = cap ? vals[cap.toUpperCase()] : 0;
+                    if (pv > cv + 1 && change >= 1.5) cls = 'brilliant';
                 }
+                if (cls === 'best' && !eng.board[move.to.row][move.to.col] && !move.isCastling) cls = 'great';
 
-                if (classification === 'best' && this.isNonObvious(engineBefore, move)) classification = 'great';
-
-                return { classification, evalChange, evalBefore: 0, evalAfter: evalAfterActual / 100, bestMove, isBestMove };
-            }
-
-            isSacrifice(engine, move, color) {
-                const piece = engine.board[move.from.row][move.from.col];
-                const values = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 0 };
-                const pieceValue = values[piece.toUpperCase()];
-                const oppColor = color === 'white' ? 'black' : 'white';
-
-                if (engine.isSquareAttacked(move.to.row, move.to.col, oppColor)) {
-                    const captured = engine.board[move.to.row][move.to.col];
-                    const capturedValue = captured ? values[captured.toUpperCase()] : 0;
-                    return pieceValue > capturedValue + 1;
-                }
-                return false;
-            }
-
-            getMaterialChange(engine, move, color) {
-                const piece = engine.board[move.from.row][move.from.col];
-                const captured = engine.board[move.to.row][move.to.col];
-                const values = { P: 1, N: 3, B: 3, R: 5, Q: 9, K: 0 };
-                return values[piece.toUpperCase()] - (captured ? values[captured.toUpperCase()] : 0);
-            }
-
-            isNonObvious(engine, move) {
-                const captured = engine.board[move.to.row][move.to.col];
-                return !captured && !move.isCastling;
+                return { classification: cls, evalChange: change, evalAfter: evalActual / 100, bestMove: best.move, isBestMove: isBest };
             }
         }
 
-        // Game State
+        // State
         let engine = new ChessEngine();
         let ai = new ChessAI(3);
         let selectedSquare = null;
@@ -1925,25 +1985,20 @@
         let reviewMode = false;
         let reviewMoveIndex = -1;
         let moveAnalysis = [];
-        let pendingPromotion = null;
         let dragging = false;
-        let dragPiece = null;
         let dragStartSquare = null;
         let ghostPiece = null;
 
-        // Initialize
+        // Init
         function init() {
             renderBoard();
             updateMoveList();
             updateEvalBar(0);
-            
-            document.getElementById('difficulty').addEventListener('change', (e) => {
-                ai.depth = parseInt(e.target.value);
-                document.getElementById('botLevel').textContent = e.target.value;
+            document.getElementById('difficulty').addEventListener('change', e => {
+                ai.depth = parseInt(e.value);
+                document.getElementById('botLevel').textContent = e.value;
             });
-
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', e => {
                 if (e.key === 'ArrowLeft') goBack();
                 if (e.key === 'ArrowRight') goForward();
                 if (e.key === 'ArrowUp') { e.preventDefault(); goToStart(); }
@@ -1951,74 +2006,75 @@
             });
         }
 
-        function renderBoard(customState = null) {
+        function renderBoard(customState = null, showClassification = false, classIndex = -1) {
             const board = document.getElementById('board');
             board.innerHTML = '';
-
             const state = customState || engine.board;
             const files = 'abcdefgh';
 
+            // Find last move for this state
+            let lastMove = null;
+            let classification = null;
+            if (reviewMode && classIndex >= 0 && engine.moveHistory[classIndex]) {
+                lastMove = engine.moveHistory[classIndex];
+                classification = moveAnalysis[classIndex];
+            } else if (!customState && engine.moveHistory.length > 0) {
+                lastMove = engine.moveHistory[engine.moveHistory.length - 1];
+            }
+
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    const square = document.createElement('div');
+                    const sq = document.createElement('div');
                     const isLight = (r + c) % 2 === 0;
-                    square.className = `square ${isLight ? 'light' : 'dark'}`;
-                    square.dataset.row = r;
-                    square.dataset.col = c;
+                    sq.className = `square ${isLight ? 'light' : 'dark'}`;
+                    sq.dataset.row = r;
+                    sq.dataset.col = c;
 
-                    // Highlights
-                    if (!customState && engine.moveHistory.length > 0) {
-                        const lastMove = engine.moveHistory[engine.moveHistory.length - 1];
-                        if ((lastMove.from.row === r && lastMove.from.col === c) ||
-                            (lastMove.to.row === r && lastMove.to.col === c)) {
-                            square.classList.add('last-move');
-                        }
+                    // Last move highlight
+                    if (lastMove && ((lastMove.from.row === r && lastMove.from.col === c) || (lastMove.to.row === r && lastMove.to.col === c))) {
+                        sq.classList.add('last-move');
                     }
 
-                    if (selectedSquare && selectedSquare.row === r && selectedSquare.col === c) {
-                        square.classList.add('selected');
-                    }
+                    // Selected
+                    if (selectedSquare?.row === r && selectedSquare?.col === c) sq.classList.add('selected');
 
+                    // Legal moves
                     if (legalMoves.some(m => m.to.row === r && m.to.col === c)) {
-                        square.classList.add(state[r][c] ? 'legal-capture' : 'legal-move');
+                        sq.classList.add(state[r][c] ? 'legal-capture' : 'legal-move');
                     }
 
+                    // Check
                     if (!customState && engine.isInCheck(engine.turn)) {
-                        const kingPos = engine.getKingPosition(engine.turn);
-                        if (kingPos && kingPos.row === r && kingPos.col === c) {
-                            square.classList.add('check');
-                        }
+                        const kp = engine.getKingPosition(engine.turn);
+                        if (kp?.row === r && kp?.col === c) sq.classList.add('check');
                     }
 
-                    // Coordinates
-                    if (c === 0) {
-                        const rank = document.createElement('span');
-                        rank.className = 'coordinate rank';
-                        rank.textContent = 8 - r;
-                        square.appendChild(rank);
-                    }
-                    if (r === 7) {
-                        const file = document.createElement('span');
-                        file.className = 'coordinate file';
-                        file.textContent = files[c];
-                        square.appendChild(file);
-                    }
+                    // Coords
+                    if (c === 0) { const rank = document.createElement('span'); rank.className = 'coordinate rank'; rank.textContent = 8 - r; sq.appendChild(rank); }
+                    if (r === 7) { const file = document.createElement('span'); file.className = 'coordinate file'; file.textContent = files[c]; sq.appendChild(file); }
 
                     // Piece
                     const piece = state[r][c];
-                    if (piece && !(dragging && dragStartSquare && dragStartSquare.row === r && dragStartSquare.col === c)) {
+                    if (piece && !(dragging && dragStartSquare?.row === r && dragStartSquare?.col === c)) {
                         const img = document.createElement('img');
                         img.src = PIECE_IMAGES[piece];
                         img.className = 'piece';
                         img.draggable = false;
-                        
-                        img.addEventListener('mousedown', (e) => startDrag(e, r, c, piece));
-                        square.appendChild(img);
+                        img.addEventListener('mousedown', e => startDrag(e, r, c, piece));
+                        sq.appendChild(img);
                     }
 
-                    square.addEventListener('click', () => handleSquareClick(r, c));
-                    square.addEventListener('mouseup', (e) => endDrag(e, r, c));
-                    board.appendChild(square);
+                    // Classification icon on destination square
+                    if (showClassification && classification && lastMove.to.row === r && lastMove.to.col === c) {
+                        const icon = document.createElement('img');
+                        icon.src = CLASSIFICATION_ICONS[classification.classification];
+                        icon.className = 'move-classification-icon';
+                        sq.appendChild(icon);
+                    }
+
+                    sq.addEventListener('click', () => handleClick(r, c));
+                    sq.addEventListener('mouseup', e => endDrag(e, r, c));
+                    board.appendChild(sq);
                 }
             }
 
@@ -2026,341 +2082,240 @@
             updatePlayerIndicators();
         }
 
-        // Drag and Drop
-        function startDrag(e, row, col, piece) {
-            if (gameOver || reviewMode || engine.turn !== 'white') return;
-            if (!engine.isWhite(engine.board[row][col])) return;
-
+        function startDrag(e, r, c, piece) {
+            if (gameOver || reviewMode || engine.turn !== 'white' || !engine.isWhite(piece)) return;
             e.preventDefault();
-            
             dragging = true;
-            dragStartSquare = { row, col };
-            selectedSquare = { row, col };
-            legalMoves = engine.generateLegalMoves().filter(m => m.from.row === row && m.from.col === col);
-
-            // Create ghost piece
+            dragStartSquare = { row: r, col: c };
+            selectedSquare = { row: r, col: c };
+            legalMoves = engine.generateLegalMoves().filter(m => m.from.row === r && m.from.col === c);
+            
             ghostPiece = document.createElement('img');
             ghostPiece.src = PIECE_IMAGES[piece];
             ghostPiece.className = 'ghost-piece';
             document.body.appendChild(ghostPiece);
-            
-            moveGhostPiece(e);
+            moveGhost(e);
             renderBoard();
-
-            document.addEventListener('mousemove', moveGhostPiece);
+            
+            document.addEventListener('mousemove', moveGhost);
             document.addEventListener('mouseup', dropPiece);
         }
 
-        function moveGhostPiece(e) {
-            if (ghostPiece) {
-                ghostPiece.style.left = e.clientX + 'px';
-                ghostPiece.style.top = e.clientY + 'px';
-            }
-        }
-
-        function dropPiece(e) {
-            document.removeEventListener('mousemove', moveGhostPiece);
+        function moveGhost(e) { if (ghostPiece) { ghostPiece.style.left = e.clientX + 'px'; ghostPiece.style.top = e.clientY + 'px'; } }
+        function dropPiece() {
+            document.removeEventListener('mousemove', moveGhost);
             document.removeEventListener('mouseup', dropPiece);
-
-            if (ghostPiece) {
-                ghostPiece.remove();
-                ghostPiece = null;
-            }
-
-            dragging = false;
-            dragStartSquare = null;
+            if (ghostPiece) { ghostPiece.remove(); ghostPiece = null; }
+            dragging = false; dragStartSquare = null;
         }
 
-        function endDrag(e, row, col) {
+        function endDrag(e, r, c) {
             if (!dragging) return;
-            
-            const targetMove = legalMoves.find(m => m.to.row === row && m.to.col === col);
-            if (targetMove) {
-                if (targetMove.promotion) {
-                    pendingPromotion = { ...targetMove };
-                    showPromotionModal();
-                } else {
-                    makePlayerMove(targetMove);
-                }
+            const move = legalMoves.find(m => m.to.row === r && m.to.col === c);
+            if (move) {
+                if (move.promotion) { showPromotion(move); return; }
+                makePlayerMove(move);
             }
-
-            selectedSquare = null;
-            legalMoves = [];
-            dragging = false;
-            dragStartSquare = null;
-            
-            if (ghostPiece) {
-                ghostPiece.remove();
-                ghostPiece = null;
-            }
-            
+            selectedSquare = null; legalMoves = []; dragging = false; dragStartSquare = null;
+            if (ghostPiece) { ghostPiece.remove(); ghostPiece = null; }
             renderBoard();
         }
 
-        function handleSquareClick(row, col) {
-            if (gameOver || reviewMode || dragging) return;
-            if (engine.turn !== 'white') return;
-
-            const piece = engine.board[row][col];
-            const targetMove = legalMoves.find(m => m.to.row === row && m.to.col === col);
-
-            if (targetMove) {
-                if (targetMove.promotion) {
-                    pendingPromotion = { ...targetMove };
-                    showPromotionModal();
-                    return;
-                }
-                makePlayerMove(targetMove);
-                return;
-            }
-
+        function handleClick(r, c) {
+            if (gameOver || reviewMode || dragging || engine.turn !== 'white') return;
+            const move = legalMoves.find(m => m.to.row === r && m.to.col === c);
+            if (move) { if (move.promotion) { showPromotion(move); return; } makePlayerMove(move); return; }
+            const piece = engine.board[r][c];
             if (piece && engine.isWhite(piece)) {
-                selectedSquare = { row, col };
-                legalMoves = engine.generateLegalMoves().filter(m => m.from.row === row && m.from.col === col);
-            } else {
-                selectedSquare = null;
-                legalMoves = [];
-            }
-
+                selectedSquare = { row: r, col: c };
+                legalMoves = engine.generateLegalMoves().filter(m => m.from.row === r && m.from.col === c);
+            } else { selectedSquare = null; legalMoves = []; }
             renderBoard();
         }
 
-        function showPromotionModal() {
+        function showPromotion(move) {
             const modal = document.getElementById('promotionModal');
             const container = document.getElementById('promotionPieces');
             container.innerHTML = '';
-
-            ['Q', 'R', 'B', 'N'].forEach(p => {
+            ['Q','R','B','N'].forEach(p => {
                 const div = document.createElement('div');
                 div.className = 'promotion-piece';
                 const img = document.createElement('img');
                 img.src = PIECE_IMAGES[p];
                 div.appendChild(img);
                 div.onclick = () => {
-                    const promoMove = { ...pendingPromotion, promotion: p };
                     modal.classList.remove('active');
-                    selectedSquare = null;
-                    legalMoves = [];
-                    makePlayerMove(promoMove);
+                    selectedSquare = null; legalMoves = [];
+                    makePlayerMove({ ...move, promotion: p });
                 };
                 container.appendChild(div);
             });
-
             modal.classList.add('active');
         }
 
         function makePlayerMove(move) {
-            engine.makeMove(move);
-            selectedSquare = null;
-            legalMoves = [];
+            const captured = engine.board[move.to.row][move.to.col];
+            const result = engine.makeMove(move);
+            selectedSquare = null; legalMoves = [];
+            
+            // Sound & effects
+            if (result.isCastling) playSound('castle');
+            else if (captured || result.isEnPassant) { playSound('capture'); flashSquare(move.to.row, move.to.col); }
+            else if (move.promotion) playSound('promote');
+            else playSound('move');
+
             renderBoard();
             updateMoveList();
-            playSound('move');
-            
-            const eval_ = engine.evaluate() / 100;
-            updateEvalBar(eval_);
+            updateEvalBar(engine.evaluate() / 100);
 
+            if (engine.isInCheck(engine.turn)) playSound('check');
             if (checkGameEnd()) return;
-            setTimeout(makeAIMove, 300);
+            setTimeout(makeAIMove, 350);
+        }
+
+        function flashSquare(r, c) {
+            setTimeout(() => {
+                const sq = document.querySelector(`.square[data-row="${r}"][data-col="${c}"]`);
+                if (sq) sq.classList.add('capture-flash');
+            }, 50);
+        }
+
+        function shakeBoard() {
+            document.getElementById('boardContainer').classList.add('shake');
+            setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 300);
         }
 
         function makeAIMove() {
             if (gameOver) return;
             document.getElementById('thinkingIndicator').style.display = 'flex';
-
             setTimeout(() => {
                 const result = ai.getBestMove(engine);
                 document.getElementById('thinkingIndicator').style.display = 'none';
-
-                if (result && result.move) {
+                if (result?.move) {
                     const captured = engine.board[result.move.to.row][result.move.to.col];
-                    engine.makeMove(result.move);
+                    const moveResult = engine.makeMove(result.move);
+                    
+                    if (moveResult.isCastling) playSound('castle');
+                    else if (captured || moveResult.isEnPassant) { playSound('capture'); flashSquare(result.move.to.row, result.move.to.col); }
+                    else playSound('move');
+
                     renderBoard();
                     updateMoveList();
-                    playSound(captured ? 'capture' : 'move');
-                    
-                    const eval_ = engine.evaluate() / 100;
-                    updateEvalBar(eval_);
+                    updateEvalBar(engine.evaluate() / 100);
+                    if (engine.isInCheck(engine.turn)) { playSound('check'); shakeBoard(); }
                     checkGameEnd();
                 }
-            }, 100);
-        }
-
-        function playSound(type) {
-            // Simple audio feedback using Web Audio API
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            if (type === 'move') {
-                osc.frequency.value = 600;
-                gain.gain.value = 0.1;
-            } else if (type === 'capture') {
-                osc.frequency.value = 400;
-                gain.gain.value = 0.15;
-            }
-            
-            osc.start();
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-            osc.stop(ctx.currentTime + 0.1);
+            }, 150);
         }
 
         function checkGameEnd() {
             if (engine.isCheckmate()) {
                 gameOver = true;
-                const winner = engine.turn === 'white' ? 'Black' : 'White';
-                const icon = engine.turn === 'white' ? '🤖' : '👑';
-                showGameOver(icon, `${winner} Wins!`, 'Checkmate');
+                const w = engine.turn === 'white' ? 'Black' : 'White';
+                playSound('gameend');
+                showGameOver(engine.turn === 'white' ? '🤖' : '👑', `${w} Wins!`, 'Checkmate');
                 return true;
             }
-
             const draw = engine.isDraw();
             if (draw) {
                 gameOver = true;
-                let message = 'Draw';
-                if (draw === 'stalemate') message = 'Stalemate';
-                else if (draw === 'fifty-move') message = 'Fifty-move rule';
-                else if (draw === 'insufficient') message = 'Insufficient material';
-                showGameOver('🤝', 'Draw', message);
+                playSound('gameend');
+                showGameOver('🤝', 'Draw', draw === 'stalemate' ? 'Stalemate' : draw === 'fifty-move' ? 'Fifty-move rule' : 'Insufficient material');
                 return true;
             }
             return false;
         }
 
-        function showGameOver(icon, title, message) {
+        function showGameOver(icon, title, msg) {
             document.getElementById('gameStatus').textContent = title;
             document.getElementById('gameOverIcon').textContent = icon;
             document.getElementById('gameOverTitle').textContent = title;
-            document.getElementById('gameOverMessage').textContent = message;
+            document.getElementById('gameOverMessage').textContent = msg;
             document.getElementById('gameOverModal').classList.add('active');
         }
 
-        function closeModal() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-        }
+        function closeModal() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
 
         function resign() {
-            if (gameOver || engine.moveHistory.length === 0) return;
+            if (gameOver || !engine.moveHistory.length) return;
             gameOver = true;
-            showGameOver('🏳️', 'You Resigned', 'Black wins by resignation');
+            playSound('gameend');
+            showGameOver('🏳️', 'You Resigned', 'Black wins');
         }
 
         function updateMoveList() {
             const container = document.getElementById('movesContainer');
             const moves = engine.moveHistory;
-
-            if (moves.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">♟</div>
-                        <div class="empty-state-text">No moves yet.<br>Make your first move!</div>
-                    </div>
-                `;
+            if (!moves.length) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">♟</div><div class="empty-state-text">No moves yet.<br>Make your first move!</div></div>';
                 return;
             }
-
             container.innerHTML = '';
-            const classIcons = { brilliant: '!!', great: '!', best: '★', excellent: '○', good: '○', book: '📖', inaccuracy: '?!', mistake: '?', miss: '✗', blunder: '??' };
-
             for (let i = 0; i < moves.length; i += 2) {
                 const row = document.createElement('div');
                 row.className = 'move-row';
-
-                const num = document.createElement('span');
-                num.className = 'move-number';
-                num.textContent = (i / 2 + 1) + '.';
-                row.appendChild(num);
-
-                // White move
-                const whiteMove = document.createElement('span');
-                whiteMove.className = 'move';
-                if (moveAnalysis[i]) whiteMove.classList.add(moveAnalysis[i].classification + '-move');
-                if (reviewMode && reviewMoveIndex === i) whiteMove.classList.add('current');
+                row.innerHTML = `<span class="move-number">${i/2+1}.</span>`;
                 
+                // White move
+                const wm = document.createElement('span');
+                wm.className = 'move' + (reviewMode && reviewMoveIndex === i ? ' current' : '');
                 if (moveAnalysis[i]) {
-                    const icon = document.createElement('span');
+                    const icon = document.createElement('img');
+                    icon.src = CLASSIFICATION_ICONS[moveAnalysis[i].classification];
                     icon.className = 'move-icon';
-                    icon.textContent = classIcons[moveAnalysis[i].classification];
-                    whiteMove.appendChild(icon);
+                    wm.appendChild(icon);
                 }
-                whiteMove.appendChild(document.createTextNode(moves[i].notation));
-                whiteMove.onclick = () => goToMove(i);
-                row.appendChild(whiteMove);
-
+                wm.appendChild(document.createTextNode(moves[i].notation));
+                wm.onclick = () => goToMove(i);
+                row.appendChild(wm);
+                
                 // Black move
-                if (moves[i + 1]) {
-                    const blackMove = document.createElement('span');
-                    blackMove.className = 'move';
-                    if (moveAnalysis[i + 1]) blackMove.classList.add(moveAnalysis[i + 1].classification + '-move');
-                    if (reviewMode && reviewMoveIndex === i + 1) blackMove.classList.add('current');
-                    
-                    if (moveAnalysis[i + 1]) {
-                        const icon = document.createElement('span');
+                if (moves[i+1]) {
+                    const bm = document.createElement('span');
+                    bm.className = 'move' + (reviewMode && reviewMoveIndex === i+1 ? ' current' : '');
+                    if (moveAnalysis[i+1]) {
+                        const icon = document.createElement('img');
+                        icon.src = CLASSIFICATION_ICONS[moveAnalysis[i+1].classification];
                         icon.className = 'move-icon';
-                        icon.textContent = classIcons[moveAnalysis[i + 1].classification];
-                        blackMove.appendChild(icon);
+                        bm.appendChild(icon);
                     }
-                    blackMove.appendChild(document.createTextNode(moves[i + 1].notation));
-                    blackMove.onclick = () => goToMove(i + 1);
-                    row.appendChild(blackMove);
+                    bm.appendChild(document.createTextNode(moves[i+1].notation));
+                    bm.onclick = () => goToMove(i+1);
+                    row.appendChild(bm);
                 }
-
                 container.appendChild(row);
             }
-
             container.scrollTop = container.scrollHeight;
         }
 
-        function updateEvalBar(eval_) {
+        function updateEvalBar(ev) {
             const bar = document.getElementById('evalBar');
-            const textWhite = document.getElementById('evalTextWhite');
-            const textBlack = document.getElementById('evalTextBlack');
-
-            const clampedEval = Math.max(-10, Math.min(10, eval_));
-            const percentage = 50 - (clampedEval / 10) * 50;
-            
-            bar.style.height = percentage + '%';
-
-            if (eval_ > 0) {
-                textWhite.textContent = '+' + eval_.toFixed(1);
-                textBlack.textContent = '';
-            } else if (eval_ < 0) {
-                textWhite.textContent = '';
-                textBlack.textContent = Math.abs(eval_).toFixed(1);
-            } else {
-                textWhite.textContent = '0.0';
-                textBlack.textContent = '';
-            }
+            const tw = document.getElementById('evalTextWhite');
+            const tb = document.getElementById('evalTextBlack');
+            const clamped = Math.max(-10, Math.min(10, ev));
+            bar.style.height = (50 + (clamped / 10) * 50) + '%';
+            if (ev > 0) { tw.textContent = '+' + ev.toFixed(1); tb.textContent = ''; }
+            else if (ev < 0) { tw.textContent = ''; tb.textContent = Math.abs(ev).toFixed(1); }
+            else { tw.textContent = '0.0'; tb.textContent = ''; }
         }
 
         function updateCapturedPieces() {
-            const pieceOrder = { q: 0, r: 1, b: 2, n: 3, p: 4, Q: 0, R: 1, B: 2, N: 3, P: 4 };
-            const values = { P: 1, N: 3, B: 3, R: 5, Q: 9, p: 1, n: 3, b: 3, r: 5, q: 9 };
+            const order = { q:0, r:1, b:2, n:3, p:4, Q:0, R:1, B:2, N:3, P:4 };
+            const vals = { P:1, N:3, B:3, R:5, Q:9, p:1, n:3, b:3, r:5, q:9 };
+            let wMat = 0, bMat = 0;
+            engine.capturedPieces.white.forEach(p => wMat += vals[p] || 0);
+            engine.capturedPieces.black.forEach(p => bMat += vals[p] || 0);
+            const adv = wMat - bMat;
 
-            // Calculate material
-            let whiteMaterial = 0, blackMaterial = 0;
-            engine.capturedPieces.white.forEach(p => whiteMaterial += values[p] || 0);
-            engine.capturedPieces.black.forEach(p => blackMaterial += values[p] || 0);
-            const advantage = whiteMaterial - blackMaterial;
+            const wCont = document.getElementById('capturedWhite');
+            const wCap = [...engine.capturedPieces.white].sort((a,b) => order[a] - order[b]);
+            wCont.innerHTML = wCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`).join('');
+            if (adv > 0) wCont.innerHTML += `<span class="material-advantage">+${adv}</span>`;
 
-            // White captured (black pieces)
-            const whiteContainer = document.getElementById('capturedWhite');
-            const whiteCaptured = [...engine.capturedPieces.white].sort((a, b) => pieceOrder[a] - pieceOrder[b]);
-            whiteContainer.innerHTML = whiteCaptured.map(p => 
-                `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`
-            ).join('');
-            if (advantage > 0) whiteContainer.innerHTML += `<span class="material-advantage">+${advantage}</span>`;
-
-            // Black captured (white pieces)
-            const blackContainer = document.getElementById('capturedBlack');
-            const blackCaptured = [...engine.capturedPieces.black].sort((a, b) => pieceOrder[a] - pieceOrder[b]);
-            blackContainer.innerHTML = blackCaptured.map(p => 
-                `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`
-            ).join('');
-            if (advantage < 0) blackContainer.innerHTML += `<span class="material-advantage">+${Math.abs(advantage)}</span>`;
+            const bCont = document.getElementById('capturedBlack');
+            const bCap = [...engine.capturedPieces.black].sort((a,b) => order[a] - order[b]);
+            bCont.innerHTML = bCap.map(p => `<img src="${PIECE_IMAGES[p]}" class="captured-piece">`).join('');
+            if (adv < 0) bCont.innerHTML += `<span class="material-advantage">+${Math.abs(adv)}</span>`;
         }
 
         function updatePlayerIndicators() {
@@ -2378,71 +2333,53 @@
             legalMoves = [];
             moveAnalysis = [];
             reviewMoveIndex = -1;
-            
             closeModal();
+            clearArrows();
             renderBoard();
             updateMoveList();
             updateEvalBar(0);
             document.getElementById('gameStatus').textContent = '';
             showPanelTab('moves');
-            
             document.getElementById('playTab').classList.add('active');
-            document.getElementById('reviewTab').classList.remove('active');
+            document.getElementById('reviewTabBtn').classList.remove('active');
         }
 
         function showGame() {
             document.getElementById('playTab').classList.add('active');
-            document.getElementById('reviewTab').classList.remove('active');
+            document.getElementById('reviewTabBtn').classList.remove('active');
             reviewMode = false;
             reviewMoveIndex = -1;
-            renderBoard();
             clearArrows();
+            renderBoard();
+            updateMoveList();
         }
 
         function showPanelTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.tab:nth-child(${tab === 'moves' ? 1 : 2})`).classList.add('active');
-            
+            document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab === 'moves' && i === 0) || (tab === 'review' && i === 1)));
             document.getElementById('movesPanel').style.display = tab === 'moves' ? 'flex' : 'none';
             document.getElementById('reviewPanel').style.display = tab === 'review' ? 'block' : 'none';
             document.getElementById('reviewPanel').classList.toggle('active', tab === 'review');
         }
 
         function startReview() {
-            if (engine.moveHistory.length === 0) {
-                alert('Play a game first to use Game Review!');
-                return;
-            }
-
+            if (!engine.moveHistory.length) { alert('Play a game first!'); return; }
             document.getElementById('playTab').classList.remove('active');
-            document.getElementById('reviewTab').classList.add('active');
+            document.getElementById('reviewTabBtn').classList.add('active');
             showPanelTab('review');
-            
-            const content = document.getElementById('reviewContent');
-            content.innerHTML = `
-                <div class="analyzing-container">
-                    <div class="spinner"></div>
-                    <div class="analyzing-text">Analyzing your game...</div>
-                    <div class="analyzing-subtext">This may take a moment</div>
-                </div>
-            `;
-
+            document.getElementById('reviewContent').innerHTML = '<div class="analyzing-container"><div class="spinner"></div><div class="analyzing-text">Analyzing your game...</div><div class="analyzing-subtext">This may take a moment</div></div>';
             setTimeout(analyzeGame, 100);
         }
 
         function analyzeGame() {
             moveAnalysis = [];
-            const tempEngine = new ChessEngine();
-            const analyzeAI = new ChessAI(4);
-
+            const temp = new ChessEngine();
+            const analyzer = new ChessAI(4);
             for (let i = 0; i < engine.moveHistory.length; i++) {
                 const move = engine.moveHistory[i];
                 const color = i % 2 === 0 ? 'white' : 'black';
-                const analysis = analyzeAI.analyzeMove(tempEngine, move, color);
-                moveAnalysis.push(analysis);
-                tempEngine.makeMove(move, true);
+                moveAnalysis.push(analyzer.analyzeMove(temp, move, color));
+                temp.makeMove(move, true);
             }
-
             showReviewResults();
             reviewMode = true;
             reviewMoveIndex = -1;
@@ -2451,212 +2388,116 @@
 
         function showReviewResults() {
             const content = document.getElementById('reviewContent');
+            const wA = moveAnalysis.filter((_,i) => i % 2 === 0);
+            const bA = moveAnalysis.filter((_,i) => i % 2 === 1);
             
-            const whiteAnalysis = moveAnalysis.filter((_, i) => i % 2 === 0);
-            const blackAnalysis = moveAnalysis.filter((_, i) => i % 2 === 1);
-            
-            const calcAccuracy = (analyses) => {
-                if (analyses.length === 0) return 100;
-                let total = 0;
-                for (const a of analyses) {
-                    let acc = 100;
-                    switch (a.classification) {
-                        case 'brilliant': case 'great': case 'best': acc = 100; break;
-                        case 'excellent': acc = 95; break;
-                        case 'good': acc = 87; break;
-                        case 'book': acc = 92; break;
-                        case 'inaccuracy': acc = 52; break;
-                        case 'mistake': acc = 26; break;
-                        case 'miss': acc = 15; break;
-                        case 'blunder': acc = 0; break;
-                    }
-                    total += acc;
-                }
-                return Math.round(total / analyses.length);
+            const calcAcc = arr => {
+                if (!arr.length) return 100;
+                return Math.round(arr.reduce((s,a) => s + ({brilliant:100,great:100,best:100,excellent:95,good:87,book:92,inaccuracy:52,mistake:26,miss:15,blunder:0}[a.classification] || 80), 0) / arr.length);
             };
-
-            const whiteAccuracy = calcAccuracy(whiteAnalysis);
-            const blackAccuracy = calcAccuracy(blackAnalysis);
-            const countClass = (analyses, cls) => analyses.filter(a => a.classification === cls).length;
-
-            const classifications = [
-                { key: 'brilliant', name: 'Brilliant', icon: '!!' },
-                { key: 'great', name: 'Great Move', icon: '!' },
-                { key: 'best', name: 'Best Move', icon: '★' },
-                { key: 'excellent', name: 'Excellent', icon: '○' },
-                { key: 'good', name: 'Good', icon: '○' },
-                { key: 'book', name: 'Book', icon: '📖' },
-                { key: 'inaccuracy', name: 'Inaccuracy', icon: '?!' },
-                { key: 'mistake', name: 'Mistake', icon: '?' },
-                { key: 'blunder', name: 'Blunder', icon: '??' }
+            const wAcc = calcAcc(wA), bAcc = calcAcc(bA);
+            const cnt = (arr, cls) => arr.filter(a => a.classification === cls).length;
+            const circ = 2 * Math.PI * 46;
+            
+            const classes = [
+                { key: 'brilliant', name: 'Brilliant' },
+                { key: 'great', name: 'Great Move' },
+                { key: 'best', name: 'Best Move' },
+                { key: 'excellent', name: 'Excellent' },
+                { key: 'good', name: 'Good' },
+                { key: 'book', name: 'Book' },
+                { key: 'inaccuracy', name: 'Inaccuracy' },
+                { key: 'mistake', name: 'Mistake' },
+                { key: 'blunder', name: 'Blunder' }
             ];
-
-            const circumference = 2 * Math.PI * 46;
 
             content.innerHTML = `
                 <div class="accuracy-section">
                     <div class="accuracy-row">
                         <div class="accuracy-item">
                             <div class="accuracy-ring white">
-                                <svg viewBox="0 0 100 100">
-                                    <circle class="bg" cx="50" cy="50" r="46"/>
-                                    <circle class="progress" cx="50" cy="50" r="46" 
-                                        stroke-dasharray="${circumference}" 
-                                        stroke-dashoffset="${circumference * (1 - whiteAccuracy / 100)}"/>
-                                </svg>
-                                <div class="accuracy-value">${whiteAccuracy}</div>
+                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="46"/><circle class="progress" cx="50" cy="50" r="46" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - wAcc/100)}"/></svg>
+                                <div class="accuracy-value">${wAcc}<span class="accuracy-percent">%</span></div>
                             </div>
                             <div class="accuracy-label">Your Accuracy</div>
                         </div>
                         <div class="accuracy-item">
                             <div class="accuracy-ring black">
-                                <svg viewBox="0 0 100 100">
-                                    <circle class="bg" cx="50" cy="50" r="46"/>
-                                    <circle class="progress" cx="50" cy="50" r="46" 
-                                        stroke-dasharray="${circumference}" 
-                                        stroke-dashoffset="${circumference * (1 - blackAccuracy / 100)}"/>
-                                </svg>
-                                <div class="accuracy-value">${blackAccuracy}</div>
+                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="46"/><circle class="progress" cx="50" cy="50" r="46" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - bAcc/100)}"/></svg>
+                                <div class="accuracy-value">${bAcc}<span class="accuracy-percent">%</span></div>
                             </div>
                             <div class="accuracy-label">Bot Accuracy</div>
                         </div>
                     </div>
                 </div>
                 <div class="classification-section">
-                    <div class="classification-header">
-                        <span>White</span>
-                        <span>Black</span>
-                    </div>
-                    ${classifications.map(c => {
-                        const wCount = countClass(whiteAnalysis, c.key);
-                        const bCount = countClass(blackAnalysis, c.key);
-                        return `
-                            <div class="classification-row">
-                                <div class="classification-label">
-                                    <div class="classification-icon ${c.key}">${c.icon}</div>
-                                    <span class="classification-name">${c.name}</span>
-                                </div>
-                                <div class="classification-counts">
-                                    <span class="count-badge ${wCount > 0 ? 'has-value' : ''}">${wCount}</span>
-                                    <span class="count-badge ${bCount > 0 ? 'has-value' : ''}">${bCount}</span>
-                                </div>
+                    <div class="classification-header"><span>White</span><span>Black</span></div>
+                    ${classes.map(c => `
+                        <div class="classification-row">
+                            <div class="classification-label">
+                                <img src="${CLASSIFICATION_ICONS[c.key]}" class="classification-icon">
+                                <span class="classification-name">${c.name}</span>
                             </div>
-                        `;
-                    }).join('')}
+                            <div class="classification-counts">
+                                <span class="count-badge ${cnt(wA,c.key) > 0 ? 'has-value' : ''}">${cnt(wA,c.key)}</span>
+                                <span class="count-badge ${cnt(bA,c.key) > 0 ? 'has-value' : ''}">${cnt(bA,c.key)}</span>
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
                 <div id="reviewMoveInfo"></div>
             `;
         }
 
-        function goToMove(index) {
-            if (index < -1 || index >= engine.moveHistory.length) return;
+        function goToMove(idx) {
+            if (idx < -1 || idx >= engine.moveHistory.length) return;
+            reviewMoveIndex = idx;
+            clearArrows();
             
-            reviewMoveIndex = index;
-            
-            if (index === -1) {
-                const initialEngine = new ChessEngine();
-                renderBoard(initialEngine.board);
+            if (idx === -1) {
+                renderBoard(new ChessEngine().board, false, -1);
                 updateEvalBar(0);
-                clearArrows();
             } else {
-                const state = engine.moveHistory[index].boardState;
-                renderBoard(state.board);
-                
-                if (moveAnalysis[index]) {
-                    updateEvalBar(moveAnalysis[index].evalAfter);
-                    showMoveInfo(index);
-                    if (moveAnalysis[index].bestMove && !moveAnalysis[index].isBestMove) {
-                        drawArrow(moveAnalysis[index].bestMove);
-                    } else {
-                        clearArrows();
-                    }
+                const state = engine.moveHistory[idx].boardState;
+                renderBoard(state.board, true, idx);
+                if (moveAnalysis[idx]) {
+                    updateEvalBar(moveAnalysis[idx].evalAfter);
+                    showMoveInfo(idx);
                 }
             }
-
             updateMoveList();
         }
 
-        function showMoveInfo(index) {
+        function showMoveInfo(idx) {
             const info = document.getElementById('reviewMoveInfo');
-            if (!info || !moveAnalysis[index]) return;
-
-            const analysis = moveAnalysis[index];
-            const move = engine.moveHistory[index];
-            
-            const classData = {
-                brilliant: { icon: '!!', name: 'Brilliant' },
-                great: { icon: '!', name: 'Great Move' },
-                best: { icon: '★', name: 'Best Move' },
-                excellent: { icon: '○', name: 'Excellent' },
-                good: { icon: '○', name: 'Good' },
-                book: { icon: '📖', name: 'Book' },
-                inaccuracy: { icon: '?!', name: 'Inaccuracy' },
-                mistake: { icon: '?', name: 'Mistake' },
-                miss: { icon: '✗', name: 'Miss' },
-                blunder: { icon: '??', name: 'Blunder' }
-            };
-
-            const cls = classData[analysis.classification];
+            if (!info || !moveAnalysis[idx]) return;
+            const a = moveAnalysis[idx];
+            const m = engine.moveHistory[idx];
+            const names = { brilliant:'Brilliant', great:'Great Move', best:'Best Move', excellent:'Excellent', good:'Good', book:'Book', inaccuracy:'Inaccuracy', mistake:'Mistake', miss:'Miss', blunder:'Blunder' };
             const files = 'abcdefgh';
 
             info.innerHTML = `
                 <div class="review-move-info">
                     <div class="review-move-header">
                         <div class="review-move-class">
-                            <div class="classification-icon ${analysis.classification}">${cls.icon}</div>
-                            <span class="review-move-notation">${move.notation}</span>
-                            <span style="color: var(--text-muted); font-size: 13px;">${cls.name}</span>
+                            <img src="${CLASSIFICATION_ICONS[a.classification]}" class="review-move-icon">
+                            <span class="review-move-notation">${m.notation}</span>
+                            <span class="review-move-type">${names[a.classification]}</span>
                         </div>
-                        <span class="eval-change ${analysis.evalChange >= 0 ? 'positive' : 'negative'}">
-                            ${analysis.evalChange >= 0 ? '+' : ''}${analysis.evalChange.toFixed(2)}
-                        </span>
+                        <span class="eval-change ${a.evalChange >= 0 ? 'positive' : 'negative'}">${a.evalChange >= 0 ? '+' : ''}${a.evalChange.toFixed(2)}</span>
                     </div>
-                    ${!analysis.isBestMove && analysis.bestMove ? `
-                        <div class="review-best-move">
-                            Best move was <strong>${files[analysis.bestMove.from.col]}${8 - analysis.bestMove.from.row}${files[analysis.bestMove.to.col]}${8 - analysis.bestMove.to.row}</strong>
-                        </div>
-                    ` : ''}
+                    ${!a.isBestMove && a.bestMove ? `<div class="review-best-move">Best move was <strong>${files[a.bestMove.from.col]}${8-a.bestMove.from.row}${files[a.bestMove.to.col]}${8-a.bestMove.to.row}</strong></div>` : ''}
                 </div>
             `;
         }
 
-        function drawArrow(move) {
-            const svg = document.getElementById('arrowOverlay');
-            const squareSize = 80;
-            
-            const fromX = move.from.col * squareSize + squareSize / 2;
-            const fromY = move.from.row * squareSize + squareSize / 2;
-            const toX = move.to.col * squareSize + squareSize / 2;
-            const toY = move.to.row * squareSize + squareSize / 2;
-
-            const angle = Math.atan2(toY - fromY, toX - fromX);
-            const headLen = 20;
-            
-            const endX = toX - Math.cos(angle) * 15;
-            const endY = toY - Math.sin(angle) * 15;
-            
-            svg.innerHTML = `
-                <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                        <polygon points="0 0, 10 3.5, 0 7" fill="rgba(129, 182, 76, 0.9)"/>
-                    </marker>
-                </defs>
-                <line x1="${fromX}" y1="${fromY}" x2="${endX}" y2="${endY}" 
-                    stroke="rgba(129, 182, 76, 0.9)" stroke-width="12" stroke-linecap="round"
-                    marker-end="url(#arrowhead)"/>
-            `;
-        }
-
-        function clearArrows() {
-            document.getElementById('arrowOverlay').innerHTML = '';
-        }
+        function clearArrows() { document.getElementById('arrowOverlay').innerHTML = ''; }
 
         function goToStart() { goToMove(-1); }
         function goBack() { goToMove(Math.max(-1, reviewMoveIndex - 1)); }
         function goForward() { goToMove(Math.min(engine.moveHistory.length - 1, reviewMoveIndex + 1)); }
         function goToEnd() { goToMove(engine.moveHistory.length - 1); }
 
-        // Initialize
         init();
     </script>
 </body>
