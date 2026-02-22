@@ -49,10 +49,9 @@
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes shake { 0%, 100% { transform: translate(0, 0) rotate(0); } 10% { transform: translate(-10px, -5px) rotate(-1deg); } 20% { transform: translate(10px, 5px) rotate(1deg); } 30% { transform: translate(-10px, 5px) rotate(-1deg); } 40% { transform: translate(10px, -5px) rotate(1deg); } 50% { transform: translate(-5px, 5px) rotate(-0.5deg); } 60% { transform: translate(5px, -5px) rotate(0.5deg); } 70% { transform: translate(-5px, -5px) rotate(-0.5deg); } 80% { transform: translate(5px, 5px) rotate(0.5deg); } 90% { transform: translate(-2px, 2px) rotate(0); } }
         @keyframes megaShake { 0%, 100% { transform: translate(0, 0) rotate(0); } 5% { transform: translate(-15px, -10px) rotate(-2deg); } 10% { transform: translate(15px, 10px) rotate(2deg); } 15% { transform: translate(-15px, 10px) rotate(-2deg); } 20% { transform: translate(15px, -10px) rotate(2deg); } 25% { transform: translate(-12px, 8px) rotate(-1.5deg); } 30% { transform: translate(12px, -8px) rotate(1.5deg); } 35% { transform: translate(-10px, -8px) rotate(-1deg); } 40% { transform: translate(10px, 8px) rotate(1deg); } 45% { transform: translate(-8px, 6px) rotate(-0.8deg); } 50% { transform: translate(8px, -6px) rotate(0.8deg); } 55% { transform: translate(-6px, -4px) rotate(-0.5deg); } 60% { transform: translate(6px, 4px) rotate(0.5deg); } 70% { transform: translate(-4px, 2px) rotate(-0.3deg); } 80% { transform: translate(2px, -2px) rotate(0.2deg); } 90% { transform: translate(-1px, 1px) rotate(0); } }
+        @keyframes shake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-8px, -4px); } 20% { transform: translate(8px, 4px); } 30% { transform: translate(-8px, 4px); } 40% { transform: translate(8px, -4px); } 50% { transform: translate(-4px, 4px); } 60% { transform: translate(4px, -4px); } 70% { transform: translate(-4px, -2px); } 80% { transform: translate(4px, 2px); } 90% { transform: translate(-2px, 1px); } }
         @keyframes popIn { 0% { transform: scale(0); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
         @keyframes popInBig { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.3) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
         @keyframes captureFlash { 0% { background: rgba(255, 100, 100, 0.7); transform: scale(1.05); } 100% { background: transparent; transform: scale(1); } }
@@ -68,27 +67,33 @@
         @keyframes defeatGlow { 0%, 100% { box-shadow: 0 0 40px rgba(202, 52, 49, 0.6); } 50% { box-shadow: 0 0 80px rgba(202, 52, 49, 0.9); } }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(180deg); } }
-        @keyframes lightning { 0% { opacity: 0; } 5% { opacity: 1; } 10% { opacity: 0; } 15% { opacity: 0.8; } 20% { opacity: 0; } 100% { opacity: 0; } }
         @keyframes confetti { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0.8; } }
         @keyframes screenFlash { 0% { opacity: 0; } 10% { opacity: 0.8; } 100% { opacity: 0; } }
         @keyframes crownBounce { 0% { transform: translateY(-50px) scale(0); opacity: 0; } 50% { transform: translateY(10px) scale(1.2); opacity: 1; } 70% { transform: translateY(-5px) scale(0.95); } 100% { transform: translateY(0) scale(1); opacity: 1; } }
         @keyframes textReveal { 0% { transform: translateY(50px) scale(0.5); opacity: 0; filter: blur(10px); } 100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); } }
         @keyframes piecePlace { 0% { transform: scale(1.3) translateY(-10px); } 50% { transform: scale(0.95) translateY(2px); } 100% { transform: scale(1) translateY(0); } }
-        @keyframes pieceLift { 0% { transform: scale(1); filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4)); } 100% { transform: scale(1.15); filter: drop-shadow(8px 16px 16px rgba(0,0,0,0.5)); } }
         @keyframes ripple { 0% { transform: scale(0.5); opacity: 0.5; } 100% { transform: scale(2.5); opacity: 0; } }
-        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 5px var(--glow-color)); } 50% { filter: drop-shadow(0 0 20px var(--glow-color)); } }
-        @keyframes importantMove { 0% { transform: scale(1); } 20% { transform: scale(1.15); } 40% { transform: scale(0.95); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
         @keyframes evalBarPulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.3); } }
+        @keyframes brilliantGlow { 0%, 100% { filter: drop-shadow(0 0 10px #1baca6) drop-shadow(0 0 20px #1baca6) drop-shadow(0 0 30px #1baca6); } 50% { filter: drop-shadow(0 0 20px #1baca6) drop-shadow(0 0 40px #1baca6) drop-shadow(0 0 60px #1baca6); } }
+        @keyframes greatGlow { 0%, 100% { filter: drop-shadow(0 0 8px #5c8bb0) drop-shadow(0 0 16px #5c8bb0); } 50% { filter: drop-shadow(0 0 16px #5c8bb0) drop-shadow(0 0 32px #5c8bb0); } }
+        @keyframes brilliantText { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 20% { transform: scale(1.5) rotate(5deg); opacity: 1; } 40% { transform: scale(1.2) rotate(-3deg); } 60% { transform: scale(1.3) rotate(2deg); } 80% { transform: scale(1.1) rotate(-1deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        @keyframes greatText { 0% { transform: scale(0) translateY(20px); opacity: 0; } 50% { transform: scale(1.3) translateY(-5px); opacity: 1; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
         @keyframes starBurst { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
+        @keyframes brilliantSquare { 0%, 100% { background: rgba(27, 172, 166, 0.3); box-shadow: inset 0 0 30px rgba(27, 172, 166, 0.5); } 50% { background: rgba(27, 172, 166, 0.5); box-shadow: inset 0 0 50px rgba(27, 172, 166, 0.8); } }
+        @keyframes greatSquare { 0%, 100% { background: rgba(92, 139, 176, 0.3); box-shadow: inset 0 0 20px rgba(92, 139, 176, 0.4); } 50% { background: rgba(92, 139, 176, 0.4); box-shadow: inset 0 0 35px rgba(92, 139, 176, 0.6); } }
+        @keyframes lightningFlash { 0%, 100% { opacity: 0; } 5%, 15%, 25% { opacity: 1; } 10%, 20% { opacity: 0; } }
+        @keyframes epicPieceMove { 0% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)); } 100% { filter: drop-shadow(0 0 0 transparent); } }
 
         .shake { animation: shake 0.5s ease-in-out; }
         .mega-shake { animation: megaShake 1.2s ease-in-out; }
         .king-fallen { animation: kingFall 1.2s ease-in forwards; }
-        .victory-glow { animation: victoryGlow 1.5s ease infinite; }
-        .defeat-glow { animation: defeatGlow 1.5s ease infinite; }
+        .victory-glow { animation: victoryGlow 2s ease infinite; }
+        .defeat-glow { animation: defeatGlow 2s ease infinite; }
         .piece-placed { animation: piecePlace 0.25s ease-out; }
-        .important-move { animation: importantMove 0.4s ease-out; }
+        .brilliant-glow { animation: brilliantGlow 1.5s ease infinite; }
+        .great-glow { animation: greatGlow 1.5s ease infinite; }
+        .brilliant-square { animation: brilliantSquare 1s ease infinite !important; }
+        .great-square { animation: greatSquare 1s ease infinite !important; }
 
         .screen-flash {
             position: fixed;
@@ -96,10 +101,48 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
             pointer-events: none;
             z-index: 99999;
             animation: screenFlash 0.5s ease-out forwards;
+        }
+
+        .screen-flash.white { background: white; }
+        .screen-flash.brilliant { background: linear-gradient(135deg, #1baca6, #26d9ca, #1baca6); }
+        .screen-flash.great { background: linear-gradient(135deg, #5c8bb0, #7ab3d9, #5c8bb0); }
+
+        .brilliant-popup, .great-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 72px;
+            font-weight: 900;
+            z-index: 100000;
+            pointer-events: none;
+            text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+        }
+
+        .brilliant-popup {
+            color: #1baca6;
+            animation: brilliantText 1.5s ease-out forwards;
+        }
+
+        .great-popup {
+            color: #5c8bb0;
+            font-size: 56px;
+            animation: greatText 1s ease-out forwards;
+        }
+
+        .lightning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 40%, rgba(27, 172, 166, 0.3) 45%, rgba(27, 172, 166, 0.8) 50%, rgba(27, 172, 166, 0.3) 55%, transparent 60%);
+            pointer-events: none;
+            z-index: 99998;
+            animation: lightningFlash 0.5s ease-out forwards;
         }
 
         .header {
@@ -175,24 +218,9 @@
             margin-left: auto;
         }
 
-        .elo-container {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .elo-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .elo-display {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .elo-container { display: flex; flex-direction: column; gap: 4px; }
+        .elo-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .elo-display { display: flex; align-items: center; gap: 12px; }
 
         .elo-value {
             font-size: 20px;
@@ -227,12 +255,7 @@
         }
 
         .elo-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
-
-        .elo-description {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .elo-description { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
         .main-container {
             display: flex;
@@ -245,17 +268,8 @@
             animation: fadeIn 0.5s ease;
         }
 
-        .board-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .board-wrapper {
-            display: flex;
-            gap: 10px;
-            position: relative;
-        }
+        .board-section { display: flex; flex-direction: column; gap: 8px; }
+        .board-wrapper { display: flex; gap: 10px; position: relative; }
 
         .board-container {
             position: relative;
@@ -362,6 +376,25 @@
             height: 100px;
             filter: drop-shadow(8px 16px 16px rgba(0,0,0,0.6));
             transform: translate(-50%, -50%);
+        }
+
+        /* Animated piece for review mode */
+        .animated-piece {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            z-index: 1000;
+            pointer-events: none;
+            filter: drop-shadow(4px 8px 8px rgba(0,0,0,0.5));
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .animated-piece.brilliant {
+            animation: epicPieceMove 0.6s ease, brilliantGlow 0.6s ease;
+        }
+
+        .animated-piece.great {
+            animation: epicPieceMove 0.6s ease, greatGlow 0.6s ease;
         }
 
         .coordinate {
@@ -515,12 +548,7 @@
             box-shadow: 0 4px 20px rgba(129, 182, 76, 0.5);
         }
 
-        .tab-container {
-            display: flex;
-            background: var(--bg-darkest);
-            padding: 6px;
-            gap: 4px;
-        }
+        .tab-container { display: flex; background: var(--bg-darkest); padding: 6px; gap: 4px; }
 
         .tab {
             flex: 1;
@@ -540,21 +568,9 @@
         .tab:hover { color: var(--text-light); background: var(--bg-dark); }
         .tab.active { color: var(--text-white); background: var(--bg-medium); }
 
-        .moves-section {
-            flex: 1;
-            min-height: 260px;
-            max-height: 320px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+        .moves-section { flex: 1; min-height: 260px; max-height: 320px; overflow: hidden; display: flex; flex-direction: column; }
 
-        .moves-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
-        }
-
+        .moves-container { flex: 1; overflow-y: auto; padding: 12px; }
         .moves-container::-webkit-scrollbar { width: 6px; }
         .moves-container::-webkit-scrollbar-track { background: var(--bg-darkest); border-radius: 3px; }
         .moves-container::-webkit-scrollbar-thumb { background: var(--bg-medium); border-radius: 3px; }
@@ -577,22 +593,9 @@
 
         .move:hover { background: var(--bg-dark); transform: translateX(2px); }
         .move.current { background: var(--bg-medium); box-shadow: inset 3px 0 0 var(--accent-green); }
+        .move-icon { width: 20px; height: 20px; flex-shrink: 0; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
 
-        .move-icon {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-        }
-
-        .game-status {
-            text-align: center;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 700;
-            background: linear-gradient(180deg, transparent 0%, rgba(129, 182, 76, 0.1) 100%);
-        }
-
+        .game-status { text-align: center; padding: 16px; font-size: 16px; font-weight: 700; background: linear-gradient(180deg, transparent 0%, rgba(129, 182, 76, 0.1) 100%); }
         .game-status.victory { color: var(--accent-green); }
         .game-status.defeat { color: var(--blunder); }
 
@@ -610,24 +613,11 @@
         }
 
         .thinking-dots { display: flex; gap: 5px; }
-        .thinking-dots span {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse 1s infinite;
-        }
+        .thinking-dots span { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse 1s infinite; }
         .thinking-dots span:nth-child(2) { animation-delay: 0.15s; }
         .thinking-dots span:nth-child(3) { animation-delay: 0.3s; }
 
-        .game-controls {
-            display: flex;
-            gap: 8px;
-            padding: 16px 18px;
-            justify-content: center;
-            background: var(--bg-darkest);
-            border-top: 1px solid rgba(255,255,255,0.06);
-        }
+        .game-controls { display: flex; gap: 8px; padding: 16px 18px; justify-content: center; background: var(--bg-darkest); border-top: 1px solid rgba(255,255,255,0.06); }
 
         .control-btn {
             background: var(--bg-dark);
@@ -682,15 +672,10 @@
 
         .resign-btn:hover { background: var(--blunder); border-color: var(--blunder); color: var(--text-white); }
 
-        /* Review Panel */
         .review-panel { display: none; animation: fadeIn 0.3s ease; overflow-y: auto; max-height: 400px; }
         .review-panel.active { display: block; }
 
-        .accuracy-section {
-            padding: 24px;
-            background: linear-gradient(180deg, var(--bg-darkest) 0%, var(--bg-darker) 100%);
-        }
-
+        .accuracy-section { padding: 24px; background: linear-gradient(180deg, var(--bg-darkest) 0%, var(--bg-darker) 100%); }
         .accuracy-row { display: flex; justify-content: center; gap: 40px; }
         .accuracy-item { text-align: center; }
 
@@ -716,49 +701,11 @@
         .accuracy-percent { font-size: 12px; font-weight: 600; opacity: 0.7; }
         .accuracy-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        .eval-graph {
-            height: 80px;
-            margin: 0 18px 18px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .eval-graph-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: var(--bg-medium);
-        }
-
-        .eval-graph-fill {
-            position: absolute;
-            bottom: 50%;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, rgba(129, 182, 76, 0.3) 0%, rgba(129, 182, 76, 0.1) 100%);
-        }
-
-        .eval-graph canvas {
-            width: 100%;
-            height: 100%;
-        }
-
         .classification-section { padding: 0 18px 18px; }
         .classification-header { display: flex; justify-content: flex-end; padding: 10px 0; gap: 8px; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .classification-header span { width: 40px; text-align: center; }
 
-        .classification-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            transition: all 0.2s ease;
-        }
+        .classification-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); transition: all 0.2s ease; }
         .classification-row:hover { background: rgba(255,255,255,0.02); padding-left: 8px; }
 
         .classification-label { display: flex; align-items: center; gap: 10px; }
@@ -766,66 +713,21 @@
         .classification-name { font-size: 12px; font-weight: 600; }
         .classification-counts { display: flex; gap: 8px; }
 
-        .count-badge {
-            width: 40px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 4px 0;
-            border-radius: 4px;
-            background: var(--bg-dark);
-            transition: all 0.2s ease;
-        }
+        .count-badge { width: 40px; text-align: center; font-size: 13px; font-weight: 700; padding: 4px 0; border-radius: 4px; background: var(--bg-dark); transition: all 0.2s ease; }
         .count-badge.has-value { background: var(--bg-medium); }
 
-        .key-moments {
-            padding: 0 18px 18px;
-        }
+        .key-moments { padding: 0 18px 18px; }
+        .key-moments-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
 
-        .key-moments-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .key-moment {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
+        .key-moment { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-dark); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s ease; }
         .key-moment:hover { background: var(--bg-medium); transform: translateX(4px); }
         .key-moment-icon { width: 28px; height: 28px; }
         .key-moment-text { flex: 1; font-size: 12px; }
         .key-moment-move { font-weight: 700; }
         .key-moment-eval { font-size: 11px; color: var(--text-muted); }
 
-        .review-move-info {
-            background: var(--bg-dark);
-            margin: 0 18px 18px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s ease;
-        }
-
-        .review-move-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: var(--bg-darkest);
-        }
-
+        .review-move-info { background: var(--bg-dark); margin: 0 18px 18px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+        .review-move-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--bg-darkest); }
         .review-move-class { display: flex; align-items: center; gap: 10px; }
         .review-move-icon { width: 26px; height: 26px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); }
         .review-move-notation { font-size: 16px; font-weight: 700; }
@@ -838,109 +740,27 @@
         .review-best-move { padding: 12px 16px; font-size: 12px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.05); }
         .review-best-move strong { color: var(--accent-green); font-weight: 700; }
 
-        /* Modals */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(10px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
 
-        .modal {
-            background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-darkest) 100%);
-            padding: 50px 60px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8);
-            max-width: 500px;
-            position: relative;
-            overflow: visible;
-        }
-
+        .modal { background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-darkest) 100%); padding: 50px 60px; border-radius: 24px; text-align: center; box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8); max-width: 500px; position: relative; overflow: visible; }
         .modal.victory { animation: victoryGlow 2s ease infinite; }
         .modal.defeat { animation: defeatGlow 2s ease infinite; }
 
-        .modal-crown {
-            font-size: 80px;
-            animation: crownBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-        }
+        .modal-crown { font-size: 80px; animation: crownBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-bottom: 20px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5)); }
+        .modal-title { font-size: 42px; font-weight: 900; margin-bottom: 12px; animation: textReveal 0.6s ease 0.2s both; letter-spacing: -1px; }
+        .modal-subtitle { color: var(--text-muted); font-size: 18px; margin-bottom: 36px; animation: textReveal 0.6s ease 0.4s both; }
 
-        .modal-title {
-            font-size: 42px;
-            font-weight: 900;
-            margin-bottom: 12px;
-            animation: textReveal 0.6s ease 0.2s both;
-            letter-spacing: -1px;
-        }
+        .modal-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; animation: textReveal 0.6s ease 0.5s both; }
+        .modal-stat { text-align: center; }
+        .modal-stat-value { font-size: 28px; font-weight: 800; color: var(--accent-green); }
+        .modal-stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        .modal-subtitle {
-            color: var(--text-muted);
-            font-size: 18px;
-            margin-bottom: 36px;
-            animation: textReveal 0.6s ease 0.4s both;
-        }
+        .modal-buttons { display: flex; gap: 12px; justify-content: center; animation: textReveal 0.6s ease 0.6s both; }
 
-        .modal-stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            animation: textReveal 0.6s ease 0.5s both;
-        }
-
-        .modal-stat {
-            text-align: center;
-        }
-
-        .modal-stat-value {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--accent-green);
-        }
-
-        .modal-stat-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            animation: textReveal 0.6s ease 0.6s both;
-        }
-
-        .modal-btn {
-            padding: 16px 36px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-        .modal-btn.primary {
-            background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%);
-            color: var(--text-white);
-            box-shadow: 0 4px 20px rgba(129, 182, 76, 0.5);
-        }
+        .modal-btn { padding: 16px 36px; border-radius: 12px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s ease; border: none; }
+        .modal-btn.primary { background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-green-dark) 100%); color: var(--text-white); box-shadow: 0 4px 20px rgba(129, 182, 76, 0.5); }
         .modal-btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 30px rgba(129, 182, 76, 0.6); }
-
         .modal-btn.secondary { background: var(--bg-dark); color: var(--text-light); border: 2px solid var(--bg-medium); }
         .modal-btn.secondary:hover { background: var(--bg-medium); color: var(--text-white); transform: translateY(-2px); }
 
@@ -948,95 +768,27 @@
         .promotion-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--text-light); }
         .promotion-pieces { display: flex; gap: 12px; justify-content: center; }
 
-        .promotion-piece {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
-            border: 3px solid transparent;
-        }
-
-        .promotion-piece:hover {
-            border-color: var(--accent-green);
-            transform: scale(1.1) translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-        }
-
+        .promotion-piece { width: 90px; height: 90px; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%); border-radius: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s ease; border: 3px solid transparent; }
+        .promotion-piece:hover { border-color: var(--accent-green); transform: scale(1.1) translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         .promotion-piece img { width: 70px; height: 70px; }
 
-        .particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            animation: particle 1.2s ease-out forwards;
-        }
-
-        .particle-star {
-            position: absolute;
-            font-size: 20px;
-            animation: particleSlow 1.5s ease-out forwards;
-        }
-
-        .explosion-ring {
-            position: absolute;
-            border: 4px solid;
-            border-radius: 50%;
-            animation: explodeBig 0.8s ease-out forwards;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 20px;
-            animation: confetti 3s ease-out forwards;
-        }
+        .particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; overflow: hidden; }
+        .particle { position: absolute; border-radius: 50%; animation: particle 1.2s ease-out forwards; }
+        .particle-star { position: absolute; animation: starBurst 1s ease-out forwards; font-size: 24px; }
+        .explosion-ring { position: absolute; border: 4px solid; border-radius: 50%; animation: explodeBig 0.8s ease-out forwards; }
+        .confetti { position: absolute; width: 10px; height: 20px; animation: confetti 3s ease-out forwards; }
 
         .empty-state { padding: 50px; text-align: center; color: var(--text-muted); }
         .empty-state-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; animation: float 3s ease infinite; }
         .empty-state-text { font-size: 14px; line-height: 1.7; }
 
         .analyzing-container { padding: 60px 40px; text-align: center; }
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid var(--bg-dark);
-            border-top: 5px solid var(--accent-green);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 24px;
-        }
+        .spinner { width: 60px; height: 60px; border: 5px solid var(--bg-dark); border-top: 5px solid var(--accent-green); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .analyzing-text { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .analyzing-subtext { font-size: 13px; color: var(--text-muted); }
-        .analyzing-progress {
-            width: 200px;
-            height: 4px;
-            background: var(--bg-dark);
-            border-radius: 2px;
-            margin: 20px auto 0;
-            overflow: hidden;
-        }
-        .analyzing-progress-bar {
-            height: 100%;
-            background: var(--accent-green);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
+        .analyzing-progress { width: 200px; height: 4px; background: var(--bg-dark); border-radius: 2px; margin: 20px auto 0; overflow: hidden; }
+        .analyzing-progress-bar { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.3s ease; }
 
         @media (max-width: 1100px) {
             .main-container { flex-direction: column; align-items: center; padding: 20px; }
@@ -1235,15 +987,14 @@
         let audioCtx = null;
         const getAudioContext = () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; };
 
-        function playSound(type, options = {}) {
+        function playSound(type) {
             try {
                 const ctx = getAudioContext();
                 const now = ctx.currentTime;
                 
                 switch(type) {
                     case 'move': {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
+                        const osc = ctx.createOscillator(), gain = ctx.createGain();
                         osc.connect(gain); gain.connect(ctx.destination);
                         osc.frequency.value = 330 + Math.random() * 60;
                         osc.type = 'sine';
@@ -1253,8 +1004,7 @@
                         break;
                     }
                     case 'capture': {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
+                        const osc = ctx.createOscillator(), gain = ctx.createGain();
                         osc.connect(gain); gain.connect(ctx.destination);
                         osc.frequency.value = 180;
                         osc.type = 'sawtooth';
@@ -1263,10 +1013,37 @@
                         osc.start(now); osc.stop(now + 0.25);
                         break;
                     }
+                    case 'brilliant': {
+                        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
+                        notes.forEach((freq, i) => {
+                            const osc = ctx.createOscillator(), gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0, now + i * 0.08);
+                            gain.gain.linearRampToValueAtTime(0.2, now + i * 0.08 + 0.02);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.5);
+                            osc.start(now + i * 0.08); osc.stop(now + i * 0.08 + 0.6);
+                        });
+                        break;
+                    }
+                    case 'great': {
+                        const notes = [440, 554.37, 659.25, 880];
+                        notes.forEach((freq, i) => {
+                            const osc = ctx.createOscillator(), gain = ctx.createGain();
+                            osc.connect(gain); gain.connect(ctx.destination);
+                            osc.frequency.value = freq;
+                            osc.type = 'sine';
+                            gain.gain.setValueAtTime(0, now + i * 0.1);
+                            gain.gain.linearRampToValueAtTime(0.15, now + i * 0.1 + 0.02);
+                            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.4);
+                            osc.start(now + i * 0.1); osc.stop(now + i * 0.1 + 0.5);
+                        });
+                        break;
+                    }
                     case 'queenCapture': {
                         [523.25, 659.25, 783.99].forEach((freq, i) => {
-                            const osc = ctx.createOscillator();
-                            const gain = ctx.createGain();
+                            const osc = ctx.createOscillator(), gain = ctx.createGain();
                             osc.connect(gain); gain.connect(ctx.destination);
                             osc.frequency.value = freq;
                             osc.type = 'sine';
@@ -1277,8 +1054,7 @@
                         break;
                     }
                     case 'check': {
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
+                        const osc = ctx.createOscillator(), gain = ctx.createGain();
                         osc.connect(gain); gain.connect(ctx.destination);
                         osc.frequency.setValueAtTime(600, now);
                         osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
@@ -1291,8 +1067,7 @@
                     case 'victory': {
                         const melody = [[523.25, 0], [659.25, 0.15], [783.99, 0.3], [1046.50, 0.45], [1318.51, 0.7], [1046.50, 0.9]];
                         melody.forEach(([freq, delay]) => {
-                            const osc = ctx.createOscillator();
-                            const gain = ctx.createGain();
+                            const osc = ctx.createOscillator(), gain = ctx.createGain();
                             osc.connect(gain); gain.connect(ctx.destination);
                             osc.frequency.value = freq;
                             osc.type = 'sine';
@@ -1306,8 +1081,7 @@
                     case 'defeat': {
                         const melody = [[392, 0], [349.23, 0.25], [293.66, 0.5], [220, 0.75]];
                         melody.forEach(([freq, delay]) => {
-                            const osc = ctx.createOscillator();
-                            const gain = ctx.createGain();
+                            const osc = ctx.createOscillator(), gain = ctx.createGain();
                             osc.connect(gain); gain.connect(ctx.destination);
                             osc.frequency.value = freq;
                             osc.type = 'sine';
@@ -1335,31 +1109,33 @@
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance;
                 
-                particle.style.cssText = `
-                    left: ${x}px; top: ${y}px;
-                    width: ${size}px; height: ${size}px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    --tx: ${tx}px; --ty: ${ty}px; --rot: ${Math.random() * 720}deg;
-                    animation-duration: ${options.duration || 1.2}s;
-                `;
+                particle.style.cssText = `left: ${x}px; top: ${y}px; width: ${size}px; height: ${size}px; background: ${colors[Math.floor(Math.random() * colors.length)]}; --tx: ${tx}px; --ty: ${ty}px; --rot: ${Math.random() * 720}deg; animation-duration: ${options.duration || 1.2}s;`;
                 container.appendChild(particle);
                 setTimeout(() => particle.remove(), (options.duration || 1.2) * 1000);
             }
         }
 
-        function createExplosionRings(x, y, count = 3) {
+        function createStars(x, y, count) {
             const container = document.getElementById('particles');
-            const colors = ['var(--accent-green)', 'var(--gold)', '#fff'];
-            
+            const emojis = ['⭐', '✨', '💫', '🌟'];
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'particle-star';
+                star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                const angle = (Math.PI * 2 * i) / count;
+                const distance = 60 + Math.random() * 100;
+                star.style.cssText = `left: ${x}px; top: ${y}px; --tx: ${Math.cos(angle) * distance}px; --ty: ${Math.sin(angle) * distance}px;`;
+                container.appendChild(star);
+                setTimeout(() => star.remove(), 1000);
+            }
+        }
+
+        function createExplosionRings(x, y, count = 3, colors = ['var(--accent-green)', 'var(--gold)', '#fff']) {
+            const container = document.getElementById('particles');
             for (let i = 0; i < count; i++) {
                 const ring = document.createElement('div');
                 ring.className = 'explosion-ring';
-                ring.style.cssText = `
-                    left: ${x - 25}px; top: ${y - 25}px;
-                    width: 50px; height: 50px;
-                    border-color: ${colors[i % colors.length]};
-                    animation-delay: ${i * 0.12}s;
-                `;
+                ring.style.cssText = `left: ${x - 25}px; top: ${y - 25}px; width: 50px; height: 50px; border-color: ${colors[i % colors.length]}; animation-delay: ${i * 0.12}s;`;
                 container.appendChild(ring);
                 setTimeout(() => ring.remove(), 1000);
             }
@@ -1368,27 +1144,101 @@
         function createConfetti(count = 50) {
             const container = document.getElementById('particles');
             const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bb5', '#9b59b6', '#fff'];
-            
             for (let i = 0; i < count; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
-                confetti.style.cssText = `
-                    left: ${Math.random() * window.innerWidth}px;
-                    top: -20px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    animation-delay: ${Math.random() * 2}s;
-                    animation-duration: ${2 + Math.random() * 2}s;
-                `;
+                confetti.style.cssText = `left: ${Math.random() * window.innerWidth}px; top: -20px; background: ${colors[Math.floor(Math.random() * colors.length)]}; animation-delay: ${Math.random() * 2}s; animation-duration: ${2 + Math.random() * 2}s;`;
                 container.appendChild(confetti);
                 setTimeout(() => confetti.remove(), 5000);
             }
         }
 
-        function screenFlash() {
+        function screenFlash(type = 'white') {
             const flash = document.createElement('div');
-            flash.className = 'screen-flash';
+            flash.className = `screen-flash ${type}`;
             document.body.appendChild(flash);
             setTimeout(() => flash.remove(), 500);
+        }
+
+        function showBrilliantPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'brilliant-popup';
+            popup.textContent = '✨ BRILLIANT!! ✨';
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 2000);
+        }
+
+        function showGreatPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'great-popup';
+            popup.textContent = '🎯 GREAT!';
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1500);
+        }
+
+        function createLightning() {
+            const lightning = document.createElement('div');
+            lightning.className = 'lightning-overlay';
+            document.body.appendChild(lightning);
+            setTimeout(() => lightning.remove(), 500);
+        }
+
+        function brilliantMoveEffect(square) {
+            const rect = square.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            screenFlash('brilliant');
+            createLightning();
+            
+            setTimeout(() => {
+                createParticles(x, y, 60, { colors: ['#1baca6', '#26d9ca', '#fff', '#a8f0ed', '#00ffcc'], distance: 180, duration: 1.5 });
+                createExplosionRings(x, y, 5, ['#1baca6', '#26d9ca', '#fff']);
+                createStars(x, y, 12);
+            }, 100);
+            
+            setTimeout(() => createParticles(x, y, 30, { colors: ['#1baca6', '#fff'], distance: 100 }), 300);
+            setTimeout(() => createStars(x, y, 8), 500);
+            
+            showBrilliantPopup();
+            playSound('brilliant');
+            
+            square.classList.add('brilliant-square');
+            const piece = square.querySelector('.piece');
+            if (piece) piece.classList.add('brilliant-glow');
+            
+            setTimeout(() => {
+                square.classList.remove('brilliant-square');
+                if (piece) piece.classList.remove('brilliant-glow');
+            }, 3000);
+            
+            document.getElementById('boardContainer').classList.add('shake');
+            setTimeout(() => document.getElementById('boardContainer').classList.remove('shake'), 500);
+        }
+
+        function greatMoveEffect(square) {
+            const rect = square.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            screenFlash('great');
+            
+            setTimeout(() => {
+                createParticles(x, y, 35, { colors: ['#5c8bb0', '#7ab3d9', '#fff', '#a8d4f0'], distance: 120, duration: 1 });
+                createExplosionRings(x, y, 3, ['#5c8bb0', '#7ab3d9']);
+            }, 100);
+            
+            showGreatPopup();
+            playSound('great');
+            
+            square.classList.add('great-square');
+            const piece = square.querySelector('.piece');
+            if (piece) piece.classList.add('great-glow');
+            
+            setTimeout(() => {
+                square.classList.remove('great-square');
+                if (piece) piece.classList.remove('great-glow');
+            }, 2000);
         }
 
         function epicCheckmateAnimation(kingSquare, playerWon) {
@@ -1397,46 +1247,31 @@
             const x = rect.left + kingSquare.col * 80 + 40;
             const y = rect.top + kingSquare.row * 80 + 40;
 
-            // Screen flash
-            screenFlash();
-
-            // King falls
+            screenFlash('white');
             const kingPiece = document.querySelector(`.square[data-row="${kingSquare.row}"][data-col="${kingSquare.col}"] .piece`);
             if (kingPiece) kingPiece.classList.add('king-fallen');
-
-            // Mega shake
             document.getElementById('boardContainer').classList.add('mega-shake');
             setTimeout(() => document.getElementById('boardContainer').classList.remove('mega-shake'), 1200);
 
-            // Multiple explosion waves
             setTimeout(() => {
-                createParticles(x, y, 50, { colors: playerWon ? ['#81b64c', '#a8e063', '#fff', '#ffd700'] : ['#ca3431', '#ff6b6b', '#333', '#fff'], distance: 150 });
-                createExplosionRings(x, y, 4);
+                createParticles(x, y, 60, { colors: playerWon ? ['#81b64c', '#a8e063', '#fff', '#ffd700'] : ['#ca3431', '#ff6b6b', '#333', '#fff'], distance: 180 });
+                createExplosionRings(x, y, 5);
             }, 100);
-
             setTimeout(() => createParticles(x - 40, y - 40, 25, { distance: 100 }), 250);
             setTimeout(() => createParticles(x + 40, y + 40, 25, { distance: 100 }), 350);
             setTimeout(() => createParticles(x, y, 30, { distance: 200, size: 8 }), 500);
-
-            // Corner explosions
             setTimeout(() => {
                 [[0, 0], [640, 0], [0, 640], [640, 640]].forEach(([ox, oy], i) => {
                     setTimeout(() => createParticles(rect.left + ox, rect.top + oy, 15, { distance: 80 }), i * 100);
                 });
             }, 400);
-
-            // Confetti for victory
-            if (playerWon) {
-                setTimeout(() => createConfetti(80), 600);
-            }
-
-            // Sound
+            if (playerWon) setTimeout(() => createConfetti(80), 600);
             playSound(playerWon ? 'victory' : 'defeat');
         }
 
         function queenCaptureAnimation(x, y) {
             createParticles(x, y, 30, { colors: ['#ffd700', '#ffec8b', '#fff', '#ffa500'], distance: 100, duration: 1 });
-            createExplosionRings(x, y, 2);
+            createExplosionRings(x, y, 2, ['#ffd700', '#fff']);
             playSound('queenCapture');
         }
 
@@ -1470,7 +1305,6 @@
                 this.fullMoveNumber = 1;
                 this.moveHistory = [];
                 this.capturedPieces = { white: [], black: [] };
-                this.evalHistory = [0];
             }
 
             clone() {
@@ -1483,7 +1317,6 @@
                 c.fullMoveNumber = this.fullMoveNumber;
                 c.moveHistory = [...this.moveHistory];
                 c.capturedPieces = { white: [...this.capturedPieces.white], black: [...this.capturedPieces.black] };
-                c.evalHistory = [...this.evalHistory];
                 return c;
             }
 
@@ -1497,8 +1330,7 @@
             }
 
             isSquareAttacked(row, col, byColor) {
-                const pDir = byColor === 'white' ? 1 : -1;
-                const pawn = byColor === 'white' ? 'P' : 'p';
+                const pDir = byColor === 'white' ? 1 : -1, pawn = byColor === 'white' ? 'P' : 'p';
                 if (row + pDir >= 0 && row + pDir < 8) {
                     if (col > 0 && this.board[row + pDir][col - 1] === pawn) return true;
                     if (col < 7 && this.board[row + pDir][col + 1] === pawn) return true;
@@ -1548,10 +1380,7 @@
                         const pt = piece.toUpperCase();
                         
                         if (pt === 'P') {
-                            const dir = color === 'white' ? -1 : 1;
-                            const start = color === 'white' ? 6 : 1;
-                            const promo = color === 'white' ? 0 : 7;
-                            
+                            const dir = color === 'white' ? -1 : 1, start = color === 'white' ? 6 : 1, promo = color === 'white' ? 0 : 7;
                             if (r + dir >= 0 && r + dir < 8 && !this.board[r + dir][c]) {
                                 if (r + dir === promo) ['Q','R','B','N'].forEach(p => moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c}, promotion: p }));
                                 else moves.push({ from: {row:r,col:c}, to: {row:r+dir,col:c} });
@@ -1605,8 +1434,7 @@
                             }
                             const row = color === 'white' ? 7 : 0;
                             if (r === row && c === 4 && !this.isInCheck(color)) {
-                                const ks = color === 'white' ? 'K' : 'k', qs = color === 'white' ? 'Q' : 'q';
-                                const opp = color === 'white' ? 'black' : 'white';
+                                const ks = color === 'white' ? 'K' : 'k', qs = color === 'white' ? 'Q' : 'q', opp = color === 'white' ? 'black' : 'white';
                                 if (this.castling[ks] && !this.board[row][5] && !this.board[row][6] && !this.isSquareAttacked(row, 5, opp) && !this.isSquareAttacked(row, 6, opp))
                                     moves.push({ from: {row:r,col:c}, to: {row:row,col:6}, isCastling: 'kingside' });
                                 if (this.castling[qs] && !this.board[row][3] && !this.board[row][2] && !this.board[row][1] && !this.isSquareAttacked(row, 3, opp) && !this.isSquareAttacked(row, 2, opp))
@@ -1658,7 +1486,6 @@
                 if (!skip) {
                     const notation = this.getMoveNotation(move, piece, captured, isCastling);
                     this.moveHistory.push({ ...move, notation, piece, captured, boardState: this.getBoardState() });
-                    this.evalHistory.push(this.evaluate() / 100);
                 }
 
                 this.turn = this.turn === 'white' ? 'black' : 'white';
@@ -1731,10 +1558,7 @@
             getBestMove(engine) {
                 const moves = engine.generateLegalMoves();
                 if (!moves.length) return null;
-                
-                if (this.elo <= 400 && this.elo > 0 && Math.random() < 0.4) {
-                    return { move: moves[Math.floor(Math.random() * moves.length)], score: 0 };
-                }
+                if (this.elo <= 400 && this.elo > 0 && Math.random() < 0.4) return { move: moves[Math.floor(Math.random() * moves.length)], score: 0 };
 
                 const scoredMoves = moves.map(m => {
                     const c = engine.clone(); c.makeMove(m, true);
@@ -1747,7 +1571,6 @@
                     if (this.tryToLose) return engine.turn === 'white' ? a.score - b.score : b.score - a.score;
                     return engine.turn === 'white' ? b.score - a.score : a.score - b.score;
                 });
-                
                 return scoredMoves[0];
             }
 
@@ -1818,6 +1641,7 @@
         let dragging = false;
         let dragStartSquare = null;
         let ghostPiece = null;
+        let isAnimating = false;
 
         function init() {
             renderBoard();
@@ -1845,6 +1669,7 @@
             });
             
             document.addEventListener('keydown', e => {
+                if (isAnimating) return;
                 if (e.key === 'ArrowLeft') goBack();
                 if (e.key === 'ArrowRight') goForward();
                 if (e.key === 'ArrowUp') { e.preventDefault(); goToStart(); }
@@ -1852,7 +1677,7 @@
             });
         }
 
-        function renderBoard(customState = null, showClassification = false, classIndex = -1) {
+        function renderBoard(customState = null, showClassification = false, classIndex = -1, skipAnimation = false) {
             const board = document.getElementById('board');
             board.innerHTML = '';
             const state = customState || engine.board;
@@ -1900,6 +1725,17 @@
                         icon.src = CLASSIFICATION_ICONS[classification.classification];
                         icon.className = 'move-classification-icon';
                         sq.appendChild(icon);
+                        
+                        // Apply effects for brilliant/great
+                        if (classification.classification === 'brilliant') {
+                            sq.classList.add('brilliant-square');
+                            const piece = sq.querySelector('.piece');
+                            if (piece) piece.classList.add('brilliant-glow');
+                        } else if (classification.classification === 'great') {
+                            sq.classList.add('great-square');
+                            const piece = sq.querySelector('.piece');
+                            if (piece) piece.classList.add('great-glow');
+                        }
                     }
 
                     sq.addEventListener('click', () => handleClick(r, c));
@@ -1909,6 +1745,42 @@
             }
             updateCapturedPieces();
             updatePlayerIndicators();
+        }
+
+        function animatePieceMove(fromRow, fromCol, toRow, toCol, piece, classification, callback) {
+            isAnimating = true;
+            const board = document.getElementById('board');
+            const boardRect = board.getBoundingClientRect();
+            
+            const animatedPiece = document.createElement('img');
+            animatedPiece.src = PIECE_IMAGES[piece];
+            animatedPiece.className = 'animated-piece';
+            if (classification === 'brilliant') animatedPiece.classList.add('brilliant');
+            if (classification === 'great') animatedPiece.classList.add('great');
+            
+            const startX = fromCol * 80 + 5;
+            const startY = fromRow * 80 + 5;
+            animatedPiece.style.left = startX + 'px';
+            animatedPiece.style.top = startY + 'px';
+            
+            board.appendChild(animatedPiece);
+            
+            // Hide piece at destination temporarily
+            const destSquare = document.querySelector(`.square[data-row="${toRow}"][data-col="${toCol}"]`);
+            const destPiece = destSquare?.querySelector('.piece');
+            if (destPiece) destPiece.style.opacity = '0';
+            
+            requestAnimationFrame(() => {
+                animatedPiece.style.left = (toCol * 80 + 5) + 'px';
+                animatedPiece.style.top = (toRow * 80 + 5) + 'px';
+            });
+            
+            setTimeout(() => {
+                animatedPiece.remove();
+                if (destPiece) destPiece.style.opacity = '1';
+                isAnimating = false;
+                if (callback) callback();
+            }, 650);
         }
 
         function startDrag(e, r, c, piece) {
@@ -2000,8 +1872,7 @@
             }
 
             updateMoveList();
-            const ev = engine.evaluate() / 100;
-            updateEvalBar(ev, true);
+            updateEvalBar(engine.evaluate() / 100, true);
 
             if (engine.isInCheck(engine.turn)) {
                 playSound('check');
@@ -2068,22 +1939,15 @@
                 
                 setTimeout(() => {
                     const modal = document.getElementById('gameOverModalContent');
-                    const icon = document.getElementById('gameOverIcon');
-                    const title = document.getElementById('gameOverTitle');
-                    const msg = document.getElementById('gameOverMessage');
-                    const status = document.getElementById('gameStatus');
-                    
                     modal.className = 'modal ' + (playerWon ? 'victory' : 'defeat');
-                    icon.textContent = playerWon ? '👑' : '💀';
-                    title.textContent = playerWon ? 'Victory!' : 'Defeat';
-                    msg.textContent = playerWon ? 'Checkmate! You crushed them!' : 'You were checkmated';
-                    status.className = 'game-status ' + (playerWon ? 'victory' : 'defeat');
-                    status.textContent = playerWon ? '🎉 Victory!' : '😢 Defeated';
-                    
+                    document.getElementById('gameOverIcon').textContent = playerWon ? '👑' : '💀';
+                    document.getElementById('gameOverTitle').textContent = playerWon ? 'Victory!' : 'Defeat';
+                    document.getElementById('gameOverMessage').textContent = playerWon ? 'Checkmate! You crushed them!' : 'You were checkmated';
+                    document.getElementById('gameStatus').className = 'game-status ' + (playerWon ? 'victory' : 'defeat');
+                    document.getElementById('gameStatus').textContent = playerWon ? '🎉 Victory!' : '😢 Defeated';
                     document.getElementById('statMoves').textContent = Math.ceil(engine.moveHistory.length / 2);
                     document.getElementById('gameOverModal').classList.add('active');
                 }, 1500);
-                
                 return true;
             }
             
@@ -2298,10 +2162,9 @@
                 { key: 'blunder', name: 'Blunder' }
             ];
 
-            // Find key moments
             const keyMoments = [];
             moveAnalysis.forEach((a, i) => {
-                if (['brilliant', 'blunder', 'mistake'].includes(a.classification)) {
+                if (['brilliant', 'great', 'blunder', 'mistake'].includes(a.classification)) {
                     keyMoments.push({ index: i, ...a, move: engine.moveHistory[i] });
                 }
             });
@@ -2316,98 +2179,4 @@
                                 <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="progress" cx="50" cy="50" r="42" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - wAcc/100)}"/></svg>
                                 <div class="accuracy-value">${wAcc}<span class="accuracy-percent">%</span></div>
                             </div>
-                            <div class="accuracy-label">Your Accuracy</div>
-                        </div>
-                        <div class="accuracy-item">
-                            <div class="accuracy-ring black">
-                                <svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="42"/><circle class="progress" cx="50" cy="50" r="42" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - bAcc/100)}"/></svg>
-                                <div class="accuracy-value">${bAcc}<span class="accuracy-percent">%</span></div>
-                            </div>
-                            <div class="accuracy-label">Bot Accuracy</div>
-                        </div>
-                    </div>
-                </div>
-                
-                ${keyMoments.length > 0 ? `
-                <div class="key-moments">
-                    <div class="key-moments-title">Key Moments</div>
-                    ${keyMoments.slice(0, 5).map(km => `
-                        <div class="key-moment" onclick="goToMove(${km.index})">
-                            <img src="${CLASSIFICATION_ICONS[km.classification]}" class="key-moment-icon">
-                            <div class="key-moment-text">
-                                <div class="key-moment-move">Move ${Math.floor(km.index/2)+1}${km.index % 2 === 0 ? '.' : '...'} ${km.move.notation}</div>
-                                <div class="key-moment-eval">${km.evalChange >= 0 ? '+' : ''}${km.evalChange.toFixed(1)} eval change</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                ` : ''}
-                
-                <div class="classification-section">
-                    <div class="classification-header"><span>You</span><span>Bot</span></div>
-                    ${classes.map(c => `
-                        <div class="classification-row">
-                            <div class="classification-label">
-                                <img src="${CLASSIFICATION_ICONS[c.key]}" class="classification-icon">
-                                <span class="classification-name">${c.name}</span>
-                            </div>
-                            <div class="classification-counts">
-                                <span class="count-badge ${cnt(wA,c.key) > 0 ? 'has-value' : ''}">${cnt(wA,c.key)}</span>
-                                <span class="count-badge ${cnt(bA,c.key) > 0 ? 'has-value' : ''}">${cnt(bA,c.key)}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div id="reviewMoveInfo"></div>
-            `;
-        }
-
-        function goToMove(idx) {
-            if (idx < -1 || idx >= engine.moveHistory.length) return;
-            reviewMoveIndex = idx;
-            
-            if (idx === -1) {
-                renderBoard(new ChessEngine().board, false, -1);
-                updateEvalBar(0);
-            } else {
-                const state = engine.moveHistory[idx].boardState;
-                renderBoard(state.board, true, idx);
-                if (moveAnalysis[idx]) {
-                    updateEvalBar(moveAnalysis[idx].evalAfter);
-                    showMoveInfo(idx);
-                }
-            }
-            updateMoveList();
-        }
-
-        function showMoveInfo(idx) {
-            const info = document.getElementById('reviewMoveInfo');
-            if (!info || !moveAnalysis[idx]) return;
-            const a = moveAnalysis[idx], m = engine.moveHistory[idx];
-            const names = { brilliant:'Brilliant', great:'Great Move', best:'Best Move', excellent:'Excellent', good:'Good', book:'Book', inaccuracy:'Inaccuracy', mistake:'Mistake', miss:'Miss', blunder:'Blunder' };
-            const files = 'abcdefgh';
-
-            info.innerHTML = `
-                <div class="review-move-info">
-                    <div class="review-move-header">
-                        <div class="review-move-class">
-                            <img src="${CLASSIFICATION_ICONS[a.classification]}" class="review-move-icon">
-                            <span class="review-move-notation">${m.notation}</span>
-                            <span class="review-move-type">${names[a.classification]}</span>
-                        </div>
-                        <span class="eval-change ${a.evalChange >= 0 ? 'positive' : 'negative'}">${a.evalChange >= 0 ? '+' : ''}${a.evalChange.toFixed(2)}</span>
-                    </div>
-                    ${!a.isBestMove && a.bestMove ? `<div class="review-best-move">Best was <strong>${files[a.bestMove.from.col]}${8-a.bestMove.from.row}${files[a.bestMove.to.col]}${8-a.bestMove.to.row}</strong></div>` : ''}
-                </div>
-            `;
-        }
-
-        function goToStart() { goToMove(-1); }
-        function goBack() { goToMove(Math.max(-1, reviewMoveIndex - 1)); }
-        function goForward() { goToMove(Math.min(engine.moveHistory.length - 1, reviewMoveIndex + 1)); }
-        function goToEnd() { goToMove(engine.moveHistory.length - 1); }
-
-        init();
-    </script>
-</body>
-</html>
+                            <div
